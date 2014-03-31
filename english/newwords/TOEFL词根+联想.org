@@ -1,0 +1,906 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template-toc.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+INFOJS_OPT: view:showall
+#+title:TOEFL词根+联想
+* List1
+** accessory
+   n 附件／配件
+   adj 附属的／副的
+   联想：
+   adjunct 附属物／附属的
+   additional 附加的／额外的
+   additive 添加的／添加剂
+** acoustic
+   adj 听觉相关的／声学的
+** acute
+   severe/intense 极度的／激烈的
+   acute sorrow/pain
+   an acute shortage of oil
+** adhere
+   粘贴
+   adhesive 带粘性的／胶合剂
+   adhesion 粘连
+** adobe
+   泥砖
+   adobe reader
+** adolescence
+   青春期
+   adolescent
+** adorn
+   decorate 装饰
+** aer-
+   前缀表和空气相关的
+   aerial 空中的
+   aerobic 有氧运动／好氧的
+   aerobic bacteria 好氧细菌
+   aerobic sport 有氧运行
+   aerobic fermentation 有氧发酵 
+** aesthetic
+   artistic 美学的
+   审美的
+** commodity
+   商品
+   commerce 商业
+   commodities
+** afflict
+   tortue 折磨／使痛苦
+* List2
+** alga
+   藻类／水藻
+** alkali
+   n 碱
+   adj 碱性的
+   acid 酸
+** allay
+   1. calm 使平静
+   2. relieve, alleviate 减轻痛苦
+   联想：
+   1. alloy 合金
+   2. alley 小路
+   3. ally  伙伴／助手
+** allegory
+   寓言故事
+   寓意／象征
+** aluminum
+   铝
+   联想：
+   magnesium 镁
+** amino
+   氨基的
+   amino acid 氨基酸
+** amnesia
+   失忆症／健忘症
+** ample
+   充足的／丰富的
+   plentiful/sufficient/abundant/abound/adequate
+** amplify
+   加强 make larger/stronger/greater or enlarge or extend
+   提高音量
+   amplifier 扩音器／放大器
+   amplification  放大
+** anatomy
+   解剖学
+** anthropology
+   人类学
+   anthropologist 人类学家
+   anthropological 人类学的
+** antibiotic
+   抗生素
+   biotic 生物相关的
+** anticipate
+   预期／预见 foresee/look forward to
+   anticipated 预期的
+** applicant
+   申请者
+   apply for 申请
+   application 应用程序／应用／申请
+** apprentice
+   学徒
+** appropriate
+   v 拨款／占用
+   adj 合适的
+** aqua-
+   做为前缀表与水有关的
+   aquatic 水生动植物／水生的／水上的 marine
+   aquarium 养鱼池／水族馆
+   联想：
+   natatorium 游泳馆
+** archaeology
+   考古学
+   archaeologist 考古学家
+   archaeological 考古学的
+   archaeological site 考古遗址
+** arbitrary
+   任意的／专制的，武断的
+** articulate
+   adj 表达清晰的／关节相关的
+   v 清晰地表达 
+#+begin_example
+Be careful to articulate your words so that everyone in the room can understand you.
+#+end_example
+   articulation 关节
+   articulation point 关节点／连接点
+** artifact
+   人工制品
+   artifactitious 人工现象的／人工制品的
+   artificial 人造的／合成的
+   artificiality 人工／不自然
+   synthetic 合成的 -> n synthesis 综合
+** arid
+   droughty 干旱的
+   arid climate 干旱气候
+   n drought 干旱
+** ascribe
+   ascribe sth to sb/sth 归因于
+* List3
+** premise
+   n 前提假设
+   v 作出前提
+   assume/suppose
+   on the premise
+** asteroid
+   小行星
+   minor planet
+** attain
+   reach/accomplish/obtain/achieve/gain 获得，达到
+** auction
+   public sale 拍卖
+** auditorium
+   礼堂
+   orium/arium后缀结尾的一般表“地方”
+   natatorium 游泳馆
+   aquarium 水族馆
+** augment
+   增加／增强
+   augmentation
+   augmented
+   augmenting
+   编译原理LR语法分析时 augmented grammer 增广文法
+** avalanche
+   n 雪崩/山崩 snowslide/landslide
+** avert
+   avoid 避开／避免
+   n aversion
+   avert the eyes from sth
+   avert dangers
+** aviation
+   飞行学／航空行
+   aviator 飞行家／飞行员
+** bald
+   光秃
+   联想：
+   bold 大胆的
+** barge
+   驳船／游艇
+** barren
+   infertile/unproductive 贫瘠的
+   sterile 不育的
+** barter
+   trade／deal 实物交换
+** bead
+   n 珠子／水珠
+   v 形成珠状
+** benign
+   gentle/mild 温和的／气候良好的／性情温和的
+** besiege
+   surround so as to force to give up 围攻
+   被困扰／使烦恼
+** bias
+   n inclination 偏见
+   v 存在偏见
+** bland
+   nonirritating 无刺激的／平淡的／无味的
+** bleach
+   v 漂白／使变白 to make whiter or lighter in color
+** blend
+   mix 混合
+   blend the ingredients
+** blip
+   雷达上的尖峰
+* List4
+** blizzard
+   a storm with dry, driving snow, strong wind and intense cold. 暴风雪
+   联想：bazaar
+   <<The Cathedral And The Bazaar>> 大教堂和集市
+** blossom
+   v 开花/兴旺
+   n 花/开花期
+   同义词：bloom 
+** bog
+   n 沼泽
+   v 陷于沼泽
+** bony
+   very thin 瘦骨嶙峋的
+** boulder
+   a large smooth mass of rock 大石头
+** brittle
+   fragile 易碎的
+   loacking warmth and generosity of spirit 冷漠的
+** brochure
+   pamphlet, booklet 小册子
+** buckle
+   n 皮带扣
+   v 扣住
+** bulk
+   n majority 大部分/体积/容量
+   v 增大体积/使显得重要
+** bureau
+   局/署, 官僚
+   bureaucrat 官僚主义者
+   bureaucratic 官僚主义的
+   bureaucracy 官僚主义
+** burgeon
+   bloom flourish 迅速增长
+   发芽
+** cactus
+   仙人掌
+** calibration
+   calibrate 测量口径/调整
+   calibration 标度/刻度
+** camouflage
+   disguise hide 掩饰/伪装
+** canvas
+   帆布/画布
+** canopy
+   遮篷
+** canyon
+   峡谷
+** capillary
+   毛细血管
+   vessel 血管
+** cardiac
+   心脏的/心脏病的
+   cardiac rhythm 心律
+   cardiac failure 心力衰竭
+** cardinal
+   adj main essential 主要的/基本的
+       vivid red 深红色的
+   n 红衣主教
+   cardinal number 基数
+** carnivore
+   食肉动物
+   同义词：predator 捕食者/食肉动物
+** carp
+   鲤鱼
+* List5
+** cascara
+   缓泻剂（治疗便秘）
+** catalyst
+   [化学]催化剂
+   刺激因素
+** caterpillar
+   毛虫（蝴蝶的幼虫）
+** cavity
+   cave 洞
+   [解剖anatomy]腔
+** celestial
+   adj 天空的
+   n 神仙
+** census
+   人口普查
+** centennial
+   百年纪念
+   centenary 百年的
+   millennium 千年的/千禧年
+** ceramic
+   陶瓷的
+   ceram 陶瓷
+** chafe
+   abrade rub 擦伤/摩擦
+   激怒 irritate
+** chamber
+   n 房间/私人会所
+   adj 私人的/室内的
+** chapel
+   小教堂
+   cathedral 大教堂
+   bazaar 集市
+** charter
+   n 宪章/执照
+   v 特许
+** charcoal
+   木炭
+** checked
+   格子花纹的
+** baboon
+   狒狒
+   chimpanzee 黑猩猩
+   gorilla 大猩猩
+   orangutan 猩猩
+** chlorine
+   [化学]氯
+   aluminum 铝
+   magnesium 镁
+** cholesterol
+   胆固醇
+   chole 胆/胆汁
+   sterol 固醇
+** choreograph
+   编排舞蹈
+   choreographer 编舞者
+   choreography 编舞/舞蹈艺术
+** choir
+   唱诗班
+   chorus 合唱队
+** chronic
+   慢性的
+   chronical 慢性的
+   chron-时间相关的
+   chronicle 编年史
+   chrono-时间长的
+   chronology 年代学
+** circumference
+   周长/圆周
+   periphery 周边 peripheral equipment 外围设备
+   perimeter 圆周
+** clam
+   蛤
+   oyster 牡蛎
+   abalone 鲍鱼
+   coral 珊瑚
+   crab 螃蟹
+** clamor
+   n/v 吵闹/喧嚷
+   proclaim 声明/宣告
+   proclamation
+   reclaim 回收利用/开拓
+   reclamation
+   exclaim 感叹
+   exclamation 感叹 exclamation mark感叹号 exclamatory 感叹的
+   变名词时去掉i
+** clipper
+   快速帆船/大剪刀/理发剪刀
+   clip n/v修剪
+** cluster
+   簇
+** clump
+   n 土块/丛
+   v 形成丛
+** clutch
+   n 离合器
+   v 抓住
+** coarse
+   粗糙的/粗俗的/下流的
+   hoarse 嘶哑的
+** coax
+   哄/哄骗/慢慢弄好，细心处理
+   Coax
+   coaxial/coxal 同轴的（having a common axis）
+** cognition
+   认知/感知 perception
+   cognitive 认知的
+** coil
+   n 卷/线圈
+   v 盘绕
+** ellipsis
+   省略(号)
+   ellipse 椭圆
+** apostrophe
+   省略号/撇号
+** despicable
+   卑鄙的
+** myriad
+   大量的
+   一万
+** mnemonic
+   记忆的/助记的
+   
+* List6
+** collapse
+   倒塌/折叠（bootstrap中有一个控件叫collapse）
+** combustible
+   flammable 易燃的
+   combust v燃烧
+   combustion n
+** commemorate
+   v 纪念 honor/celebrate
+   commemoration
+** commodity
+   日用品
+   merchandise 商品
+   merchant 商人/商业的
+** communal
+   公共的/社区的 for public use
+   community 社区
+** advertent
+   留意的
+   inadvertent 不注意的
+   advert v注意/广告
+   advertise v做广告
+   advertisement n广告
+** compensate
+   偿还/赔偿
+   compensation n赔偿金
+   compensatory n赔偿
+** competence
+   n 胜任/有能力
+   compete 竞争
+   competent capable有能力的
+** comprise
+   be composed of 由...构成
+   #+begin_example
+   The earth comprised three principal layers.
+   #+end_example
+** concede
+   confess 承认
+   yield 让步
+** conceive
+   设想/想象
+   怀孕 become pregnant
+   conceive of 想象
+   #+begin_example
+   It's hard to conceive of living on the moon.
+   I can't conceive where he came up with that idea.
+   #+end_example
+** concert
+   音乐会
+   consistency/conherence 一致
+
+   concerted 一致的/商定好的
+** condensation
+   压缩/凝聚/液化
+   condense v浓缩
+   condenser 冷凝器/聚光器
+** confederacy
+   联盟
+   confederate n同盟国 a同盟的 united/federal
+   confederative a同盟的/联邦的
+** confer
+   conference 会议
+   conferee 与会者
+   conferment n商议/颁给
+   confer v商议
+   授予/给予 award/give
+   #+begin_example
+   The invention will confer a benefit on all invalids(残疾人).
+   #+end_example
+* List7
+** conform
+   conform to
+   comply with
+   obey 遵守
+   一致/符合
+** malady
+   疾病
+** congenial
+   意气相投的/相宜的/同性质的
+   congeniality 同性质
+   congener 同类的（人或物）
+** kindred
+   n家族，亲戚关系
+   a同族的，血缘的，同类的
+** consent
+   v/n赞同，同意
+   #+begin_example
+   He threw me a smile that telegraphed consent.
+   #+end_example
+** constellation
+   星座
+** consort
+   v 结交 make friends
+   n 伙伴 partner, buddy, companion
+** consonant
+   辅音 consotantal 辅音的
+   一致的，相符的
+   consonance 和音chord/调和
+   consonant with = in agreement with
+   be consonant with
+   #+begin_example
+   behaving with a dignity consonant with his rank. 举止带有与其地位相符的气质
+   #+end_example
+** volatile
+   易挥发的，不稳定的
+** electorate
+   选民
+   elector 选民
+   electoral a和选举相关的
+** contagious
+   传染的
+   infectious 传染的
+   contagion n传染（病）
+   inflammation 发炎/炎症
+   influenza 流行性感冒
+   区别：contiguous 相邻的
+** contaminate
+   污染 pollute
+   contamination 污染
+   contaminator 污染者
+   contaminated 污染的
+   pollution 污染
+   pollutent 污染物
+** contour
+   外形 shape/figure/appearance
+   轮廓 outline
+   Contour Integral 康托尔积分
+** controversy
+   n争论
+   controversial a有争议的
+   controvert v争论/议论/辩论
+** convect
+   空气对流
+   the converting layer 对流层
+   convection 对流
+** converge
+   收敛/聚合/汇聚 aggregate
+   convergence 收敛（数学上）
+** intervene
+   interfere 干涉/介入
+   intervention
+   interference
+** convict
+   v定罪/判罪
+   n囚犯 prisoner
+   convicted 被判有罪的 proven/declared guilty
+** cosmic
+   宇宙的
+   cosmos 宇宙
+   celestial 天空的/天国的
+   Celestial Empire 天朝
+** correspond
+   v符合/通信
+   correspond to 和..符合/通信
+   correspond with 符合/和...通信
+   correspondent 通信者/记者reporter/journalist
+   corresponding 一致的
+** counteract
+   抵消/消除/中和neutralize
+** counterpart
+   相似的人/物
+** coupon
+   优惠券/票据
+* List8
+** craft
+   工艺/手艺/手工艺品
+** crater
+   火山口/陨石坑
+** credential
+   diploma/certificate/qualification 文凭/证书/资格
+   diplomat 外交官
+** crest
+   （山）顶
+** crisscross
+   十字形/十字记号/矛盾
+** critique
+   criticism/comment 批评/评论
+** cramped
+   limited 狭窄的
+   cramp v抽筋
+** crude
+   unrefined 天然的/未经提炼的
+   refine 精炼/提纯
+** crusade
+   n 十字军/圣战
+   v 从事改革运动
+** crust
+   面包皮/外壳
+   #+begin_example
+   the earth's crust 地壳
+   #+end_example
+** crustacean
+   甲壳动物
+** cue
+   n clue 提示，线索
+   v 提示
+** cumbersome
+   笨重的/麻烦的
+   cumber v阻碍/防碍/阻塞
+** cultivated
+   耕种的/有修养的(educated/sophiscated)
+** metabolic
+   新陈代谢物
+   metabolism n新陈代谢
+   metabolize v新陈代谢
+   metabolite n（生物）代谢物
+** damp
+   adj slightly wet 潮湿的
+   n 潮湿
+   v 打湿
+** diminish
+   make/become less 减少
+** demolish
+   destroy 摧毁
+   knock down a building 拆毁建筑
+** devour
+   eat food hungrily and quickly 狼吞虎咽地吃
+   read quickly and eagerly 贪婪地读
+** dazzling
+   耀眼的/眼花缭乱的
+   #+begin_example
+   The sunlight is dazzling.
+   #+end_example
+   dazzle v晃眼
+** deteriorate
+   变质/变坏
+   #+begin_example
+   The relationship between the two countries had deteriorated sharply.
+   #+end_example
+   1. erode 风化/侵蚀
+      erosion
+   2. rot 腐烂
+   3. decay 腐坏/腐烂
+   4. corrode 腐蚀/侵蚀
+      corrosion
+   5. mold n霉
+      moldy 发霉的
+** defect
+   a shortcoming/imperfection 缺点/缺乏
+   #+begin_example
+   generic defect
+   #+end_example
+** delicate
+   fragile/subtle/exquisite 易碎的/微妙的/精巧的
+** deform
+   v变形
+   deformed
+   deformation
+   misshape v损毁形状使成畸形
+   misshapen adj变形的
+** deliberate
+   adj 故意的/谨慎的，深思熟虑的
+   v 仔细考虑
+   deliberately 故意地/谨慎地
+** denture
+   一副假牙
+   dentist 牙医
+   dentisty 牙科
+* List9
+** deplete
+   diminish/reduce the number/qunatity of sth 减少
+   exhaust 精疲力竭
+   depletion n用尽/消耗完
+** deprive
+   剥夺某人对某物的使用/拥有权
+   deprive sb/sth of sth
+   sb/sth be deprived of sth
+   #+begin_example
+   Plant stems die when deprived of water.
+   #+end_example
+   deprivation
+** portray
+   depict/describe （文学作品/艺术中）描述/刻画；（电影/戏剧）扮演
+   portray sb as sth 将某人描述成
+** designate
+   denominate 任命/指派
+   name 命名
+   designate sb as sth 任命某人为
+** deter
+   discourage sb from doing sth 打消某人的念头/阻止做(因害怕后果而不敢去做)
+** detest
+   hate
+** devise
+   v plan or invent by careful thought 策划/发明（经过精心思考）
+   n 遗赠
+** devoid
+   v entirely lacking 完全缺乏
+** diagonal
+   n 对角线
+   adj 对角线的/斜线的
+** diffuse
+   v spread/propogate 传播/渗入，弥漫
+   adj 分散的/扩散的
+** dilute
+   v 稀释
+   #+begin_example
+   bleach can be diluted by cold water.
+   #+end_example
+   削弱力量/降低价值
+   #+begin_example
+   the reform has been diluted.
+   #+end_example
+   adj 稀释的/冲淡的
+   dilutor 稀释剂
+** dim
+   adj 黯淡的/模糊的/昏暗的/悲观的
+** discern
+   v distinguish/perceive/recognize/discriminate 识别/辨别/察觉
+   #+begin_example
+   I can discern no difference between the two politics.
+   #+end_example
+   discernment 洞察力/识别
+** discharge
+   1. 放电/漏电
+   2. 释放（液/气体）
+** dilemma
+   n 进退两难的境地
+   联想记忆：地雷嘛
+** deposit
+   :PROPERTIES:
+   :CUSTOM_ID: deposit
+   :END:
+   v 沉积/存款/
+   n 沉淀物/存款/保证金/押金
+   deposition 沉积物
+   depositor 存款人
+   bank deposit 银行存款
+   同义词：
+   sediment n沉积物
+   precipitate v使物质沉积/n[化学]沉淀物
+   
+* List10
+** disposed
+   dispose
+   1. dispose of sth = a) get rid of 摆脱 b)处理/安置 c)转移某物所有权 dispose of personal property to a total stranger
+   2. give a tendency to/determine the course of event决定事态的发展
+      #+BEGIN_EXAMPLE
+      the government proposed, but the trade union movement disposed.
+      谋事的是政府，而成事的是工会运动。
+      #+END_EXAMPLE
+   disposed
+   adj 有xx意向的
+   be ill/well-disposed to 对xx恶/善意的
+
+   disposition
+   n 处置/[军事]部署
+** distort
+   1. 曲解/扭曲事实
+      #+BEGIN_EXAMPLE
+      The story was distorted by the press.
+      #+END_EXAMPLE
+   2. 扭曲变形
+      #+BEGIN_EXAMPLE
+      Her face was distorted by pain.
+      #+END_EXAMPLE
+   
+** propaganda
+   政治宣传片
+   propagate
+   v 繁殖/宣传
+   propagation
+   propagator
+   propagating
+** drastic
+   adj extreme/intense/severe剧烈的/强烈的/猛烈的
+   #+BEGIN_EXAMPLE
+   such a drastic change 剧烈变动
+   #+END_EXAMPLE
+** ductile
+   adj （金属）易延展的/可塑的，柔软的
+** edifice
+   巨大的建筑
+** elicit
+   引出 bring out/educe
+   elicitor [生物]诱导子
+   elicition 诱导/引导
+** eloquent
+   口才好的/有说服力的
+   #+BEGIN_EXAMPLE
+   an eloquent speech
+   #+END_EXAMPLE
+   eloquence 雄辩/口才
+* List11
+** elude
+   avoid/escape 逃避，躲开/难懂
+   elusion
+   elusive 难懂的
+   #+BEGIN_EXAMPLE
+   He managed to elude his pursuers by escaping into a bog.沼泽
+   This logic eluded most people.
+   #+END_EXAMPLE
+   [[file:NewWords02.org::#delude][delude]]
+** embellish
+   decorate装饰/修饰|润色（使更加吸引人/生动）
+   #+BEGIN_EXAMPLE
+   Jimmy embellished the tale of his fishing trip to make it sound more exciting.
+   #+END_EXAMPLE
+** emblem
+   徽章
+   #+BEGIN_EXAMPLE
+   national emblem 国徽
+   #+END_EXAMPLE
+** embody
+   包含contain/体现express
+   #+BEGIN_EXAMPLE
+   That's a national team that embodies competetive spirit and skill.
+   #+END_EXAMPLE
+** embryo
+   胚胎/萌芽状态的事物，发展初期的事物
+   in embryo 在初始阶段
+   embryonic adj 与胚胎相关的
+   embryology 胚胎学
+** emerald
+   绿宝石/翡翠/翠绿色
+** eminent
+   卓越的/出众的
+   preeminent =
+   prominent =
+   imminent adj 即将发生的/迫近的
+   #+BEGIN_EXAMPLE
+   one of the world's most eminent statisticians.
+   #+END_EXAMPLE
+** enactment
+   enact =make law制定法律
+   enactment n 法律的制定/法律
+   #+BEGIN_EXAMPLE
+   legislation was enacted in 1987 to attract international companies.
+   #+END_EXAMPLE
+** encroach
+   intrude侵占/侵害/侵蚀
+   encroach on 侵犯/侵害
+   #+BEGIN_EXAMPLE
+   the reporter encroached my privacy.
+   #+END_EXAMPLE
+** encase
+   put in box放入盒子中
+** encompass
+   surround环绕/围绕 include包含
+** endow
+   v donate捐助/be endowed with天生具有
+   #+BEGIN_EXAMPLE
+   endow the church
+   he is endowed with tremendous physical strength
+   #+END_EXAMPLE
+** engrave
+   carve雕刻
+** engulf
+   吞没/淹没
+   #+BEGIN_EXAMPLE
+   the cafe was engulfed in flames
+   Europe might be engulfed by war.
+   #+END_EXAMPLE
+** entail
+   involve牵扯/承担
+   #+BEGIN_EXAMPLE
+   a situation which entails considerable risks
+   #+END_EXAMPLE
+** enzyme
+   酶
+** epitomize
+   v be a perfect example of  代表/象征/缩影
+   epitomization
+   eptime n a person or thing that is a perfect example of a particular quality or type 象征/典型代表
+   #+BEGIN_EXAMPLE
+   the company epitomized the problems faced by British industry.
+   #+END_EXAMPLE
+** ethics
+   道德/伦理
+   ethical
+   ethically
+   unethical 不道德的
+** ethnic
+   种族的
+** evaporate
+   vapor 水汽
+   vaporize 汽化
+   vaporization
+   evaporate 蒸发/消失 vanish
+   evaporation
+   evaporable 易消失的
+   evaporator 蒸发器
+   #+BEGIN_EXAMPLE
+   the militancy of earlier years had evaporated in the wake of defeat.
+   #+END_EXAMPLE
+*** militancy
+    adj 好战的
+    n 好战分子
+*** in the wake of
+    following (someone or something), especially as a consequence 后果/结果
+** evoke
+   bring or recall to the conscious mind  唤起/激起
+   #+BEGIN_EXAMPLE
+   that potent tang evoking nostalgic memories of childhood holidays.
+   #+END_EXAMPLE
+   revoke 撤消
+   provoke 激起/刺激
+   #+BEGIN_EXAMPLE
+   the decision provoked a storm of protest from civil rights organizations.
+   #+END_EXAMPLE
+*** potent
+    强烈的
+*** tang
+    气味
+*** nostalgic
+    思乡的
+** excavate
+   dig 挖掘/开凿
+   excavation
+** exalt
+   :PROPERTIES:
+   :CUSTOM_ID: exalt
+   :END:
+   v think highly of赞扬/使变得崇高
+   exalted 崇高的
+   #+BEGIN_EXAMPLE
+   the party will continue to exalt their hero
+   Romanticism liberated the imagination and exalted the emotions.
+   #+END_EXAMPLE

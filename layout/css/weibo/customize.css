@@ -1,0 +1,43 @@
+li {
+    line-height: 24px;
+}
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #333;
+}
+ul, ol {
+    padding: 0;
+/* margin: 0 0 9px 25px; */
+}
+
+body a, .wb_linka a, .wb_linka {
+    color: #004;
+    text-decoration: none;
+}
+.weiboshow a, .weiboshow .wb_linka a, .weiboshow .wb_linka {
+    color: #004;
+}
+ul, menu, dir {
+    display: block;
+    list-style-type: none;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 10px;
+}
+.weiboshow {
+    color: #595959;
+}
+.weiboshow_title_top {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+.weiboshow * {
+    border-color: #D2D2D2;
+}
+.weiboShow_title_logo{
+    padding-left:10px;
+}

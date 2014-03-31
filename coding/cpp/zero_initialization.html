@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content=""/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-12-14 09:03:06 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<div id="org-div-comments"><a href="../../index.html#cpp">主页</a></div>
+
+
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title"></h1>
+
+
+
+
+<pre class="src src-c++"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;iostream&gt;</span>
+<span style="color: #a020f0;">using</span> <span style="color: #a020f0;">namespace</span> <span style="color: #008b8b;">std</span>;
+
+<span style="color: #a020f0;">template</span> &lt;<span style="color: #a020f0;">typename</span> <span style="color: #228b22;">T</span>&gt;
+<span style="color: #228b22;">void</span> <span style="color: #0000ff;">f</span>(<span style="color: #a020f0;">const</span> <span style="color: #228b22;">T</span>&amp;){
+    <span style="color: #b22222;">// </span><span style="color: #b22222;">T x = T();</span>
+    <span style="color: #228b22;">T</span> <span style="color: #a0522d;">x</span>;
+    cout&lt;&lt;x&lt;&lt;endl;
+}
+
+<span style="color: #a020f0;">template</span> &lt;<span style="color: #a020f0;">typename</span> <span style="color: #228b22;">T</span>&gt;
+<span style="color: #a020f0;">class</span> <span style="color: #228b22;">A</span>{
+<span style="color: #a020f0;">private</span>:
+    <span style="color: #228b22;">T</span> <span style="color: #a0522d;">x</span>;
+    <span style="color: #228b22;">T</span> <span style="color: #a0522d;">y</span>;
+    <span style="color: #228b22;">T</span> <span style="color: #a0522d;">z</span>;
+<span style="color: #a020f0;">public</span>:
+    <span style="color: #b22222;">// </span><span style="color: #b22222;">A():x(), y(), z(){}</span>
+    <span style="color: #228b22;">void</span> <span style="color: #0000ff;">MyPrint</span>(){
+        cout&lt;&lt;x&lt;&lt;<span style="color: #8b2252;">" "</span>&lt;&lt;y&lt;&lt;<span style="color: #8b2252;">" "</span>&lt;&lt;z&lt;&lt;endl;
+    }
+};
+<span style="color: #228b22;">int</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">int</span> <span style="color: #a0522d;">argc</span>, <span style="color: #228b22;">char</span> *<span style="color: #a0522d;">argv</span>[])
+{
+    f(1);
+    f(1.1);
+    <span style="color: #228b22;">A</span>&lt;<span style="color: #228b22;">int</span>&gt; <span style="color: #a0522d;">a</span>;
+    a.MyPrint();
+    <span style="color: #a020f0;">return</span> 0;
+}
+
+</pre>
+
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:urls
+* 软件
+** 同步
+   1. [[http://www.syncoo.com/how-to-run-multiple-dropbox-accounts.htm][如何运行多个dropbox账号]]
+   2. [[http://changblog.com/122][爽玩dropbox4：让dropbox同步任意位置的文件]]
+** Emacs
+   1. [[http://batsov.com/articles/2012/02/19/color-theming-in-emacs-reloaded/][Color Theming in Emacs: Reloaded]]
+* Ubuntu
+  1. [[http://xlambda.com/blog/2012/03/04/manage-gnome-shell-extensions/][Gnome-shell扩展管理]]
+  2. [[http://xlambda.com/blog/2011/11/13/tinker-with-gnome-shell/][折腾gnome-shell]]
+  3. [[http://blog.csdn.net/sun_168/article/details/8046164][重装win系统后修复ubuntu的grub引导程序]]
+* Lisp
+* C/C++
+  1. [[http://www.phpcompiler.org/articles/virtualinheritance.html][GCC多继承/虚继承内存布局]]
+  2. [[http://stackoverflow.com/questions/388242/the-definitive-c-book-guide-and-list][The Definitive C++ Book Guide and List]]
+* 其它
+  1. [[http://mo.dbxdb.com/][下载Youtube字幕]]

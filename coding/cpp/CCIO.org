@@ -1,0 +1,24 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:C++ 输入输出
+* 控制浮点数小数位数
+  http://blog.163.com/huangbj_ecc/blog/static/139292698201011704527595/
+  #+begin_src c++
+#include <iostream>
+#include <iomanip>   //注意要包含该头文件
+using namespace std;
+int main()
+{
+     const double value = 12.3456789;
+     cout << value << endl; // 默认以6精度，所以输出为 12.3457
+     cout << setprecision(4) << value << endl; // 改成4精度，所以输出为12.35
+     cout << setprecision(8) << value << endl; // 改成8精度，所以输出为12.345679
+     cout << fixed << setprecision(4) << value << endl; // 加了fixed意味着是固定点方式显示，所以这里的精度指的是小数位，输出为12.3457
+     cout << value << endl; // fixed和setprecision的作用还在，依然显示12.3457
+     cout.unsetf( ios::fixed ); // 去掉了fixed，所以精度恢复成整个数值的有效位数，显示为12.35
+     cout << value << endl;
+     cout.precision( 6 ); // 恢复成原来的样子，输出为12.3457
+     cout << value << endl;
+}
+  #+end_src

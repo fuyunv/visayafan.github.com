@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>成员模板函数</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="成员模板函数"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-12-14 09:03:13 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<div id="org-div-comments"><a href="../../index.html#cpp">主页</a></div>
+
+
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title">成员模板函数</h1>
+
+
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+<p>
+It is also possible to define a member template function. Let's look at an example and then walk through it:<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #a020f0;">class</span> <span style="color: #228b22;">PrintIt</span> { 
+<span style="color: #a020f0;">public</span>: 
+    <span style="color: #0000ff;">PrintIt</span>( <span style="color: #228b22;">ostream</span> &amp;<span style="color: #a0522d;">os</span> ) 
+           : _os( os ){} 
+    <span style="color: #b22222;">// </span><span style="color: #b22222;">a member template function </span>
+    <span style="color: #a020f0;">template</span> &lt;<span style="color: #a020f0;">typename</span> <span style="color: #228b22;">elemType</span>&gt; 
+    <span style="color: #228b22;">void</span> <span style="color: #0000ff;">print</span>( <span style="color: #a020f0;">const</span> <span style="color: #228b22;">elemType</span> &amp;<span style="color: #a0522d;">elem</span>, <span style="color: #228b22;">char</span> <span style="color: #a0522d;">delimiter</span> = <span style="color: #8b2252;">'\n'</span> ) 
+              { _os &lt;&lt; elem &lt;&lt; delimiter; } 
+<span style="color: #a020f0;">private</span>: 
+    <span style="color: #228b22;">ostream</span>&amp; <span style="color: #a0522d;">_os</span>; 
+}; 
+</pre>
+
+<p>
+PrintIt is a nontemplate class that is initialized to an output stream. It provides a member template print() function that writes an object of an arbitrary type to that output stream. By making print() a member template function, we can provide a single instance that supports any type for which an instance of the output operator can be applied. Were we to parameterize PrintIt by the type of element we wish to output, we would create a new class template for each distinct type. Under this implementation, there is only a single PrintIt class. Here is how we might use it:<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #228b22;">int</span> <span style="color: #0000ff;">main</span>() 
+{ 
+    <span style="color: #228b22;">PrintIt</span> <span style="color: #a0522d;">to_standard_out</span>( cout ); 
+    to_standard_out.print( <span style="color: #8b2252;">"hello"</span> ); 
+    to_standard_out.print( 1024 ); 
+    <span style="color: #228b22;">string</span> <span style="color: #a0522d;">my_string</span>( <span style="color: #8b2252;">"i am a string"</span> ); 
+    to_standard_out.print( my_string ); 
+} 
+</pre>
+
+<p>
+When compiled and executed, this generates the following output:<br/>
+hello <br/>
+1024 <br/>
+i am a string <br/>
+</p>
+<p>
+A template class can also define a member template function. For example, we might parameterize PrintIt by its ostream type while maintaining print() as a member template function:<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #a020f0;">template</span> &lt;<span style="color: #a020f0;">typename</span> <span style="color: #228b22;">OutStream</span>&gt; 
+<span style="color: #a020f0;">class</span> <span style="color: #228b22;">PrintIt</span> { 
+<span style="color: #a020f0;">public</span>: 
+    <span style="color: #0000ff;">PrintIt</span>( <span style="color: #228b22;">OutStream</span> &amp;<span style="color: #a0522d;">os</span> ) 
+           : _os( os ){} 
+    <span style="color: #a020f0;">template</span> &lt;<span style="color: #a020f0;">typename</span> <span style="color: #228b22;">elemType</span>&gt; 
+    <span style="color: #228b22;">void</span> <span style="color: #0000ff;">print</span>( <span style="color: #a020f0;">const</span> <span style="color: #228b22;">elemType</span> &amp;<span style="color: #a0522d;">elem</span>, <span style="color: #228b22;">char</span> <span style="color: #a0522d;">delimiter</span> = <span style="color: #8b2252;">'\n'</span> ) 
+              { _os &lt;&lt; elem &lt;&lt; delimiter; } 
+<span style="color: #a020f0;">private</span>: 
+    <span style="color: #228b22;">ostream</span>&amp; <span style="color: #a0522d;">_os</span>; 
+}; 
+<span style="color: #b22222;">//</span><span style="color: #b22222;">Here is our modified program:</span>
+<span style="color: #228b22;">int</span> <span style="color: #0000ff;">main</span>() 
+{ 
+    <span style="color: #228b22;">PrintIt</span>&lt;<span style="color: #228b22;">ostream</span>&gt; <span style="color: #a0522d;">to_standard_out</span>( cout ); 
+    to_standard_out.print( <span style="color: #8b2252;">"hello"</span> ); 
+    to_standard_out.print( 1024 ); 
+    <span style="color: #228b22;">string</span> <span style="color: #a0522d;">my_string</span>( <span style="color: #8b2252;">"i am a string"</span> ); 
+    to_standard_out.print( my_string ); 
+} 
+</pre>
+
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+</div>
+
+</body>
+</html>

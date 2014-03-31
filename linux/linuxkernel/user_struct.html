@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>Linux内核－user_struct</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Linux内核－user_struct"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-12-14 09:05:26 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<div id="org-div-comments"><a href="../../index.html#linuxkernel">主页</a></div>
+
+
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title">Linux内核－user_struct</h1>
+
+
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+
+
+<div id="table-of-contents">
+<h2>目录</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 user_struct</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> user_struct</h2>
+<div class="outline-text-2" id="text-1">
+
+
+
+
+<pre class="src src-c"><span class="linenr"> 1:  </span><span style="color: #a020f0;">struct</span> <span style="color: #228b22;">user_struct</span> {
+<span class="linenr"> 2:  </span>    <span style="color: #228b22;">atomic_t</span> <span style="color: #a0522d;">__count</span>;   <span style="color: #b22222;">/* </span><span style="color: #b22222;">reference count </span><span style="color: #b22222;">*/</span>
+<span class="linenr"> 3:  </span>    <span style="color: #228b22;">atomic_t</span> <span style="color: #a0522d;">processes</span>; <span style="color: #b22222;">/* </span><span style="color: #b22222;">How many processes does this user have? </span><span style="color: #b22222;">*/</span>
+<span class="linenr"> 4:  </span>    <span style="color: #228b22;">atomic_t</span> <span style="color: #a0522d;">files</span>;     <span style="color: #b22222;">/* </span><span style="color: #b22222;">How many open files does this user have? </span><span style="color: #b22222;">*/</span>
+<span class="linenr"> 5:  </span>    <span style="color: #228b22;">atomic_t</span> <span style="color: #a0522d;">sigpending</span>;    <span style="color: #b22222;">/* </span><span style="color: #b22222;">How many pending signals does this user have? </span><span style="color: #b22222;">*/</span>
+<span class="linenr"> 6:  </span>    <span style="color: #b22222;">/* </span><span style="color: #b22222;">protected by mq_lock </span><span style="color: #b22222;">*/</span>
+<span class="linenr"> 7:  </span>    <span style="color: #228b22;">unsigned</span> <span style="color: #228b22;">long</span> <span style="color: #a0522d;">mq_bytes</span>; <span style="color: #b22222;">/* </span><span style="color: #b22222;">How many bytes can be allocated to mqueue? </span><span style="color: #b22222;">*/</span>
+<span class="linenr"> 8:  </span>    <span style="color: #228b22;">unsigned</span> <span style="color: #228b22;">long</span> <span style="color: #a0522d;">locked_shm</span>; <span style="color: #b22222;">/* </span><span style="color: #b22222;">How many pages of mlocked shm ? </span><span style="color: #b22222;">*/</span>
+<span class="linenr"> 9:  </span><span style="color: #483d8b;">#ifdef</span> CONFIG_KEYS
+<span class="linenr">10:  </span>    <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">key</span> *<span style="color: #a0522d;">uid_keyring</span>;    <span style="color: #b22222;">/* </span><span style="color: #b22222;">UID specific keyring </span><span style="color: #b22222;">*/</span>
+<span class="linenr">11:  </span>    <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">key</span> *<span style="color: #a0522d;">session_keyring</span>;    <span style="color: #b22222;">/* </span><span style="color: #b22222;">UID's default session keyring </span><span style="color: #b22222;">*/</span>
+<span class="linenr">12:  </span><span style="color: #483d8b;">#endif</span>
+<span class="linenr">13:  </span>    <span style="color: #b22222;">/* </span><span style="color: #b22222;">Hash table maintenance information </span><span style="color: #b22222;">*/</span>
+<span class="linenr">14:  </span>    <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">list_head</span> <span style="color: #a0522d;">uidhash_list</span>;
+<span class="linenr">15:  </span>    <span style="color: #228b22;">uid_t</span> <span style="color: #a0522d;">uid</span>;
+<span class="linenr">16:  </span>};
+</pre>
+
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>

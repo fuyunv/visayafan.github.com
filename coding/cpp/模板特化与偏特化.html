@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="gb18030"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>模板特化与偏特化</title>
+<meta http-equiv="Content-Type" content="text/html;charset=gb18030"/>
+<meta name="title" content="模板特化与偏特化"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-12-14 09:03:05 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<div id="org-div-comments"><a href="../../index.html#cpp">主页</a></div>
+
+
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title">模板特化与偏特化</h1>
+
+
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+
+<div id="table-of-contents">
+<h2>目录</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 template specialization 模板特化</a></li>
+<li><a href="#sec-2">2 template partial specialization 模板偏特化</a></li>
+<li><a href="#sec-3">3 例子</a></li>
+<li><a href="#sec-4">4 注意</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> template specialization 模板特化</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>  一般情况下类模板定义如下：<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #a020f0;">template</span>&lt;<span style="color: #a020f0;">class</span> <span style="color: #228b22;">Window</span>, <span style="color: #a020f0;">class</span> <span style="color: #228b22;">Controller</span>&gt;
+<span style="color: #a020f0;">class</span> <span style="color: #228b22;">Widget</span>
+{
+    ... &#27867;&#21270;&#23454;&#29616;&#20195;&#30721; ...
+};
+</pre>
+
+<p>
+  特化是指把类模板中指定的class T变成具体的类型：<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #a020f0;">class</span> <span style="color: #228b22;">Widget</span>&lt;ModalDialog, MyController&gt;
+{
+    ... &#29305;&#21270;&#23454;&#29616;&#20195;&#30721; ...
+};
+</pre>
+
+<p>
+   其中ModalDialog和MyController是你自己另外定义的类.<br/>
+   有了这个Widget的特化定义之后,如果你以后定义了Widget&lt;ModalDialog, MyController&gt;对象时,编译器就会使用上述的特化定义.<br/>
+   如果定义了其它泛型对象,那么编译器就是用原本的泛化定义.<br/>
+   这就是模板的特化.<br/>
+</p></div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> template partial specialization 模板偏特化</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>  模板特化是通过"给模板中的所有模板参数一个具体的类"的方式来实现的.而模板偏特化则是通过"给模板中的部分模板参数以具体的类,而留下剩余的模板参数仍然使用原来的泛化定义"的方式来实现的.<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #a020f0;">template</span>&lt;<span style="color: #a020f0;">class</span> <span style="color: #228b22;">Window</span>&gt;                        <span style="color: #b22222;">//</span><span style="color: #b22222;">&#20173;&#28982;&#20351;&#29992;&#21407;&#26469;&#30340;&#27867;&#21270;&#23450;&#20041;;</span>
+<span style="color: #a020f0;">class</span> <span style="color: #228b22;">Widget</span>&lt;<span style="color: #228b22;">Window</span>, MyController&gt;            <span style="color: #b22222;">//</span><span style="color: #b22222;">MyController&#26159;&#20855;&#20307;&#30340;&#31867;,&#26159;&#29305;&#21270;&#23450;&#20041;;</span>
+{
+    ... &#20559;&#29305;&#21270;&#23454;&#29616;&#20195;&#30721; ...
+};
+</pre>
+
+<p>
+  模板的偏特化能力很强大.当你实例化一个模板时,编译器会把目前存在的偏特化模板和全特化模板做比较,并找出其中最合适、最匹配的实现.<br/>
+  这样,灵活性就很大.<br/>
+  模板的偏特化机制不能用在函数身上,不论成员函数还是非成员函数.<br/>
+</p></div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 例子</h2>
+<div class="outline-text-2" id="text-3">
+
+
+
+
+<pre class="src src-c++"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;iostream&gt;</span>
+<span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;typeinfo&gt;</span>
+<span style="color: #a020f0;">using</span> <span style="color: #a020f0;">namespace</span> <span style="color: #008b8b;">std</span>;
+
+<span style="color: #a020f0;">template</span> &lt;<span style="color: #a020f0;">typename</span> <span style="color: #228b22;">T</span>&gt;
+<span style="color: #a020f0;">class</span> <span style="color: #228b22;">A</span>
+{
+<span style="color: #a020f0;">public</span>:
+     <span style="color: #0000ff;">A</span>(){
+          cout&lt;&lt;<span style="color: #8b2252;">"first:"</span>&lt;&lt;<span style="color: #a020f0;">typeid</span>(<span style="color: #228b22;">T</span>).name()&lt;&lt;endl;
+     }
+};
+
+<span style="color: #a020f0;">template</span> &lt;<span style="color: #a020f0;">typename</span> <span style="color: #228b22;">T</span>&gt;
+<span style="color: #a020f0;">class</span> <span style="color: #228b22;">A</span>&lt;<span style="color: #228b22;">T</span>*&gt;{
+<span style="color: #a020f0;">public</span>:
+     <span style="color: #0000ff;">A</span>(){
+          cout&lt;&lt;<span style="color: #8b2252;">"second:"</span>&lt;&lt;<span style="color: #a020f0;">typeid</span>(<span style="color: #228b22;">T</span>).name()&lt;&lt;endl;
+     }
+     <span style="color: #228b22;">void</span> <span style="color: #0000ff;">test</span>(){
+          <span style="color: #228b22;">T</span> <span style="color: #a0522d;">t</span>=3;
+          t=4;
+     }
+};
+
+<span style="color: #228b22;">int</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">int</span> <span style="color: #a0522d;">argc</span>, <span style="color: #228b22;">char</span> *<span style="color: #a0522d;">argv</span>[])
+{
+     <span style="color: #228b22;">A</span>&lt;<span style="color: #228b22;">int</span>&gt; <span style="color: #a0522d;">a</span>;                  <span style="color: #b22222;">// </span><span style="color: #b22222;">first</span>
+     <span style="color: #228b22;">A</span>&lt;<span style="color: #228b22;">int</span>*&gt; <span style="color: #a0522d;">aa</span>;                <span style="color: #b22222;">// </span><span style="color: #b22222;">second</span>
+     aa.test();
+     <span style="color: #228b22;">A</span>&lt;<span style="color: #a020f0;">const</span> <span style="color: #228b22;">int</span>*&gt; <span style="color: #a0522d;">aaa</span>;         <span style="color: #b22222;">// </span><span style="color: #b22222;">second</span>
+     <span style="color: #b22222;">// </span><span style="color: #b22222;">aaa.test();             //error &#22240;&#20026; const int&#21021;&#22987;&#21270;&#21518;&#20415;&#19981;&#20801;&#35768;&#20462;&#25913;&#12290;</span>
+     <span style="color: #a020f0;">return</span> 0;
+}
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 注意</h2>
+<div class="outline-text-2" id="text-4">
+
+<ol>
+<li>虽然你可以全特化类模板中的成员函数,但是你不能偏特化他们;<br/>
+</li>
+<li>你不能偏特化命名空间级别(namespace-level)的函数(non-member).最接近"命名空间级别模板函数"的偏特化机制就是函数重载,那就意味着你对"函数参数"(而非返回值类型或内部所用类型)有很精致的特化能力;<br/>
+</li>
+<li>特化或全特化时,template后面的尖括号中不带任何内容;<br/>
+</li>
+</ol>
+
+
+
+
+<a class="btn btn-primary" href="https://raw.github.com/visayafan/visayafan.github.com/master/Coding/Cpp/模板特化与偏特化.org">View Org Source</a>
+<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=&amp;style=10&amp;bgcolor=Blue"></script>
+<br/>
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layo../layout/template-toc.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:Ubuntu Trick
+* 备份源
+  通过命令 =add-apt-repository= 添加的源都保存在 =/etc/apt/source.list.d/= 中的list结尾的文件中，可以将它们备份起来然后在新系统上恢复从而节省时间。
+  =cat /etc/apt/sources.list /etc/apt/sources.list.d/*.list > ~/sources.list=
+* 备份包
+  将当前系统安装包保存到文件中 =sudo dpkg --get-selections > list.txt= ,在新系统上可以用 =sudo dpkg --set-selections < list.txt= 来安装。
+* 命令行批量安装字体
+  将当前目录下所有字体拷贝到 /usr/share/font/myfont 中.
+#+begin_example
+  find . -name "*.ttf" -exec sudo cp {} /usr/share/fonts/myfont/ \;
+#+end_example
+  然后执行 =sudo mkfontscale && sudo mkfontdir && sudo fc-cache -fv= 。
+  这样字体便安装好了，可以通过 =fc-list|grep font-name= 来验证。
+* 切换键盘布局
+  System-Preferences-Keyboard Layouts 新添加一个layout
+  设置切换layout的快捷键：Options-Keys
+* 下载Youtube视频
+  goagent代理
+** Chrome直接下载
+   参考http://userscripts.org/about/installing
+   安装[[https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl%3Den][Tampermonkey]] 后访问 http://userscripts.org/scripts/show/25105 install
+** 使用youtube-dl下载
+   http://www.linuxb.in/2012/01/how-to-download-youtube-videos-in-linux.html
+   安装 sudo apt-get install youtube-dl
+   在.bashrc中设置代理
+   #+BEGIN_EXAMPLE
+   http_proxy=http://127.0.0.1:8087
+   export http_proxy
+   #+END_EXAMPLE
+   然后命令行下载 =youtube-dl http://www.youtube.com/watch?v=h4CFhT4Mrcg=
+   -o filename 表另存文件名
+   -a batch-filename 将下载链接保存到文件中批量下载
+   -c C-c中断视频下载后再次下载加上-c选项表continue
+   -F url 查看可选格式
+   -f format-code 通过-F查看可选格式式通过-f选择格式，每行前面的数字
+   --extract-audio 将会只下载格式最好的音频，可以自定义
+   --audio-format mp3 只定音频格式为mp3
+   --audio-quality 256k 音频质量 默认为128kbps
+   -k 表示原视频文件+提取音频
+* 将指定域名默认链接改为https
+  地址栏输入chrome://net-internals/
+  在HSTS的标签栏里Domain里填上需要访问的domain，比如twitter.com和facebook.com等；
+  然后选中Include subdomains点击Add按钮即可，可以加多个域；
+  这样所有访问这个域名（包括子域名）都自动转到https了。
+* 将gif转换成avi
+  :PROPERTIES:
+  :CUSTOM_ID: giftoavi
+  :END:
+  首先安装imagemagick，之后
+  #+begin_example
+  convert logo.gif logo%02d.jpg   
+  #+end_example
+  生成好多jpg文件，其中%02d和C语言中意思相同，表logo后跟两位数，如果gif的帧数超过两位数则应该考虑log%03d.jpg.
+  之后安装ffmpeg
+  #+begin_example
+  ffmpeg -r 25 -i logo%02d.jpg -y -an new.avi
+  #+end_example
+  1. -r表帧速率，默认是25.值越小生成avi时间越长（播放速度越慢）。
+  2. -i表输入文件，同理logo%02d.jpg 表logo后跟2位数再后跟.jpg
+  3. -y表输出文件如果与当前文件重名则选择覆盖掉
+  4. -an表不使用录音
+
+  另外
+  #+begin_example
+  convert -strip test.gif test.jpg  
+  #+end_example
+  可以将gif每帧生成一个jpg文件。
+* 解决evince中文乱码
+  1. 安装poppler-data: =sudo apt-get install poppler-data=
+  2. =rm /etc/fonts/conf.d/49-sansserif.conf=
+* 在线man帮助
+  http://manpages.ubuntu.com/u
+* Alt+`在当前应用中切换
+  Alt+Tab切换时Ubuntu会把相同的应用用一个图标表示（例如当前用evince打开了2个pdf文件）
+  可以用 =Alt+`= 在当前应用的不同窗口中切换
+* Alt+Tab禁止合并相同程序
+  [[http://askubuntu.com/questions/68151/how-do-i-revert-alt-tab-behavior-to-switch-between-windows-on-the-current-worksp][参考]]
+  安装ccsm =sudo apt-get install compizconfig-settings-manager= 启动命令为ccsm.
+  CompizConfig Settings Manager ▸ Desktop ▸ Ubuntu Unity Plugin ▸ Switcher ▸ Key to start the switcher ▸ Enabled and Key to start the switcher in reverse ▸ Enabled
+  CompizConfig Settings Manager ▸ Window Management ▸ Static Application Switcher ▸ Enable Static Application Switcher
+  缺点就是把图标换成了应用程序的界面，当打开很多应用的时候就显得很不合适（这时可以用 Alt+w）。
+* Alt+中键可以改变窗口大小
+* 死机时重新登陆而不用重启电脑
+  进入其它控制台，Ctrl+Alt+F1，登陆后 =kill -9 -1=

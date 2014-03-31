@@ -1,0 +1,9 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:德语成语/俗语
+
+* Kommt Zeit, kommt Rat
+  功到自然成
+* Ende gut, alles gut
+  结果好一切就好

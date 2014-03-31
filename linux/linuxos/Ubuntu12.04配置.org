@@ -1,0 +1,281 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layo../layout/template-toc.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:Ubuntu12.04配置
+#+begin_comment
+* Ctrl+Super快捷键：
+  * Ctrl+Super+Up 键：最大化当前窗口
+  * Ctrl+Super+Down键：最小化当前窗口
+  * Ctrl+Super+D：最小化所有窗口
+  * Ctrl+Super+Left：半最大化当前窗口（左边）
+  * Ctrl+Super+Right：半最大化当前窗口（右边）
+#+end_comment
+* Alt快捷键
+  * Alt+F2 –以特殊模式打开dash，以便运行任何命令。
+  * Alt+F10 – 在最大化/非最大化之间切换当前窗口。
+  * Alt+Tab – 在当前打开的窗口之间切换。
+  * Alt+F4 – 关闭当前窗口。
+  * Alt+F7 –移动当前窗口（可以使用键盘或鼠标移动）。
+* 鼠标快捷键
+  将鼠标移动到最左上角 相当于按下win键
+* 恢复Ctrl+Alt+小键盘键安置窗口
+  安装CompizConfig启动后配置Grid，[[http://askubuntu.com/questions/116744/restore-the-ctrl-alt-num-pad-4-and-6-window-positioning-commands][参考]]
+* Navigation
+  |-----------------+-------------------------------------------|
+  | *Screenshot*    |                                           |
+  |-----------------+-------------------------------------------|
+  | Print           | Take a screenshot                         |
+  | Alt+Print       | screenshot on a window                    |
+  | Shitft+Print    | screenshot on a area                      |
+  | Ctrl+Print      | copy screenshot to clipboard              |
+  | Ctrl+Alt+Print  | copy screenshot of a windows to clipboard |
+  | Ctrl+Shit+Print | copy screenshot of a area to clipboard    |
+  |-----------------+-------------------------------------------|
+  | *System*        |                                           |
+  |-----------------+-------------------------------------------|
+  | Log out         | Ctrl+Alt+Delete                           |
+  | Alt+F1 or Win   | show activities overview                  |
+  |-----------------+-------------------------------------------|
+  | *Window*        |                                           |
+  |-----------------+-------------------------------------------|
+  | Alt+Escape      | Switch windows directly                   |
+  | Ctrl+Super+D    | hide all windows                          |
+  | Ctrl+F10        | Toggle fullsceen mode                     |
+  | Ctrl+Alt+S      | Toggle maximization state                 |
+  | Ctrl+Super+Down | Restore Window                            |
+  |-----------------+-------------------------------------------|
+* Window Minimize and Maximize 默认
+  1. Minimize window: Ctrl+Alt+numpad 0
+  2. Maxminze window: Super+Up   
+* 安装gnome-shell-extension
+  官网 http://extensions.gnome.org 安装（安装方法 每个可安装程序旁边有个on/off 点击on即可）
+  我现在正在使用的扩展：
+  1. Alternative Status Menu: 新加一个power off选项（点击后可出现restart选项）
+  2. Application Menu: 增加一个类似gnome2的菜单
+  3. Hide Dash: 隐藏Dash（按Win键出现的最左边的竖条 没什么用）
+  4. Maximus: 最大化（不是全屏）隐藏标题栏
+  5. Media Player Indicator: 播放音乐的时候，panel上的音量控制比平时丰富
+  6. Panel Setting: 在panel上的用户名下面多一个system setting
+  7. Places Status Indicator: 音量旁边增加一个类似gnome2中的文件夹按钮
+  8. Remove Accessibility: 删掉panel上的accessibility按钮（没什么用）
+  9. Move Clock: 将时钟移到用户名的左边而非正中间
+  10. Status only icon: 去掉用户名，只显示一个按钮
+  11. Brightness Control: 控制显示器亮度
+  非gnome官方安装：
+  添加更新源：
+  sudo add-apt-repository ppa:upubuntu-com/ext
+  sudo apt-get update
+  1. 自动隐藏top panel: sudo apt-get install autohidetopbar-ext 双击调出
+  2. 将top panel移到下面：sudo apt-get install reflection-ext
+     将完之后可以在gnome-tweak-tool－>shell extensions中启用 然后Alt+F2 r Enter重新加载gnome-shell
+  参考 http://www.upubuntu.com/2012/05/collection-of-20-top-extensions-for.html
+* 安装gnome-tweak-tool
+  可以设置主题
+  shell->Arrangement of buttons on the titlebar->all
+* 安装dconf-editor
+  整个gnome-shell的配置数据库（相当于win下的注册表）
+  有些快捷键在system-setting->keyboard中设置没用，可以在dconf-editor中设置：
+  org->gnome->desktop->wm->keybindings
+  例如我把 minmize设置为 '<Control><Alt>x‘ 即C-M-x即可最小窗口
+  close： '<Control><Alt>z' 即C-M-z关闭窗口
+  有了这两个快捷键就不必在gnome-tweak->shell->Arrangment of buttons on the titlebar中设置最大最小化(最大化为Alt+F10 or Win-Up)
+* 关掉烦人的错误报告
+  sudo emacs /etc/default/apport 将enabled=1改为enabled=0即可，退出 sudo service apport restart
+* 设置Application中图标大小和间距
+  在/usr/share/gnome-shell/theme/gnome-shell.css中查找 grid。设置
+#+begin_src css
+-shell-grid-horizontal-item-size: 100px;
+-shell-grid-vertical-item-size: 100px;
+
+-shell-grid-horizontal-item-size: 272px; /* 2 * -shell-grid-horizontal-item-size + spacing */
+-shell-grid-vertical-item-size: 118px;
+#+end_src
+  即可。
+* apt-fast/apt-proz/apt-metalink
+  替代apt-get来加速下载
+#+begin_example
+sudo sudo apt-add-repository ppa:tldm217/tahutek.net
+sudo apt-get update
+sudo apt-get install apt-proz
+#+end_example
+
+#+begin_example
+sudo add-apt-repository ppa:tldm217/tahutek.net 
+sudo apt-get update 
+sudo apt-get install apt-fast
+#+end_example
+* 为gnome-shell配置快捷键
+  可以通过 dconf-editor来配置，安装 =sudo apt-get install dconf-tools=。
+  快捷键配置位于 =org.gnome.desktop.wm.keybindings=
+  *技巧* 参考：http://dan.bodar.com/2012/10/23/gnome-3-gsettings-sucks-exportimporting-your-keyboard-shortcuts/
+  可以通过
+#+begin_example
+gsettings list-recursively org.gnome.desktop.wm.keybindings > keybindings
+#+end_example
+  将现有的快捷键配置导出到文件keybindings中，格式为：
+#+begin_example
+org.gnome.desktop.wm.keybindings unmaximize ['<Super>Down', '<Alt>F5']
+#+end_example
+  可以通过
+#+begin_example
+gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
+#+end_example
+  为show-desktop配置快捷键Win-d。
+  可惜没有可以从指定文件中批量导入快捷键的命令，不过利用shell脚本来完成：
+#+begin_example
+gsettings set org.gnome.desktop.wm.keybindings move-to-corner-sw "['<Control><Alt>KP_1']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-side-s "['<Control><Alt>KP_2']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-corner-se "['<Control><Alt>KP_3']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-side-w "['<Control><Alt>KP_4']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-center "['<Control><Alt>KP_5']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-side-e "['<Control><Alt>KP_6']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-corner-nw "['<Control><Alt>KP_7']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-side-n "['<Control><Alt>KP_8']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-corner-ne "['<Control><Alt>KP_9']"
+gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
+gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Control>F10']"
+#+end_example
+  可以用这种方法来实现当前快捷键配置的备份：先导出，然后在每行前面加上 =gsettings set= ，然后在新环境下执行此文件即可实现快捷键的导入。
+
+  在此做下备份：
+{{{srcbegin(200)}}}
+gsettings set org.gnome.desktop.wm.keybindings activate-window-menu @as []
+gsettings set org.gnome.desktop.wm.keybindings begin-move ['<Alt>F7']
+gsettings set org.gnome.desktop.wm.keybindings begin-resize ['<Alt>F8']
+gsettings set org.gnome.desktop.wm.keybindings close ['<Control><Alt>z']
+gsettings set org.gnome.desktop.wm.keybindings cycle-group ['<Alt>F6']
+gsettings set org.gnome.desktop.wm.keybindings cycle-group-backward @as []
+gsettings set org.gnome.desktop.wm.keybindings cycle-panels ['<Control><Alt>Escape']
+gsettings set org.gnome.desktop.wm.keybindings cycle-panels-backward @as []
+gsettings set org.gnome.desktop.wm.keybindings cycle-windows ['<Alt>Escape']
+gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward @as []
+gsettings set org.gnome.desktop.wm.keybindings lower @as []
+gsettings set org.gnome.desktop.wm.keybindings maximize @as []
+gsettings set org.gnome.desktop.wm.keybindings maximize-horizontally @as []
+gsettings set org.gnome.desktop.wm.keybindings maximize-vertically @as []
+gsettings set org.gnome.desktop.wm.keybindings minimize ['<Control><Alt>x']
+gsettings set org.gnome.desktop.wm.keybindings move-to-center ['<Control><Alt>KP_5']
+gsettings set org.gnome.desktop.wm.keybindings move-to-corner-ne ['<Control><Alt>KP_9']
+gsettings set org.gnome.desktop.wm.keybindings move-to-corner-nw ['<Control><Alt>KP_7']
+gsettings set org.gnome.desktop.wm.keybindings move-to-corner-se ['<Control><Alt>KP_3']
+gsettings set org.gnome.desktop.wm.keybindings move-to-corner-sw ['<Control><Alt>KP_1']
+gsettings set org.gnome.desktop.wm.keybindings move-to-side-e ['<Control><Alt>KP_6']
+gsettings set org.gnome.desktop.wm.keybindings move-to-side-n ['<Control><Alt>KP_8']
+gsettings set org.gnome.desktop.wm.keybindings move-to-side-s ['<Control><Alt>KP_2']
+gsettings set org.gnome.desktop.wm.keybindings move-to-side-w ['<Control><Alt>KP_4']
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-10 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-11 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-12 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-6 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-7 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-8 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 @as []
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down ['<Control><Shift><Alt>Down']
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-left ['<Control><Shift><Alt>Left']
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right ['<Control><Shift><Alt>Right']
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up ['<Control><Shift><Alt>Up']
+gsettings set org.gnome.desktop.wm.keybindings panel-main-menu ['<Alt>F1']
+gsettings set org.gnome.desktop.wm.keybindings panel-run-dialog ['<Alt>F2']
+gsettings set org.gnome.desktop.wm.keybindings raise @as []
+gsettings set org.gnome.desktop.wm.keybindings raise-or-lower @as []
+gsettings set org.gnome.desktop.wm.keybindings set-spew-mark @as []
+gsettings set org.gnome.desktop.wm.keybindings show-desktop ['<Super>d']
+gsettings set org.gnome.desktop.wm.keybindings switch-group ['<Alt>Above_Tab']
+gsettings set org.gnome.desktop.wm.keybindings switch-group-backward @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-panels ['<Control><Alt>Tab']
+gsettings set org.gnome.desktop.wm.keybindings switch-panels-backward @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-10 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-11 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-12 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-7 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-8 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-9 @as []
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down ['<Control><Alt>Down']
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left ['<Control><Alt>Left']
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right ['<Control><Alt>Right']
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up ['<Control><Alt>Up']
+gsettings set org.gnome.desktop.wm.keybindings switch-windows ['<Alt>Tab']
+gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward @as []
+gsettings set org.gnome.desktop.wm.keybindings toggle-above @as []
+gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen ['<Control>F10']
+gsettings set org.gnome.desktop.wm.keybindings toggle-maximized ['<Alt>F10']
+gsettings set org.gnome.desktop.wm.keybindings toggle-on-all-workspaces @as []
+gsettings set org.gnome.desktop.wm.keybindings toggle-shaded @as []
+gsettings set org.gnome.desktop.wm.keybindings unmaximize ['<Super>Down', '<Alt>F5']
+{{{srcend}}}
+
+* 删除gnome-shell panel上的应用程序图标
+  打开 =/usr/share/gnome-shell/theme/gnome-shell.css=
+  修改400行左右的代码：
+#+begin_src css
+.panel-button #appMenuIcon {
+    width:0px;
+    height:0px;
+}
+.panel-button #appMenuIcon {
+    app-icon-bottom-clip: 0px;
+}
+
+.panel-button:active #appMenuIcon,
+.panel-button:checked #appMenuIcon,
+.panel-button:focus #appMenuIcon {
+    app-icon-bottom-clip: 0px;
+}
+
+.app-menu-icon {
+    /* width: 0px; */
+    /* height: 0px; */
+}
+#+end_src
+* Alt+鼠标托动窗口
+  gnome2.x中可以用按下Alt的同时鼠标单击窗口任何地方就可以手动窗口，在gnome3.x中改为Win键。
+  可以通过dconf-editor来修改： =org.gnome.desktop.wm.preferences= ，将 =mouse-button-modifer= 修改为 =<Alt>=
+* 登陆自动启动应用程序
+  在unity下可在右上角用户名下startup application中添加，gnome-shell下怎么也找不到。
+  通过上面添加的应用程序配置文件在 ~/.config/autostart下，格式为:
+  fcitx.desktop
+#+begin_example
+[Desktop Entry]
+Type=Application
+Exec=fcitx -d
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=fcitx
+Name=fcitx
+Comment[en_US]=
+Comment=
+#+end_example
+  可以根据这种格式来写配置文件，不用图形界面也可以实现应用程序的登陆自动启动。
+  
+* 安装Mac主题
+  完全参考 http://www.noobslab.com/2012/05/mac-os-x-lion-for-ubuntu-1204-precise.html
+  1. alt+tab不能进行窗口切换
+     执行以下命令即可：
+     #+begin_example
+     gconftool-2 -s /apps/compiz-1/general/screen0/options/active_plugins --type=list --list-type=string "[core,composite,opengl,compiztoolbox,decor,vpswitch,snap,mousepoll,resize,place,move,wall,grid,regex,imgpng,session,gnomecompat,animation,fade,staticswitcher,workarounds,scale,expo,ezoom,dbus]"
+     #+end_example
+  2. 原先自定义的快捷键失效，需重新定义。
+  3. 快捷键Ctrl+F10浏览和查找最近的event.
+* 禁止Ubuntu开机网络配置
+  http://www.codewhirl.com/2011/10/ubuntu-11-10-waiting-up-to-60-more-seconds-for-network-configuration/
+  
+  Ubuntu12.04在开机时会检查网络，如果网络不通则会进行配置，在此期间会等待2分钟。
+
+  如果用户确信不需要进行网络配置则可以通过修改配置文件的方法禁止这2分钟的检查从而加快开机速度。
+  
+  修改/etc/init/failsafe.conf，注释掉 sleep 40和 sleep 59两条语句。
+* 禁止HUD的Alt快捷键
+  Head-Up Display 默认按下Alt可输入菜单命令。对中文来说几乎没什么用。可以禁止掉。
+  system-setting->keyboard->shortcut->launchers->key to show launcher

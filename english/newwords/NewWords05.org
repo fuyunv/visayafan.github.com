@@ -1,0 +1,300 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* hoax/perpetrate
+  hoax n trick恶作剧
+  perpetrate =carry on/commit实施/犯罪
+  #+BEGIN_EXAMPLE
+  After the story ran, Apple's share price dropped 3%. Less than 20 minutes later the story was retracted after the email was discovered to have been a hoax perpetrated on Apple employees.
+  #+END_EXAMPLE
+* throw tantrums
+  发脾气
+  thrown a tantrum
+  tantrum n发脾气
+* cucumber
+  黄瓜
+* cast a vote for
+  投票
+  #+BEGIN_EXAMPLE
+  If there is an ignorant-idiot contest going on, I know who I would cast my vote for.
+  #+END_EXAMPLE
+* WIWAL
+  When I Was A Lad/Lass 少年/少女
+* gob-smacked
+  也可以写作 gobsmacked
+  1980s: from gob + smack, with reference to being shocked by a blow to the mouth, or to clapping a hand to one's mouth in astonishment.
+  adj utterly astonished
+** gob
+   n （非正式的）嘴 shut up your big gob
+      一块/一团（a lump of slimy stuff黏稠物质） a gob of phlegm 一块痰
+      大量/许多
+   v spit 吐唾沫
+*** lump
+    块/团
+*** slimy
+    黏稠的
+*** phlegm
+    痰
+** smack
+   v 用手掌击打 smack his face
+   #+BEGIN_EXAMPLE
+   a smack in the face  强硬的回绝
+   #+END_EXAMPLE
+* etiquette
+  礼节
+  #+BEGIN_EXAMPLE
+  Fork etiquette is a fascinating bit of comparative cultural history.
+  #+END_EXAMPLE
+* adept/with ease
+  #+BEGIN_EXAMPLE
+  One of the things that I enjoyed about the two months that I spent in South Korea was learning how to be adept with their metal chopsticks - they're more difficult than wooden or plastic ones by quite a bit. In the end I was able to eat rice with ease using them and even do pretty well with noodle soup.
+  #+END_EXAMPLE
+** adept
+   熟练的
+   be adept in/at 擅长
+** with ease
+   熟练地
+** quite a bit
+   adv 相当多
+* with gratitude
+  adv 感激地
+  #+BEGIN_EXAMPLE
+  Much later, I injured my right elbow in such a way that it was awkward to convey things to my mouth with my right hand, and I adopted the British standard with gratitude.
+  #+END_EXAMPLE
+  gratitude =appreciation/thankfulness/gratefulness
+  eternal gratitude 永远感激
+  
+* versed
+  adj 精通
+  verse v 精通 n诗
+  be versed in 精通于
+  #+BEGIN_EXAMPLE
+  Car thieves are well versed in the places people normally tape or otherwise hide car keys.
+  #+END_EXAMPLE
+* dismantle/steering column
+  dismantle disassemble/take apart 拆开
+  column 列/圆柱形物体
+  steering column 驾驶杆
+  #+BEGIN_EXAMPLE
+  Cars for a long time have the ignition wires inside the steering column, basically impossible to access without serious efforts to dismantle the steering column.
+  #+END_EXAMPLE
+* hammer/tong/screwdriver/socket/wrench
+  tong 钳
+  screwdriver 螺丝刀
+  socket 插座/槽
+  wrench 扳手
+  #+BEGIN_EXAMPLE
+  Even the simple case of "I have the car open, I have the steering column unlocked, I have the hood open, I have a hammer and tongs and screwdrivers and sockets and wrenches, now how do I start/stop the car without the key" case was problematic.
+  #+END_EXAMPLE
+* at this juncture
+  at this time/point 在这个时刻
+  juncture （时间）时刻/关头 （地理）接口处/交界
+  #+BEGIN_EXAMPLE
+  It is difficult to say at this juncture whether this upturn can be sustained.
+  #+END_EXAMPLE
+* off hand
+  没有准备的
+  #+BEGIN_EXAMPLE
+  Interestingly, the males were more accurate than the females in the off-hand test, despite having been less accurate on the on-hand test.
+  #+END_EXAMPLE
+* blanket approval/carry-over
+  blanket n地毯 v覆盖 adj全部的
+  blanket approval 完全同意
+  carry-over n 遗留物
+  #+BEGIN_EXAMPLE
+  That's a blanket approval with carry-over to all posts on all subjects, I assume.
+  #+END_EXAMPLE
+* FSVO
+  For Some Value Of 表大部分xx但小部分不xx
+  #+BEGIN_EXAMPLE
+  So the upgrade went well?
+  FSVO well. 总体上不错但有小差错
+  #+END_EXAMPLE
+* out of sorts
+  感觉不爽
+  #+BEGIN_EXAMPLE
+  I was feeling more than a bit out of sorts at the time.
+  #+END_EXAMPLE
+* metropolis/metropolitan/megalopolis/megalopolitan
+  metropolis 大城市 -> metropolitan adj
+  megalopolis特大城市 -> megalopolitan adj
+* bizarre
+  stange/unusual古怪的
+* entity/immediately
+  entity 实体
+  a seperate political entity 独立的政治实体
+  immediate 立即、（时空上）相邻的
+  #+BEGIN_EXAMPLE
+  Indeed my home town, while a separate political entity, is immediately adjacent to Frankfurt.
+  #+END_EXAMPLE
+* disambiguate
+  v 消除歧义
+  disambiguating adj 消除歧义的
+  ambiguous adj歧义的
+  ambiguous grammer 二义文法
+* relevant
+  相关的
+  irrelevant 不相关的
+* whiny/whine
+  whine 
+  n
+  a long, high-pitched complaining cry  哀叹声
+  a long, high-pitched unpleasant sound.  嘠嘎声
+  v
+  发出哀叹声/嘎嘎声
+
+  whiny adj continually whining, complaining
+  
+  whinge
+  v
+  complain persistently and in a peevish or irritating way 老抱怨
+  n
+  an act of complaining in such a way 
+  #+BEGIN_EXAMPLE
+  stop whingeing and get on with it!.
+  #+END_EXAMPLE
+* put the kibosh on
+  terminate/ruin/to destory结束
+  #+BEGIN_EXAMPLE
+  Project Glass has officially put the kibosh on facial recognition apps, thoughts?
+  #+END_EXAMPLE
+* out of blue
+  出乎意料地/突然地
+* debunk
+  expose the falseness or hollowness of (a myth, idea, or belief)
+  指出，揭穿，拆穿（神话想法信仰）
+* damnation
+  （感叹词）该死的
+* tactile
+  触觉的
+  #+BEGIN_EXAMPLE
+  visual or tactile 
+  #+END_EXAMPLE
+* prescribe
+  开处方/推荐recommend/规定
+  prescription n 处方/规定
+  #+BEGIN_EXAMPLE
+  The supervisor prescribed the steps in which orders must be filled out.
+  #+END_EXAMPLE
+* testicle
+  睾丸
+* set my face against/on my own account/queer
+  #+BEGIN_EXAMPLE
+  "So I set my face against the sea trip. Not, as I explained, upon my
+own account.. I was never queer. But I was afraid for George. George
+says he should be all right, and would rather like it, but he would
+advise Harris and me not to think of it, as he felt sure we should
+both be ill."
+  #+END_EXAMPLE
+** queer
+   strange/odd
+** set my face against
+   反对/抵制
+** on my account
+   由于我的缘故
+* hidebound/pundit/competence/pronounce/on the matter
+  hidebound unwilling or unable to change because of tradition or convention 迂腐的
+  pundit expert专家
+  comeptence 能力/资格
+  pronounce 发音/就..发表意见，表态/断言，宣称
+  on the matter 在这件事上
+  belong among （在分类上）属于
+  #+BEGIN_EXAMPLE
+  Fremont-Smith's evaluation is the only quoted one worth paying attention to. All the others -- belonging among the most hidebound conservative pundits (as they were not yet called) on the American scene -- had no competence to pronounce on the matter.
+  #+END_EXAMPLE
+* iterate
+  重复/（程序语言中）迭代，反复计算
+  reiterate 再次重复/重申
+* reckon
+  v
+  establish by counting or calculation; calculate  估计/计算
+  conclude after calculation; be of the opinion 认为/想/看法
+  #+BEGIN_EXAMPLE
+  We reckon her among our best reporters. 
+  #+END_EXAMPLE
+* proscribe
+  (law) forbid禁止
+  n proscription
+* IIRC
+  If I Remember Correctly 如果我没记错的话
+* counterfeit
+  伪造的
+  {{{lightbox(image/counterfeit.jpg,400)}}} 
+  [[file:NewWords04.org::#prosecute][prosecute]]
+* prop
+  v 支撑
+  n 支撑物
+  {{{lightbox(image/prop.jpg,400)}}} 
+* in the light of
+  按照/依据/鉴于
+  #+BEGIN_EXAMPLE
+  Some rules are now outdated in the light of move semantics.
+  #+END_EXAMPLE
+* pathological
+  病理学的/疾病的/病态的
+  #+BEGIN_EXAMPLE
+  I'd call this a pathological textbook example with zero practical relevance.
+  #+END_EXAMPLE
+* obscure
+  adj uncertain/not discovered未被发现的
+  v conceal/make unclear 隐藏/使模糊
+  #+BEGIN_EXAMPLE
+  so performance will vary considerably for rather obscure reasons
+  #+END_EXAMPLE
+* merry-go-round/carousel
+  旋转木马
+* hoard
+  v collect/accumulate储藏/收藏
+  n 储藏
+  hoarder 储藏者
+  #+BEGIN_EXAMPLE
+  I'm a hoarder and got dozens of dead, dying and defective electric handheld devices like Remington shavers, Sharper Image nose hair trimmers.
+  #+END_EXAMPLE
+** defective
+   adj imperfect/fauty/deficient 有缺陷的/不足的
+** trimmer
+   修剪器
+   v trim 修剪
+* in a nutshell
+  nutshell 坚果壳
+  in a nutshell 简单来说
+  #+BEGIN_EXAMPLE
+  she put the matter in a nutshell.
+  #+END_EXAMPLE
+* conceive
+  1. became pregnant 怀孕
+  2. think of/image sth 想出（计划/主意）
+     conceive of sth/conceive sth as sth
+  conceivable
+  That can be conceived or believed; imaginable 
+* instantiate
+  例证
+  instantiation
+  #+BEGIN_EXAMPLE
+  The process of replacing template parameters by concrete types is called instantiation.
+  #+END_EXAMPLE
+* more than necessary
+  不必要的
+  #+BEGIN_EXAMPLE
+  Note that in all overloaded implementations, we pass all arguments by reference. In general, it is a good idea not to change more than necessary when overloading function templates.
+  #+END_EXAMPLE
+* as a rule of thumb
+  根据经验；一般说来
+  #+BEGIN_EXAMPLE
+  We discuss details in Section 9.2 on page 121, but for the moment, as a rule of thumb you should always have all overloaded versions of a function declared before the function is called.
+  #+END_EXAMPLE
+* excerpt
+  摘录/节选
+* on a par/in having
+  on a par 同等
+  above/below par 在（一般水平）以上/下
+  on a par with 水平相同
+  up to par 达到期望的水平
+  in having= in that it has 
+  #+BEGIN_EXAMPLE
+  Message-ID: <kos9i8$dm1$1@dont-email.me>
+  It holds the potential of mental illnesses being on a par with the rest of healthcare, in having a number of biomarkers and being more objective in doing assessments.
+  #+END_EXAMPLE
+

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>little-big endian</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="little-big endian"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-12-14 09:03:15 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<div id="org-div-comments"><a href="../../index.html#cpp">主页</a></div>
+
+
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title">little-big endian</h1>
+
+
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+<p>
+<b>小端字节序</b><br/>
+  x86系列是little endian<br/>
+  是指在存储时低位放在低地址。<br/>
+<b>大端字节序</b><br/>
+  PowerPC是big endian<br/>
+  存储时高位放在低地址。<br/>
+</p>
+<p> <br/>
+例如存储0x1234，12是高位，34是低位。<br/>
+<b>big endian存储：</b><br/>
+内存地址 低-&gt;高<br/>
+存储内容 12 34<br/>
+<b>little endian存储：</b><br/>
+内存地址 低-&gt;高<br/>
+存储内容 34 12<br/>
+</p>
+<p>
+<b>程序验证当前使用CPU的字节序：</b><br/>
+</p><ul>
+<li>使用普通方法：强制类型转化<br/>
+</li>
+</ul>
+
+
+
+
+<pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;stdio.h&gt;</span>
+
+<span style="color: #228b22;">int</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">int</span> <span style="color: #a0522d;">argc</span>, <span style="color: #228b22;">char</span> *<span style="color: #a0522d;">argv</span>[])
+{
+    <span style="color: #228b22;">int</span> <span style="color: #a0522d;">num</span> = 0;
+    <span style="color: #228b22;">int</span> *<span style="color: #a0522d;">p</span> = &amp;num;
+    *((<span style="color: #228b22;">char</span> *)p) = 0xff;
+    <span style="color: #a020f0;">if</span>(num == 0xff)
+        printf(<span style="color: #8b2252;">"little endian"</span>);
+    <span style="color: #a020f0;">else</span>                        <span style="color: #b22222;">// </span><span style="color: #b22222;">0xff000000</span>
+        printf(<span style="color: #8b2252;">"big endian"</span>);
+    <span style="color: #a020f0;">return</span> 0;
+}
+</pre>
+
+<ul>
+<li>使用UNION方法<br/>
+</li>
+</ul>
+
+
+
+
+<pre class="src src-c"><span style="color: #228b22;">bool</span> <span style="color: #0000ff;">checkCPU</span>(){
+    <span style="color: #a020f0;">union</span> <span style="color: #228b22;">A</span>{
+        <span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>;
+        <span style="color: #228b22;">char</span> <span style="color: #a0522d;">c</span>;
+    }<span style="color: #a0522d;">a</span>;
+    a.i = 1;
+    <span style="color: #a020f0;">return</span> (a.c == 1);          <span style="color: #b22222;">// </span><span style="color: #b22222;">little endian will return 0</span>
+                                <span style="color: #b22222;">// </span><span style="color: #b22222;">big endian will return 1</span>
+}
+</pre>
+
+<ul>
+<li>LINUX中实现：<br/>
+</li>
+</ul>
+
+<p>若为little endian则l与long的低位占同内存，若big endian则b与long的低位占同内存。<br/>
+所以若为little endian则ENDIANESS则为l否则为b。<br/>
+</p>
+
+
+<pre class="src src-c"><span style="color: #a020f0;">static</span> <span style="color: #a020f0;">union</span> { <span style="color: #228b22;">char</span> <span style="color: #a0522d;">c</span>[4]; <span style="color: #228b22;">unsigned</span> <span style="color: #228b22;">long</span> <span style="color: #a0522d;">mylong</span>; } <span style="color: #a0522d;">endian_test</span> = {{ <span style="color: #8b2252;">'l'</span>, <span style="color: #8b2252;">'?'</span>, <span style="color: #8b2252;">'?'</span>, <span style="color: #8b2252;">'b'</span> } };
+<span style="color: #483d8b;">#define</span> <span style="color: #a0522d;">ENDIANNESS</span> ((<span style="color: #228b22;">char</span>)endian_test.mylong
+</pre>
+
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+</div>
+
+</body>
+</html>

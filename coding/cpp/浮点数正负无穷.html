@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>IEE754中浮点数表示正负无穷</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="IEE754中浮点数表示正负无穷"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-12-14 09:03:04 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<div id="org-div-comments"><a href="../../index.html#cpp">主页</a></div>
+
+
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title">IEE754中浮点数表示正负无穷</h1>
+
+
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+
+<p>
+float在c中为32位，采用的存储方式为IEE754规定的方式，具体为：<br/>
+最高1位为符号位，接下8位为阶码，采用的方法是移码，接下23位为尾数，采用的方法是原码表示法，其中最高位1被省略掉。<br/>
+阶码移码表示是通过加上2^7-1即127（7个1）。<br/>
+尾数规格化后最高位为1，被省略掉以来扩大表示范围和精度。<br/>
+当阶码全是1时，理论上应该是2^9-1-127=128,表示大小为 1.尾数*2^128，但实际中并非如此，而是规定阶码全为1表示无穷大，符号位为正时表正无穷，表示为NaN，为负时表负无穷，为-NaN.<br/>
+</p>
+
+
+
+<pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;stdio.h&gt;</span>
+<span style="color: #228b22;">int</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">int</span> <span style="color: #a0522d;">argc</span>, <span style="color: #228b22;">char</span> *<span style="color: #a0522d;">argv</span>[])
+{
+    <span style="color: #228b22;">float</span> <span style="color: #a0522d;">f</span>, *<span style="color: #a0522d;">p</span>=&amp;f;
+    *((<span style="color: #228b22;">char</span>*)(p)+2) = 0b10000000;
+    *((<span style="color: #228b22;">char</span>*)(p)+3) = 0b01111111;
+    printf(<span style="color: #8b2252;">"%f\n"</span>,f);
+    *((<span style="color: #228b22;">char</span>*)(p)+3) = 0b11111111;
+    printf(<span style="color: #8b2252;">"%f"</span>,f);
+    <span style="color: #a020f0;">return</span> 0;
+}
+</pre>
+
+
+<p>
+上面程序先设置符号位为0，阶码全为1得到结果为NaN，之后更改符号位为1得到-NaN。<br/>
+因为f未初始化，所以其最低两个字节的存储内容是随机的，故可得证上面结论。<sup><a class="footref" name="fnr.1" href="#fn.1">1</a></sup><br/>
+</p>
+<div id="footnotes">
+<h2 class="footnotes">脚注: </h2>
+<div id="text-footnotes">
+<p class="footnote"><sup><a class="footnum" name="fn.1" href="#fnr.1">1</a></sup> Intel的86系列机采用小端字节序，即低字节存储在低位上。如果是大端字节序则应该将程序中的索引2改为1，3改为0.<br/>
+</p>
+
+
+
+</div>
+</div>
+</div>
+
+</body>
+</html>

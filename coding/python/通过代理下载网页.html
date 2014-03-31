@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>Python通过代理下载网页</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Python通过代理下载网页"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-12-14 09:04:38 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<div id="org-div-comments"><a href="../../index.html#python">主页</a></div>
+
+
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title">Python通过代理下载网页</h1>
+
+
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+
+<p>
+利用urblib2模块下载并保存到test.html中，再利用webbrowser模块用默认浏览器打开test.html.<br/>
+利用GAE代理，端口8087.<br/>
+</p>
+
+
+<pre class="example">#! /usr/bin/env python
+import urllib2
+import webbrowser
+proxy_support = urllib2.ProxyHandler({'http':'http://127.0.0.1:8087'})
+opener = urllib2.build_opener(proxy_support,urllib2.HTTPHandler)
+urllib2.install_opener(opener)
+content = urllib2.urlopen('http://www.twitter.com').read()
+f=open('test.html','w')
+f.write(content)
+f.close()
+webbrowser.open('./test.html')
+</pre>
+
+
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+</div>
+
+</body>
+</html>

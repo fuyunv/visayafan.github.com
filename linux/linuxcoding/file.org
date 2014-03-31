@@ -1,0 +1,13 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+include "../../layout/template.org"
+#+title: Unix环境高级编程－文件
+
+* 读写
+  * write
+    ssize_t write(int fd, const void *buf, size_t count);
+    从缓冲区地址buf开始读取count个byte写入文件描述符fd指向的文件，成功则返回写入的字节数，失败则返回-1.
+#+BEGIN_HTML
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+#+END_HTML

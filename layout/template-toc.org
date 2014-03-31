@@ -1,0 +1,7 @@
+#+LaTeX_CLASS: cn-article
+#+BEGIN_HTML
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/too_many_toc.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+#+END_HTML

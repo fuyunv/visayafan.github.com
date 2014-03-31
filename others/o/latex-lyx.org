@@ -1,0 +1,448 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template-toc.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:Lyx 笔记 
+* Preamble
+** article
+{{{srcbegin(200)}}}
+#+INCLUDE: "lyx-article-preamble.tex" src tex
+{{{srcend}}}
+** beamer
+   {{{srcbegin(200)}}}
+#+INCLUDE: "lyx-beamer-preamble.tex" src tex
+   {{{srcend}}}
+   其它可选的主题和色彩
+   #+begin_src tex
+   \usetheme{Warsaw}              
+   AnnArbor, Antibes,Bergen, Berkeley, Berlin, Boadilla, CambridgeUS, Copenhagen, Darmstadt, default, Dresden, Frankfurt, Goettingen, Hannover, Ilmenau, JuanLesPins, Luebeck, Madrid, Malmoe, Marburg, Montpellier, PaloAlto, Pittsburgh, Rochester, Singapore, Szeged, Stockton, boxes, Warsaw…
+   \usecolortheme{beaver} 
+   albatross, orchid, beaver, rose, beetle, seagull, crane. seahorse, default, sidebartab, dolphin , structure dove, whale, fly, wolverine, lily
+   #+end_src
+* 中文段落缩进
+  Preamble中添加\usepackage{indentfirst}
+* 摘要
+#+begin_example
+\begin{abstract}
+Your abstract goes here...
+\end{abstract}
+#+end_example
+默认的摘要名称为 Abstract。要改变摘要名称: =\renewcommand{\abstractname}{Executive Summary}=
+* 公式
+** 自定义TAG
+   可以用\tag命令来自定义TAG，但在lyx中要先将公式环境切换到ASM环境：Edit->Math->Chang Formula Type->ASM align environment。
+** 长公式换行
+   [[http://comments.gmane.org/gmane.editors.lyx.general/67870][参考]]
+   在公式上右键 AMS enviroment->AMS multiline enviroment，开始输入公式，此公式是左对齐的，在需要换行的地方Ctrl-RET即可新建一行此行的公式是上一行公式的继续，是右对齐的。
+   注意：用 =Alt-m (= 类似命令生成的括号内的内容被lyx看成整体不可分割，所以不能在这种括号里面换行（实在没有办法只有用手工输入括号的办法了，这样输出结果括号会略小）。
+** theorem
+   进入theorem环境： =M-x layout Theorem=
+   非Lyx下改变theorem名称和编号：
+#+begin_src tex
+\newtheoremstyle{mythm}%名字
+        {1.5ex plus 1ex minus .2ex}%上方的空行
+        {1.5ex plus 1ex minus .2ex }%下方的空行
+        {}%内容字体
+        {}%缩进
+        {\hei}%定理头部字体
+        {}%定理头部后的标点
+        {1em}%定理头部后的空格
+        {}%定理头部的说明
+\theoremstyle{mythm}
+\newtheorem{definition}{\hspace{2em}定义}[section]
+\newtheorem{axiom}{\hspace{2em}公理}
+\newtheorem{theorem}{\hspace{2em}定理}[section]
+\newtheorem{propsition}{\hspace{2em}命题}[section]
+\newtheorem{corollary}{\hspace{2em}推论}[section]
+\newtheorem{lemma}{\hspace{2em}引理}[section]
+\newtheorem{example}{\hspace{2em}例}[section]
+\newtheorem{exercise}{\hspace{2em}习题}[section]
+#+end_src
+   Lyx下改变theorem名称和编号:
+   见[[http://wiki.lyx.org/LyX/I18nLabels][lyx wiki]]
+#+begin_src tex
+\newtheorem{theo}{定理}[section]
+\renewenvironment{thm}{\begin{theo}}{\end{theo}}
+#+end_src
+** 小写花写L
+   为了和数字1区分，tex提供了花写的小写L，使用 =\ell= 效果 $\ell$ 。
+* 日期
+  如果不想要日期可以用 =\date{}=
+* 参考文献
+  默认是Reference，可以修改 =\renewcommand\refname{参考文献}=
+* 分栏
+  可以用宏包multicol来实现。
+#+begin_example
+\uspackage{multicol}
+\columnseprule=0.2pt %分隔线，默认没有
+\begin{multicols}{2}
+内容
+\end{multicols}
+#+end_example
+* 设置页边距
+  A4默认使用的边距为上下2.54cm,左右3.18cm，可以使用geometry包来更改其默认设置：
+#+begin_example
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+#+end_example
+* 源码高亮
+  lstlisting可以实现源码高亮但颜色单调，不过还是建议使用此包，原因：
+  1.lyx对此包的支持非常好，在lyx中插入代码非常方便
+    + 可以通过 insert->program listing 来插入源码，然后在边框上右键设置。
+    + 可以通过 insert->file->child document来选择源码所在的文件，在include type下选择program listing，此时可在More Parameters中设置相应的参数：
+      - basicstyle={\tiny} 设置字体 \tiny \scriptsize \footnotesize \small \normalsize \large \Large \LARGE \huge \Huge
+      - breaklines=true 适当时候断行显示
+      - commentstyle={\color{black}} 注释颜色为黑色（否则如果不设置中文为黑色，英文为红色）
+      - language=Matlab 设置代码所用的语言
+      - numbers=left 显示行号，可选在显示左边还是右边
+      - numberstyle={\tiny\color{lightgray}} 设置行号大小及颜色
+      - frame=shadowbox 显示边框，可选 leftline, topline等
+      - rulesepcolor={\color{red!20!green!20!blue!20!}} 若边框为shadow则设置阴影的颜色
+      - xleftmargin=.2in 设置源码左边距
+      - xrightmargin=.2in 设置源码右边距
+      - emph和emphstyle用来强调 http://tex.stackexchange.com/questions/28229/extend-a-language-with-additional-keywords
+        可以为不同emph设置不同的格式
+        #+BEGIN_EXAMPLE
+        \lstset{emph={square}, emphstyle=\color{red},
+                emph={[2]root,base},emphstyle={[2]\color{blue}}}
+        #+END_EXAMPLE
+        square被设置为红色，而root，base被设置为蓝色
+      - morekeywords添加更多的关键字
+      - literate programming将指定的内容替换成指定的内容
+        #+BEGIN_EXAMPLE
+        literate={<=}{{$\leq$}}1 {>=}{{$\geq$}}1
+        #+END_EXAMPLE
+        将<=替换成 $\leq$ 替换个数为1个，同理将>=替换成 $\geq$ 替换个数为1个
+        #+BEGIN_SRC latex
+        % Add your keywords here, and have this in a separate file
+        % and include it in your preamble
+        \lstset{emph={%  
+            downto, for%
+            },emphstyle={\color{red}\bfseries\underbar}%
+        }%
+        #+END_SRC
+      模板：
+      #+begin_example
+      basicstyle={\small}
+      breaklines=true
+      commentstyle={\color{black}}
+      language=Matlab
+      frame=lines
+      xleftmargin=.2in
+      #+end_example
+  *注意：* 如果注释中存在中英文混排情况则夹在中文之间的英文前后必须有空格，否则排版出错.
+  2.此包支持中文注释（虽然要求中文和英文之间必须用空格分隔），而minted则不支持。
+  基本使用方法：
+  #+begin_src tex
+  \begin{lstlisting}[language=matlab]
+  test
+  \end{lstlisting}
+  #+end_src
+  另一种是minted。
+  具体参考：http://www.latexstudio.net/?p=596
+{{{left(5)}}}
+#+begin_src tex
+\documentclass{article}
+\usepackage{minted}
+\begin{document}
+\begin{minted}[linenos=true]{c++}
+#include<iostream>
+using namespace std;
+
+class A{};
+class B{};
+
+class C{
+public:
+     operator A(){}
+     operator B(){}
+};
+
+void f(A a){}
+void f(B b){}
+
+int main(int argc, char *argv[])
+{
+     C c;
+     f(c);
+     return 0;
+}
+\end{minted}
+\end{document}
+#+end_src
+{{{middle(5)}}}
+{{{lightbox(images/minted.png,450)}}} 
+{{{right}}}
+* 算法排版
+  使用algorithm2e宏包。[[http://nckunoname.pixnet.net/blog/post/67368529-%25E7%2594%25A8latex%25E5%25AF%25ABalgorithm][參考]]
+  在preamble中加入
+  #+BEGIN_SRC tex
+  \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+  \renewcommand{\algorithmcfname}{算法}
+  \SetKwInput{KwIn}{输入}
+  \SetKwInput{KwOut}{输出}
+  #+END_SRC
+  #+BEGIN_SRC tex
+\begin{algorithm}
+\caption{压缩追踪}
+\KwIn{第$t$个视频帧}
+\KwOut{追踪位置$\mathbf{l}_t$和分类器参数}
+中間加入內容
+\end{algorithm}
+  #+END_SRC
+  在lyx中
+  {{{left(5)}}}
+  {{{lightbox(images/algorithm2e.png,400)}}} 
+  {{{middle(2)}}}
+  #+html:<br/><br/><br/><br/><br/>
+  #+html:<img src="images/result.jpg"></img>
+  {{{middle(5)}}}
+  #+html:<br/><br/><br/><br/>
+  {{{lightbox(images/algorithm2eresult.png,400)}}} 
+  {{{right}}}
+  --------
+  下面是參考中的例子，preamble中的选项和刚才的不同：
+  #+BEGIN_SRC tex
+  \usepackage[linesnumbered,boxed]{algorithm2e}
+  #+END_SRC
+  {{{left(5)}}}
+  {{{srcbegin(200)}}}
+  #+BEGIN_SRC tex
+\begin{algorithm}
+  \caption{identifyRowContext}
+  \KwIn{$r_i$, $Backgrd(T_i)$=${T_1,T_2,\ldots ,T_n}$ and similarity threshold $\theta_r$}
+  \KwOut{$con(r_i)$}
+  $con(r_i)= \Phi$\;
+  \For{$j=1;j \le n;j \ne i$}
+  {
+    float $maxSim=0$\;
+    $r^{maxSim}=null$\;
+    \While{not end of $T_j$}
+    {
+      compute Jaro($r_i,r_m$)($r_m\in T_j$)\;
+      \If{$(Jaro(r_i,r_m) \ge \theta_r)\wedge (Jaro(r_i,r_m)\ge r^{maxSim})$}
+      {
+        replace $r^{maxSim}$ with $r_m$\;
+      }
+    }
+    $con(r_i)=con(r_i)\cup {r^{maxSim}}$\;
+  }
+  return $con(r_i)$\;
+\end{algorithm}
+  #+END_SRC
+  {{{srcend}}}
+  {{{middle(2)}}}
+  #+html:<br/><br/><br/><br/>
+  #+html:<img src="images/result.jpg"></img>
+  {{{middle(5)}}}
+  {{{lightbox(images/algorithm2eresult2.png,400)}}} 
+  {{{right}}}
+  --------
+* 为lyx添加新的class
+  http://www.paulkiddie.com/2010/02/adding-custom-class-files-cls-to-lyx-in-windows-vista-windows-7-environment/
+  查找cls文件位置：使用kpsewhich命令，例如 kpsewhich amsbook.cls
+* 插入gif动画文件
+  可以[[file:../../Linux/LinuxOS/UbuntuTrick.org::giftoavi][将gif转换成avi]] 后再用movie15宏包插入。
+* Beamer中为插入frame设置快捷键
+  Tools->Preferences->Editing->Shortcuts中New对话框中Function栏写 =layout BeginFrame= 并为其添加快捷键，同理可为 =layout EndFrame= 添加快捷键.
+  查看一个功能对应的函数：在菜单上执行一次此功能后会出现在状态栏上。
+  默认文件保存到了~/.lyx/bind/user.bind，可以备份此文件以便日后使用。
+* lyx+latex+Beamer
+** columns
+   首先从下拉菜单下选择columns，在新行中选择column，输入宽度，后快捷键 =M-S-right= 将其提升了columns的child。
+** block
+   菜单下选择block后 =C-l= 输入 ={标题}= ，注意不可省略 ={}= 。
+** step-wise
+   1. 对于列表之类的 =\item<n1-n2>内容= 表示在n1至n2个幻灯片上显示，省略n2则表示自n1之后一直显示。
+      #+begin_src tex
+      \begin{itemize}
+      \item<1-> Every thing
+      \item<2-> that has
+      \item<3-> beginning
+      \item<4-> has end.
+      \end{itemize}      
+      #+end_src
+   2. 如果列表环境中每个项逐一显示，为避免为每个项都写 =\item<1->= 带来的麻烦，可以将 =\begin{itemize}= 写成 =\begin{itemize}[<+->]= ，=\item= 不变。
+      #+begin_src tex
+      \begin{itemize}[<+->]
+      \item Every thing
+      \item that has
+      \item beginning
+      \item has end.
+      \end{itemize}      
+      #+end_src
+** replace
+*** only
+    =\only<n>{..}= 表示只在第n个幻灯片上显示，不保留空间
+*** uncover
+    =\uncover<n>{..}= 只在n张上显示，保留空间
+    与only的区别可以用下面的例子说明：
+    --------
+    {{{left(2)}}}
+    lyx代码：
+    {{{lightbox(images/Beamer_difference_between_only_and_uncover.png,500)}}} 
+    {{{middle(1)}}}
+    #+html:<br/><br/><br/><br/><br/>
+    #+html:<img src="images/result.jpg"></img>
+    {{{middle(2)}}}
+    第1张幻灯片：
+    {{{lightbox(images/Beamer_difference_between_only_and_uncover_result1.png,100)}}} 
+    {{{middle(2)}}}
+    第2张幻灯片：
+    {{{lightbox(images/Beamer_difference_between_only_and_uncover_result2.png,100)}}} 
+    {{{middle(2)}}}
+    第3张幻灯片：
+    {{{lightbox(images/Beamer_difference_between_only_and_uncover_result3.png,100)}}} 
+    {{{right}}}
+    --------
+    可见不管是哪张幻灯片都为uncover的内容c保留了空间，所以在第1张和第2张幻灯片中第2个test和第3个test之间一直是空的，然而没有为only的内容a和b保留空间，所以第1张中第1个test和第2个test之间没有空间。
+*** invisable
+    =\invisible<n>{..}= 在第n张上消失，和 =\uncover<n>{..}= 相反。
+*** alter
+    =\alter<n>{..}= 在第n张的时候显示为强调颜色
+    lyx中使用方法是 =<alter@n>=
+*** alt
+    =\alt<n>{before}{after}= n帧前为before，n帧后为after。
+*** temporal
+    =\temporal<n>{before}{on}{after}= 在n帧之前一直是before，n帧时是on，之后是after
+{{{left(4)}}}
+{{{lightbox(./images/beamer_overlay_columns_block_item.png,400)}}}
+{{{middle(1)}}}
+#+html:<br/><br/><br/><br/><br/><br/><br/><br/>
+$$\underrightarrow{\ \ result\ \ }$$
+{{{middle(7)}}}
+#+html:<br/><br/><br/><br/><br/>
+{{{lightbox(images/beamer_overlay_columns_block_item_result.png,700)}}} 
+{{{right}}}
+   右图中列表是动态出现的。
+*** Overprint/Overlayarea
+**** 使用原因
+     下面代码由于only1和only2行数不同，所以两者之下的内容在切换时会发生移动现象，叫“whobble”：
+     {{{left(4)}}}
+     #+html:<br/><br/><br/><br/><br/><br/>
+     lyx代码：
+     {{{lightbox(images/Beamer_without_Overprint.png,300)}}} 
+     {{{middle(1)}}}
+     #+html:<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+     #+html:<img src="images/result.jpg"></img>
+     {{{middle(4)}}}
+     第1张：
+     {{{lightbox(images/Beamer_without_Overprint_result.png,300)}}} 
+     第2张：
+     {{{lightbox(images/Beamer_without_Overprint_result2.png,300)}}} 
+     {{{right}}}
+     --------
+     可以使用Overprint和Overlayarea来解决：
+     {{{left(4)}}}
+     lyx代码：
+     {{{lightbox(images/Beamer_with_Overprint.png,250)}}} 
+     {{{middle(1)}}}
+     #+html:<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+     #+html:<img src="images/result.jpg"></img>
+     {{{middle(7)}}}
+     第1张幻灯片：
+     {{{lightbox(images/Beamer_with_Overprint_result.png,600)}}} 
+     --------
+     第2张幻灯片：
+     {{{lightbox(images/Beamer_with_Overprint_result2.png,600)}}} 
+     {{{right}}}
+     --------
+**** 二者区别
+     二者的区别是Overlayarea必须要自定义显示矩阵的宽和高：
+     #+begin_src tex
+     \begin{overlayarea}{area widthi{area height}
+     environment contents
+     \end{overlayarea}
+     #+end_src
+     而overprint的高是自动生成的，不能自己定义（选择几个之间最高的那个），宽默认是文本宽度，也可以自己定义：
+     #+begin_src tex
+     \begin{overprint}[harea widthi]
+     henvironment contentsi
+     \end{overprint}    
+     #+end_src
+     一般情况只使用overprint即可满足要求。
+     *注意* 使用Overlayarea时需用only而非onslide，lyx下拉菜单下有only，所以不能自己用tex代码的方式来写only。两个only之间要用tex代码 ={}= 分隔（不然下一个onlyenv环境会进入上一个onlyenv环境内部，不知道是不是bug）：
+     {{{left(3)}}}
+     lyx代码：
+     {{{lightbox(images/Beamer_Overlayarea.png,180)}}} 
+     {{{middle(1)}}}
+     #+html:<br/><br/><br/><br/><br/><br/><br/><br/>
+     #+html:<img src="images/result.jpg"></img>
+     {{{middle(3)}}}
+     第1张幻灯片：
+     {{{lightbox(images/Beamer_Overlayarea_result1.png,270)}}} 
+     {{{middle(3)}}}
+     第2张幻灯片：
+     {{{lightbox(images/Beamer_Overlayarea_result2.png,400)}}} 
+     {{{right}}}
+     --------
+**** 打印设置
+     打印设置为[[*%E6%89%93%E5%8D%B0Beamer%E5%88%B6%E4%BD%9C%E7%9A%84%E5%B9%BB%E7%81%AF%E7%89%87][handout]]的时候会出错，因为tex不知道打印哪个，可以设置handout属性，所有默认值都为1,可以将不想被打印出来的设置为0：
+     #+begin_src tex
+     \begin{overprint}
+     \onslide<1| handout:1>
+     会显示在handout上
+     \onslide<2| handout:0>
+     不会显示在handout上
+     \onslide<3| handout:0>
+     不会显示在handout上
+     \end{overprint}     
+     #+end_src
+** 创建链接
+   创建target: =\hypertarget{targetname}{text-to-show}= 。
+   创建link: =\hyperlink{targetname}{\beamergotobutton{text-to-show-on-button}}=。
+   其它有用的button： \beamerreturnbutton，\beamerbutton
+** 整个frame的内容动态出现
+   可以在菜单选择BeginFrame后 =C-l= 输入 =<+->= 再输入标题。这样如果此frame此都是列表则列表逐一出现。
+** 改变Beamer的脚注
+   默认情况下所有幻灯片脚注中使用的标题是整个幻灯片的标题。
+   1. 实现某个section的所有幻灯片中的脚注使用自己特有的标题，操作如下：在该section的标题上insert->short title中出现想要的内容即可
+   2. 同理要修改所有幻灯片的脚注中的标题则需要为整个幻灯片的大标题插入小标题
+** 打印Beamer制作的幻灯片
+*** 修改源码实现
+    Beamer做的幻灯片的pause之类的Overlay都是通过额外的PDF页来实现的，打印时会造成浪费，解决方法是：
+    #+begin_example
+    \documentclass[handout]{beamer}
+    #+end_example
+    这样生成的PDF不再具有Overlay的特效，但适合打印。(前提是你有此Beamer制作幻灯片的源码)
+    lyx设置：document->setting->document class->class options->custom中添加handout
+*** 利用pdfpages包实现
+    大部分情况下我们手上只有一份pdf版的幻灯片，没有源码，此时上面的方法就行不通了，可以利用如下方法实现：
+    #+begin_src tex
+    \documentclass{article} %
+    \usepackage{pdfpages}
+    \begin{document}
+    \includepdf[nup=2x2,landscape,delta=5mm 5mm, scale=0.95,pages={1-18}]{trans.pdf}
+    \end{document}   
+    #+end_src
+    其中1-18指定了想要合并trans.pdf的页码范围，2x2指定了每页上个数。
+** lyx解决Beamer中插入代码问题
+   直接insert->program listing插入代码这种方法行不通。
+   目前最好的解决办法是把待插入的代码保存到一个文件中，通过 insert->file->child document来插入文件，
+** 生成的幻灯片默认以全屏方式打开
+   添加 =\hypersetup{pdfpagemode=FullScreen}=
+* 管理文献
+  将文献写入bib后缀文件中，格式如下：
+  #+BEGIN_SRC tex
+@article{bandyopadhyay2004multiobjective,
+  title={Multiobjective GAs, quantitative indices, and pattern classification},
+  author={Bandyopadhyay, S. and Pal, S.K. and Aruna, B.},
+  journal={Systems, Man, and Cybernetics, Part B: Cybernetics, IEEE Transactions on},
+  volume={34},
+  number={5},
+  pages={2088--2099},
+  year={2004},
+  publisher={IEEE}
+};
+  #+END_SRC
+  lyx中insert->list/toc->bibtex bibliography插入文件中，之后insert->citation选择要引用的文献，之后编译即可看见只有引用过的文献存在于参考文献一节中，没有引用过的不会显示。
+* 快捷键
+  参考lyx的帮助文档 [[./lyx_shortcuts/Shortcuts.html][LY X Keyboard Shortcuts]]
+** lyx设置菜单快捷键
+   需要修改菜单配置文件，xp下位于C:\Program Files\LyX 2.0\Resources\ui中，打开stdmenu.inc，
+   #+BEGIN_EXAMPLE
+   Item "Program Listing[[Menu]]" "listing-insert"
+   #+END_EXAMPLE
+   为：
+   #+BEGIN_EXAMPLE
+   Item "Program Listing[[Menu]]|m" "listing-insert"
+   #+END_EXAMPLE

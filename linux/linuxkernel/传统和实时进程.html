@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="gb18030"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>浼犵粺鍜屽疄鏃惰繘绋�</title>
+<meta http-equiv="Content-Type" content="text/html;charset=gb18030"/>
+<meta name="title" content="浼犵粺鍜屽疄鏃惰繘绋�"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-12-14 09:05:25 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<div id="org-div-comments"><a href="../../index.html#linuxkernel">主页</a></div>
+
+
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title">浼犵粺鍜屽疄鏃惰繘绋�</h1>
+
+
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+
+
+<div id="table-of-contents">
+<h2>目录</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 convential process</a>
+<ul>
+<li><a href="#sec-1-1">1.1 static priority</a></li>
+<li><a href="#sec-1-2">1.2 dynamic priority</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 real-time process</a>
+<ul>
+<li><a href="#sec-2-1">2.1 static priority</a></li>
+<li><a href="#sec-2-2">2.2 dynamic priority</a></li>
+<li><a href="#sec-2-3">2.3 real time priority</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 调度策略</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> convential process</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> static priority</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<p>   范围为100-139(MAX_RT_PRIO - MAX_PRIO-1)<br/>
+   内核2.6中的静态优先级相当于内核2.4中的nice值，但转到MAX_RT_PRIO到MAX_PRIO-1取值范围，其公式为：<br/>
+   static priority = nice + 20 + MAX_RT_PRIO<br/>
+   内核定义两个宏来实现此转化：nice_to_prio() and prio_to_nice()<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #483d8b;">#define</span> <span style="color: #0000ff;">NICE_TO_PRIO</span>(<span style="color: #a0522d;">nice</span>)  (MAX_RT_PRIO + (nice) + 20)
+<span style="color: #483d8b;">#define</span> <span style="color: #0000ff;">PRIO_TO_NICE</span>(<span style="color: #a0522d;">prio</span>)  ((prio) - MAX_RT_PRIO - 20)
+</pre>
+
+<p>
+   在进程task_struct中用int static_prio表示。<br/>
+   一个进程继承其父进程的静态优先级。也可以通过nice() or setpriority()指定。决定了Base Time Quantum大小。<br/>
+</p><table  border="2" cellspacing="0" cellpadding="6" rules="all" frame="all">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="left">static priority</th><th scope="col" class="left">Base Time Quantum</th></tr>
+</thead>
+<tbody>
+<tr><td class="left">&lt; 120</td><td class="left">(140 - static priority) × 20</td></tr>
+<tr><td class="left">&gt;= 120</td><td class="left">(140 - static priority) × 5</td></tr>
+</tbody>
+</table>
+
+
+
+
+
+<pre class="src src-c++"><span style="color: #483d8b;">#define</span> <span style="color: #a0522d;">DEF_TIMESLICE</span>       (100 * HZ / 1000)
+
+<span style="color: #483d8b;">#define</span> <span style="color: #0000ff;">SCALE_PRIO</span>(<span style="color: #a0522d;">x</span>, <span style="color: #a0522d;">prio</span>) \
+    max(x * (MAX_PRIO - prio) / (MAX_USER_PRIO/2), MIN_TIMESLICE)
+
+<span style="color: #a020f0;">static</span> <span style="color: #228b22;">unsigned</span> <span style="color: #228b22;">int</span> <span style="color: #0000ff;">task_timeslice</span>(<span style="color: #228b22;">task_t</span> *<span style="color: #a0522d;">p</span>)
+{
+    <span style="color: #a020f0;">if</span> (p-&gt;static_prio &lt; NICE_TO_PRIO(0))
+        <span style="color: #a020f0;">return</span> SCALE_PRIO(DEF_TIMESLICE*4, p-&gt;static_prio);
+    <span style="color: #a020f0;">else</span>
+        <span style="color: #a020f0;">return</span> SCALE_PRIO(DEF_TIMESLICE, p-&gt;static_prio);
+}
+</pre>
+
+<p>
+DEF_TIMESLICE = 100, MAX_PRIO = 140, MAX_USER_PRIO = 40, 故得到上表中的公式.<br/>
+</p>
+<p>
+   静态优先级数值越大，进程的优先级越小，分配的基时间量就越少。<br/>
+</p></div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> dynamic priority</h3>
+<div class="outline-text-3" id="text-1-2">
+
+<p>   范围与静态优先级相同。<br/>
+   动态优先级是调度器选择一个进程时实际参考的值。<br/>
+   dynamic priority = max( 100, min((static priority - bonus + 5), 139))<br/>
+   即动态优先级与静态优先级和bonus值有关，而bonus取值范围为0-10，其值大小与平均睡眠时间（average sleeping time）有关。<br/>
+   平均睡眠时间越大，bonus值越大，其动态优先级越大。（睡眠时间长了自然要提高其动态优先级以避免发生饥饿现象）<br/>
+   在task_struct中用int prio来表示。<br/>
+   动态优先级的计算过程在各个进程的运行过程中进行，同时影响动态优先级大小的因素集中反映在sleep_avg上。<br/>
+   task_struct中的成员  unsigned long sleep_avg;<br/>
+   进程创建时，在wake_up_forked_process()中子进程继承了父进程的动态优先级，并添加到父进程的就绪队列中，如果父进程不在任何就绪队列中，则通过effective_prio()来计算出子进程的动态优先级并根据计算结果将子进程放置到相应的就绪队列中。<br/>
+   动态优先级的计算只要由effective_prio()函数来完成：<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #a020f0;">static</span> <span style="color: #228b22;">int</span> <span style="color: #0000ff;">effective_prio</span>(<span style="color: #228b22;">task_t</span> *<span style="color: #a0522d;">p</span>)
+{
+    <span style="color: #228b22;">int</span> <span style="color: #a0522d;">bonus</span>, <span style="color: #a0522d;">prio</span>;
+
+    <span style="color: #a020f0;">if</span> (rt_task(p))             ;;&#22914;&#26524;&#26159;&#23454;&#26102;&#36827;&#31243;&#21017;&#36820;&#22238;&#65288;&#23454;&#26102;&#36827;&#31243;&#30340;&#21160;&#24577;&#20248;&#20808;&#32423;&#26159;&#30001;setscheduler()&#20989;&#25968;&#35774;&#32622;&#19988;&#19968;&#32463;&#35774;&#32622;&#19981;&#20877;&#25913;&#21464;&#65289;
+        <span style="color: #a020f0;">return</span> p-&gt;prio;
+
+    bonus = CURRENT_BONUS(p) - MAX_BONUS / 2; ;;<span style="color: #228b22;">&#26681;&#25454;&#30561;&#30496;&#26102;&#38388;&#35774;&#32622;bonus&#20540;</span>
+
+    <span style="color: #a0522d;">prio</span> = p-&gt;static_prio - bonus; ;;&#30001;&#38745;&#24577;&#20248;&#20808;&#32423;&#21644;bonus&#20540;&#26469;&#35774;&#32622;&#21160;&#24577;&#20248;&#20808;&#32423;
+    <span style="color: #a020f0;">if</span> (prio &lt; MAX_RT_PRIO)        ;;&#21160;&#24577;&#20248;&#20808;&#32423;&#33539;&#22260;&#19981;&#33021;&#23567;&#20110;MAX_RT_PRIO&#20063;&#19981;&#33021;&#36229;&#36807;MAX_PRIO&#65292;&#25152;&#20197;&#27492;&#22788;&#20570;&#19979;&#21028;&#26029;&#12290;
+        prio = MAX_RT_PRIO;
+    <span style="color: #a020f0;">if</span> (prio &gt; MAX_PRIO-1)
+        prio = MAX_PRIO-1;
+    <span style="color: #a020f0;">return</span> prio;
+}
+</pre>
+
+
+
+<pre class="src src-c++"><span style="color: #483d8b;">#define</span> <span style="color: #0000ff;">CURRENT_BONUS</span>(<span style="color: #a0522d;">p</span>) \
+    (NS_TO_JIFFIES((p)-&gt;sleep_avg) * MAX_BONUS / \ ;;&#25226;&#30561;&#30496;&#26102;&#38388;&#36716;&#21270;&#20026;bonus&#20540;
+        MAX_SLEEP_AVG)
+</pre>
+
+<p>
+  最大bonus值的计算如下：<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #483d8b;">#define</span> <span style="color: #0000ff;">USER_PRIO</span>(<span style="color: #a0522d;">p</span>)        ((p)-MAX_RT_PRIO)
+<span style="color: #483d8b;">#define</span> <span style="color: #a0522d;">MAX_USER_PRIO</span>       (USER_PRIO(MAX_PRIO))       ;;40
+<span style="color: #483d8b;">#define</span> <span style="color: #a0522d;">PRIO_BONUS_RATIO</span>     25
+<span style="color: #483d8b;">#define</span> <span style="color: #a0522d;">MAX_BONUS</span>       (MAX_USER_PRIO * PRIO_BONUS_RATIO / 100) ;;&#32467;&#26524;&#20026;10
+</pre>
+
+<p>
+  最大平均睡眠时间计算如下：<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #483d8b;">#define</span> <span style="color: #a0522d;">DEF_TIMESLICE</span>       (100 * HZ / 1000)
+<span style="color: #483d8b;">#define</span> <span style="color: #a0522d;">MAX_SLEEP_AVG</span>       (DEF_TIMESLICE * MAX_BONUS)
+</pre>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> real-time process</h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> static priority</h3>
+<div class="outline-text-3" id="text-2-1">
+
+<p>   与非实时进程相同。<br/>
+</p></div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> dynamic priority</h3>
+<div class="outline-text-3" id="text-2-2">
+
+<p>   其值是在setscheduler()中设置的且一经设置便不再改变。<br/>
+   非实时进程的动态优先级会在进程运行过程中动态计算而实时进程的动态优先级不会改变。<br/>
+</p></div>
+
+</div>
+
+<div id="outline-container-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> real time priority</h3>
+<div class="outline-text-3" id="text-2-3">
+
+<p>   每个实时进程都有一与其相关的实时优先级，取值范围0-MAX_RT_PRIO-1。<br/>
+   其大小可以通过sched_setscheduler()和sched_setparam()来改变。<br/>
+   实时进程被一个进程替换，可能的情况有：<br/>
+</p><ol>
+<li>进程被拥有更高优先级的进程抢占。<br/>
+</li>
+<li>进程发生阻塞进入睡眠状态。<br/>
+</li>
+<li>进程被终止（状态为TASK_STOPPED OR TASK_TRACED）或者被杀死（EXIT_DEAD OR EXIT_ZOMBIE）。<br/>
+</li>
+<li>进程通过调用sched_yield()自愿放弃处理器。<br/>
+</li>
+<li>进程是轮回实时（SCHED_RR）且其时间片执行完毕。<br/>
+</li>
+</ol>
+
+<p>   当在SCHED_RR时调用nice()和set_priority()函数并不影响实时优先级，只会影响静态优先级（从而影响基时间片）。<br/>
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 调度策略</h2>
+<div class="outline-text-2" id="text-3">
+
+<p>  task_struct中unsigned long policy;指定调度策略，其值可以取:<br/>
+</p>
+
+
+<pre class="src src-c++"><span style="color: #483d8b;">#define</span> <span style="color: #a0522d;">SCHED_NORMAL</span>    0       <span style="color: #b22222;">//</span><span style="color: #b22222;">&#38750;&#23454;&#26102;&#36827;&#31243;&#65292;&#22522;&#20110;&#20248;&#20808;&#32423;&#30340;&#36718;&#22238;&#27861;&#65288;Round Robin&#65289;</span>
+<span style="color: #483d8b;">#define</span> <span style="color: #a0522d;">SCHED_FIFO</span>      1       <span style="color: #b22222;">//</span><span style="color: #b22222;">&#23454;&#26102;&#36827;&#31243;&#65292;&#20808;&#36827;&#20808;&#20986;</span>
+<span style="color: #483d8b;">#define</span> <span style="color: #a0522d;">SCHED_RR</span>        2       <span style="color: #b22222;">//</span><span style="color: #b22222;">&#23454;&#26102;&#36827;&#31243;&#65292;&#22522;&#20110;&#20248;&#20808;&#32423;&#30340;&#36718;&#22238;&#27861;&#65288;Round Robin&#65289;</span>
+</pre>
+
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>Tree 命令</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Tree 命令"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-03-11 03:50:28 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+
+
+
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title">Tree 命令</h1>
+
+
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+<p>
+可以利用下面的命令得到一个目录的导航树：
+</p>
+
+
+<pre class="example">tree --dirsfirst -a -T "Sitemap for www.fanhan.tk" -P "*html" -I "\.git|index_swf|image|" -C -H "http://www.fanhan.tk" --charset UTF-8  -o sitemap.html
+</pre>
+
+
+<p>
+选项解析：
+</p><ul>
+<li>&ndash;dirsfirst 目录在文件之前
+</li>
+<li>-a 所有文件
+</li>
+<li>-T 标题
+</li>
+<li>-P 匹配Pattern
+</li>
+<li>-I 不匹配Pattern
+</li>
+<li>-C 着色
+</li>
+<li>-H 在HTML输出结果中每个文件链接前面加上-H后跟的基址
+</li>
+<li>&ndash;charset 字符串
+</li>
+<li>-o 生成文件
+</li>
+</ul>
+
+
+<p>
+生成结果类似图片：
+</p>
+<div style="text-align: center">
+<p><img src="./images/Screenshot.png"  alt="./images/Screenshot.png" />
+</p>
+</div>
+
+
+
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* import static
+  http://blog.sina.com.cn/s/blog_625651900100kwul.html
+  import static静态导入是jdk1.5中的新特性。一般我们导入一个类都用 import com.domain.classname;而静态导入是这样：import static com.domain.classname.*;这里的多了个static，还有就是类名classname后面多了个 .* ，意思是导入这个类里的静态方法。当然，也可以只导入某个静态方法，只要把 .* 换成静态方法名就行了。然后在这个类中，就可以直接用方法名调用静态方法，而不必用classname.方法名 的方式来调用。 
+* java初始化顺序
+  如果有父类则递归加载父类,从最早基类开始往下依次初始化static成员变量，但只初始化一次(main函数为空此步仍会进行)。
+  之后如果有创建子类对象，则从最早基类开始往下依次处理每个类中的成员变量和构造函数。
+  {{{singletop(源码例证)}}}
+  {{{left(5)}}}
+  #+BEGIN_SRC java
+class base{
+    static int i=b.printAndRet1();
+    base(){
+        System.out.println("base ctor");
+    }
+    int k=b.printAndRet3();
+}
+
+public class a extends base{
+    a(){
+        System.out.println("a ctor");
+    }
+    static int j=b.printAndRet2();
+    int n=b.printAndRet1();
+    public static void main(String[] args){
+        System.out.println("main");
+        a aa=new a();
+        a aaa=new a();
+    }
+}
+  #+END_SRC
+  {{{middle(5)}}}
+  #+BEGIN_SRC java
+public class b{
+    public static int printAndRet1(){
+        System.out.println("1");
+        return 1;
+    }
+    public static int printAndRet2(){
+        System.out.println("2");
+        return 1;
+    }
+    public static int printAndRet3(){
+        System.out.println("3");
+        return 1;
+    }    
+}
+  #+END_SRC
+  {{{right}}}
+  --------
+  #+BEGIN_EXAMPLE
+1
+2
+main
+3
+base ctor
+1
+a ctor
+3
+base ctor
+1
+a ctor
+  #+END_EXAMPLE
+  {{{singleend}}}

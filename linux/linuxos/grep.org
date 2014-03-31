@@ -1,0 +1,8 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+include "../../layo../layout/template.org"
+#+title:grep匹配
+#+BEGIN_HTML
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+#+END_HTML

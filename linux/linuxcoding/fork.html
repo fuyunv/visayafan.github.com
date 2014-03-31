@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>一道关于fork的面试题</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="一道关于fork的面试题"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-03-19 00:45:19 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+
+
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title">一道关于fork的面试题</h1>
+
+
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+<p>
+此博文参考<a href="http://coolshell.cn/articles/7965.html"> CoolShell</a> ，通过对增加循环次数来更加深入理解fork并利用推算总结一般规律。<br/>
+</p>
+<p>
+  问下面程序一共输出多少个"-"?<br/>
+</p>
+
+
+
+<pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;stdio.h&gt;</span>
+<span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;sys/types.h&gt;</span>
+<span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;unistd.h&gt;</span>
+
+<span style="color: #228b22;">int</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">void</span>)
+{
+   <span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>;
+   <span style="color: #a020f0;">for</span>(i=0; i&lt;2; i++){
+      fork();
+      printf(<span style="color: #8b2252;">"-"</span>);
+   }
+
+   <span style="color: #a020f0;">return</span> 0;
+}
+</pre>
+
+<p>
+  由于printf语句将输出内容放到buffer中且被子进程复制，故比 printf("-\n"); 多2个-<br/>
+</p>
+
+
+<pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;stdio.h&gt;</span>
+<span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;sys/types.h&gt;</span>
+<span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;unistd.h&gt;</span>
+<span style="color: #228b22;">int</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">void</span>)
+{
+   <span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>;
+   <span style="color: #a020f0;">for</span>(i=0; i&lt;2; i++){
+      fork();
+      <span style="color: #b22222;">//</span><span style="color: #b22222;">&#27880;&#24847;&#65306;&#19979;&#38754;&#30340;printf&#26377;&#8220;\n&#8221;</span>
+      printf(<span style="color: #8b2252;">"ppid=%d, pid=%d, i=%d \n"</span>, getppid(), getpid(), i);
+   }
+   sleep(10); <span style="color: #b22222;">//</span><span style="color: #b22222;">&#35753;&#36827;&#31243;&#20572;&#30041;&#21313;&#31186;&#65292;&#36825;&#26679;&#25105;&#20204;&#21487;&#20197;&#29992;pstree&#26597;&#30475;&#19968;&#19979;&#36827;&#31243;&#26641;</span>
+   <span style="color: #a020f0;">return</span> 0;
+}
+</pre>
+
+<p>
+  结果：<br/>
+</p>
+
+
+<pre class="example">ppid=8858, pid=8518, i=0
+ppid=8858, pid=8518, i=1
+ppid=8518, pid=8519, i=0
+ppid=8518, pid=8519, i=1
+ppid=8518, pid=8520, i=1
+ppid=8519, pid=8521, i=1
+</pre>
+
+<p>
+  分析：<br/>
+  其中椭圆代表shell，每个方块执行一个输出语句。<br/>
+  <center>
+  <img src="image/fork.jpg"></img>
+  </center>
+  同理将迭代次数换成3可得14个"-"<br/>
+  <center>
+  <img src="image/fork2.jpg"></img>
+  </center>
+  规律：设迭代n次最终打印 a_n 个-。通过观察上图可得<br/>
+  当k=n时：<br/>
+$$a_k=2a_{k-1}$$
+  当k&lt;n时：<br/>
+$$a_k=2a_{k-1}+1$$
+  且有：<br/>
+$$a_0=1$$  <br/>
+  最终得:<br/>
+$$a_n=2^{n+1}-2$$
+  即迭代次数为2时打印2<sup>2+1</sup>-2=6个，迭代次数为3时2<sup>3+1</sup>-2=14个，迭代次数为4时打印2<sup>4+1</sup>-2=30个……<br/>
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+</p></div>
+
+</body>
+</html>

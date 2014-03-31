@@ -1,0 +1,395 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title: Git笔记
+
+git中文件分为4类：未追踪文件，修改文件，暂存文件，仓库文件。
+新建一个文件，此时文件为未追踪状态；已经被追踪的文件发生修改则为修改状态；新建或修改文件添加到了暂存区则成为暂存文件；暂存文件commit到仓库中则成为仓库文件。
+working tree为当前工作目录，index为add后的暂存区
+* 视频/资源
+[[http://vimeo.com/14629850][Vimeo: Getting Git]]
+[[http://www.youtube.com/watch?v%3DZDR433b0HJY][YouTube:Introduction to Git with Scott Chacon of GitHub]]
+[[http://www.youtube.com/watch?v%3D4XpnKHJAok8][YouTube:Tech Talk: Linus Torvalds on git]]
+[[https://github.com/schacon/git-presentations][Scot Chacon在Github上的幻灯片]]
+* help
+  帮助，例如 git show --help(或者 git help show 或者 man git-show)可以查看所有show的option
+  其中show可以替换成其它动作
+* ignore
+  一般某个项目dev过程中都会产生一些中间文件，这些文件是我们不想要追踪的。但git默认会将当前目录下所有文件追踪。可以使用.gitignore文件来忽略这些文件。
+  在需要的目录下面添加 .gitignore文件，文件中每一行表示需要忽略的文件／目录的正则表达式（也可以把自己添加进去，即.gitignore,这样.gitignore也被忽略了）
+#+begin_example
+# 此为注释 – 将被 Git 忽略
+*.a # 忽略所有 .a 结尾的文件
+!lib.a # 但 lib.a 除外
+/TODO # 仅仅忽略项目根目录下的 TODO 文件,不包括 subdir/TODO
+build/ # 忽略 build/ 目录下的所有文件
+doc/*.txt # 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
+#+end_example
+  1. =**= 可以表示任何级别的目录。
+  2. =**/debug/= 会忽略任何debug目录， =*/debug/= 只会忽略一级目录下的debug目录。
+  3. =*= 与 =*/= 的区别：前者忽略所有非目录，后者忽略所有目录；必须要二者配合才能忽略所有文件。
+  4. 也可以加在.git/info/exclude文件中，区别在于：如果某些忽略文件只是你特有的，比如你用emacs编辑会生成~后缀备份文件，但别人不一定用emacs，所以 =*~= 写在.gitignore里不合适，写在.git/info/exclude里，此文件不会传播给其它人。
+* 颜色
+  git config color.ui true 打开颜色显示
+  红：表修改但add之前的状态(修改文件或者未跟踪文件)
+  绿：表add之后到commit之前的状态（暂存状态）
+  黄：表commit之后的状态（仓库文件）
+* git config
+** 定义别名
+#+begin_example
+git config --global alias.co checkout 定义co为checkout的别名
+或者 git config --global "alias co=checkout"
+#+end_example
+   要删除别名直接修改~/.gitconfig文件即可
+** 用户名和邮件
+#+begin_example
+git config --global user.name visayafan
+git config --global user.email visayafan@gmail.com
+#+end_example
+** 编辑器
+#+begin_example
+git config --global core.editor emacs
+#+end_example
+** 差异分析工具
+#+begin_example
+git config --global merge.tool vimdiff
+#+end_example
+** 查看
+#+begin_example
+git config --list
+#+end_example
+   或者直接查看~/.gitconfig文件内容
+* git status
+  反映git commit执行之前的变化，git commit执行之后再用此命令将看不到变化
+  -s 简明地显示
+* git init
+** --bare
+   假设在A目录下git init则会在A目录下生成一个.git文件里存放配置文件。
+   如果加上--bare选项则不会生成.git文件，配置文件会出现在在当前A目录下。
+** --git-dir
+   使用--git-dir=directory选项则--bare将配置文件生成在directory目录下。
+   =git init= 等价于 /git --git-dir=.git init --bare/
+* git add
+  将未追踪文件或者修改文件添加到暂存区。之后便可以commit到仓库中。
+  表明xxx将要提交到respository中，如果xxx不想被提交则可以省去此步骤直接commit
+  -p 选项：对于每个改变的文件都以交互的方式来询问是否add此文件
+  -u 只查看跟踪文件，不会暂存文件，如果跟踪文件在工作目录下被删除，则这些跟踪文件被删除
+
+  *add一个文件后又后悔了（commit之前），可以用 git reset HEAD filename来取消对filename的add* [[http://stackoverflow.com/questions/348170/undo-git-add-before-commit?rq%3D1][参考]]
+#+BEGIN_EXAMPLE
+test$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#+END_EXAMPLE  
+* git clone
+<<gitclone>>  
+** --recursive
+   如果repo下有子submodule，如果只运行 git clone的话不会clone子模块，需要 git submodule init 注册子模块，然后 git submodule update来更新子模块。
+   可以加上--recursive选项来clone repo（包括子模块），等于上面操作的和。
+* git rm
+  git rm filename 把filename从仓库中删除
+  
+  如果已经把一个文件add到暂存区后又后悔了，可以用git rm --cached filename来将此文件从暂存区中删除，但此文件仍然存在于当前工作目录中，通过git status可以看到此文件处于未跟踪或者修改状态。
+  
+  如果真心不想要这个文件，可以git rm -f filename，-f选项会把此文件从暂存区和当前工作目录中删除，即从你的硬盘中删除filename文件
+  如果想把它保存在硬盘上又不想提交到暂存区或者仓库中，可以把它加到.gitignore中
+
+  如果使用rm命令将此文件从硬盘上删除，此时git status看到此文件仍在暂存区，需要使用git rm 来将其从暂存区删除，否则此文件虽然已经不在硬盘上了但还是会被提交到仓库中。
+
+  使用正则表达式：
+  git rm log/\*.log 删除log目录下的log后缀文件，*前加\是因为 Git 有它自己的文件模式扩展匹配方式,所以我们不用 shell 来帮忙展开
+  git rm \*~ 没有指定目录，默认当前目录，递归删除所有~后缀文件
+* git mv
+  等价操作：
+#+begin_example
+mv a b
+git rm a
+git add b
+#+end_example
+* git log
+  查看历史记录（即git commit的保存结点),显示作者，时间，当时-m指定的信息，一个很长的序列号（唯一的）
+  git log -2 查看最近2次的log
+  git log -p 显示每次提交与上次提交的差异
+  git log --stat 只显示差异统计信息，例如文件增加数目，修改行数。。
+  git log --pretty=oneline/short/full/fuller/format 每个commit一行／无日期／默认／更加详细/自定义输出方式
+#+begin_example
+$ git log --pretty=format:"%h - %an, %ar : %s"
+ca82a6d - Scott Chacon, 11 months ago : changed the version number
+085bb3b - Scott Chacon, 11 months ago : removed unnecessary test code
+a11bef0 - Scott Chacon, 11 months ago : first commit
+#+end_example
+#+begin_example
+%H 提交对象(commit)的完整哈希字串
+%h 提交对象的简短哈希字串
+%T 树对象(tree)的完整哈希字串
+%t 树对象的简短哈希字串
+%P 父对象(parent)的完整哈希字串
+%p 父对象的简短哈希字串
+%an 作者(author)的名字
+%ae 作者的电子邮件地址
+%ad 作者修订日期(可以用 -date= 选项定制格式)
+%ar 作者修订日期,按多久以前的方式显示
+%cn 提交者(committer)的名字
+%ce 提交者的电子邮件地址
+%cd 提交日期
+%cr 提交日期,按多久以前的方式显示
+%s 提交说明
+#+end_example  
+  git reflog 缩简版本，无作者时间，序列号只显示前几个
+  git log --oneline 只显示一行（更精简模式）
+  git log --oneline branchname 只查看某个分支的log
+  --graph 图形方式查看
+  git log branchA ^branchB 只有branchA有而branchB没有的部分（git log branchA ^master 查看分支branchA上没有merge进master的部分）
+  git log --since=日期 从某一日期开始到现在的提交历史 --after
+  同理--until指定日期之前的提交历史 --before
+  git log branchA ^branchB 只属于branchA不属于branchB的（从branchA中去掉公共的部分）
+  类似git log origin/master ^master 从orgin/master clone下来的哪些还没有被本地的master merge.
+#+begin_example
+test$ git log --since="2012-10-1" --pretty=oneline #从2012-9-1到现在的提交历史
+test$ git log --since="2 weeks 3 days ago" --pretty=oneline #2周3天前到现在的提交历史
+test$ git log --since=2.weeks --pretty=oneline #2周前
+#+end_example
+  git log --author=visayafan 只查看某作者提交历史
+  git log --committer=visayafan 提交者不一定是作者，作者也不一定是提交者
+  git log --grep "keyword" 只查看提交信息中有keyword的提交历史
+  gitk 打开图形界面gitk以查看提交日志
+* git commit
+** -m
+   -m 'message'  #跟数据库一样保存一个结点以便以后返回
+   先add后commit，可以直接用命令 git commit -am 'commit message' 但只暂存跟踪文件，未跟踪文件不会被暂存，如果当前工作目录中有想被提交的新建文件时不要这么用。
+** -amend
+   1. commit后发现有文件忘记add了或后悔add了某些文件，可以先进行正常的add或rm，再commit时加上选项--amend
+   2. commit完后发现commit -m的信息错误，可以直接commit --amend "新的提交信息"
+#+begin_example
+$ git commit -m 'initial commit'
+$ git add forgotten_file
+$ git rm remove_file
+$ git commit --amend
+#+end_example
+   等价于：
+#+BEGIN_EXAMPLE
+$ git reset --soft HEAD^
+$ ... do something else to come up with the right tree ...
+$ git commit -c ORIG_HEAD
+#+END_EXAMPLE
+   git reset的默认选项为--soft即只更改HEAD指针指向的提交点位置而保持文件状态不动，而--hard则会毁灭所做的工作并恢复到指定提交点。
+   [[http://stackoverflow.com/questions/927358/how-to-undo-the-last-git-commit?rq%3D1][此链接]] 有详解。
+* git show
+  显示上一次commit，显示序列号作者时间和diff
+* gitk
+  如果commit很多的话会比较乱，gitk以图形的方式显示出所有的commit。(另外安装 sudo apt-get install gitk)
+  其它图形界面的git工具参考http://stackoverflow.com/questions/1516720/git-gui-client-for-linux
+* git reset
+  * 返回到之前某个commit状态，例如git reset --hard 8198c8f 此时git push会出错，要加--force(-f)强制选项，git push --force
+  * 如果刚刚用git add filename将filename暂存后又不想把它加入暂存了，可以用git reset HEAD filename来撤消暂存。
+* git mergetool
+  参照：[[git branch]], [[git fetch]]
+  多个人共同维护一个项目时，一个人push一个filename文件，另一个人也要push filename文件时会发生冲突。
+  此时可以用 git mergetool来调用外部应用程序比较两个文件，由两人协商最终push哪个。
+  经过比较修改后的文件再push不会冲突（github默认此结果是我们协商的结果）
+
+  Emacs做为mergetool: http://ulf.zeitform.de/en/documents/git-ediff.html
+* git branch
+  1. =git branch -a= 绿色的代表本机，红色的代表github
+  2. =git branch newfeature= 新建分支（但不切换， =git checkout -b newfeature= 等价于 =git branch newfeature= 后再 =git checkout newfeature= ）。
+     默认新分支的主分支是master，即 =git branch newfeature master= ，当然也可以自己指定，例如从远程仓库下载下来的仓库除了origin/master外还包含一个origin/suffix分支（此分支的指针是不受自己控制的），你想要在此分支的进行开发，可以 =git branch newfeature origin/suffix= .
+  3. 此时可以修改代码添加新特性，再 git push origin newfeature，再用git branch -a查看可以看到github上新添加了一个remote/origin/newfeature
+  4. git merge newfeature 将新特性添加到master中
+  5. git branch -d newfeature 删除本地newfeature分支并没有删除remote上的，可以用git push origin :newfeature来删除remote上的newfeature，如果此分支上有没有merge的内容此时git会提示删除不成功，若要强制删除，则需要 =-d= 选项。
+  6. git branch --merge 可以用来查看已经被merge的分支，一般显示出的分支可以被删除了（已经完成其任务）。
+  7. git push origin :suffix [[git push]]有个[[push][语法]]：git push [远程仓库名] [本地分支]:[远程分支]  本地分支为空则表明在此处提取空白变成远程分支，即清空远程分支
+* git merge
+** 普通merge
+   将某个分支的最新记录点合并到当前分支上，可以回溯到分支中任何提交点。
+   =git merge new= 如果没有冲突会自动commit生成一个提交点，记录信息为 Merge branch 'new'。
+   也可以用 =-m= 指定提交信息。
+   如果有冲突则需要解决冲突，再add解决冲突修改的文件，需要再commit一个提交。
+** 压合merge
+   将分支所有记录压缩成一个记录接到当前记录表中（分支记录不变）。 =git merge --squash new=
+   需要自己commit。
+** 挑拣merge
+<<cherrypick>>
+   普通merge是将分支最新记录点合并到当前分支中，而 =cherry-merge= 是将分支中某个提交merge到当前分支上，可以用 =-n= 选项来合并多个提交。
+   {{{lightbox(images/cherrypick.jpg,400)}}} 
+   需要自己commit。
+   压合和挑拣合并都不可以从记录中回溯到分支某个提交点，所有 =git branch -d new= 删除分支时会提示 error: The branch 'new' is not fully merged.需要用-D选项。
+** 合并冲突后选择文件
+   http://stackoverflow.com/questions/161813/how-do-i-fix-merge-conflicts-in-git?rq=1
+   假设filename为发生合并冲突的文件，可以使用checkout的--ours和--theirs选项指定这个文件用哪个版本的，当然也可以打开git mergetool进入手工修改，但如果事先知道用哪个文件的话，这个方法比较快。
+   Careful! The meaning of --ours and --theirs is reversed. *--ours == the remote* . *--theirs == local* .
+* git remote
+  从远程仓库上用git clone下载下来的可以理解为有两个分支origin/master和master，其中origin为远程仓库名，前者分支是不受你支配的，你所在的是master分支，当你push的时候，git会比较你的origion/master和远程仓库的是否一样，如果一样并且你有权限则可以push，如果不一样则需要用 =git fetch= 下载下来进行合并，此时的远程仓库和你的仓库里的origin/master更改为和master指向同一结点。
+  * 查看当前repo有哪些远程repo，可以用git remote（至少有一个origin，表示这个repo的发起人），可以加-v来查看详细信息（将显示出其远程仓库地址，例如cho45 git://github.com/cho45/grit.git）这样可以方便地把它的repo提交到本地上来查看。
+  * 添加一个远程repo：git remote add shortname address 其中shortname表示简单名字，之后再用git remote -v可以看到多了一个 shortname address的远程仓库
+  * git remote show [remote-name] 查看远程repo信息
+  * git remote rename name1 namw2 将远程repo的name1命名为name2
+  * git remote rm remote-name 删除
+* git fetch
+  如果多个人同时向远程仓库提交则有可能后提交者与先前提交者存在冲突，因为本地origin/master指向结点和远程仓库上origin/master不一样([[git remote]])，此时后提交者要先用 =git fetch= 将前者已经提交的版本下载下来进行合并操作然后才能进行push。origin/master只有这种情况才会改变其指向。
+  * 如果要抓取所有shortname有但本地没有的，可以git fetch shortname
+  * 如果你本地repo是从别人那里clone来的，此命令会自动将远程仓库归于origin名下，于是可以用git fetch origin来更新本地repo的发起人的repo一致（并没有自动合并到当前本机repo中，只有等你准备好了手工合并）
+* git pull
+  git fetch只是从远程repo中拉来本地repo但并不合并，git pull则与本地repo自动合并。
+* git push
+  git push [远程仓库名] [分支名]
+  git push等价于git push origin master
+  建立仓库时默认仓库名是origin，默认分支名是master
+#<<push>>  
+  git push origin A:B 意思是发送本地仓库的分支A到远程仓库的分支B，git push origin A默认的操作是展开A为A:A即默认本地仓库的远程仓库分支名一致。
+* git tag
+  查看所有标签，或git tag v1.4查看v1.4标签的详细信息。
+  * 添加轻量级标签（lightweight）：指向一个特定提交对象的引用 使用-l选项
+  * 添加含附注的标签（annotated）：包含更加详细的信息 使用-a选项，后面可以用-m来指定说明
+* git diff
+  查看没有暂存的改动，如果暂存后立即用git diff则看不到差异。
+  1. =git diff master^= 查看上次提交与本次的差异
+  2. =git diff= 查看当前目录与暂存库的差异 ，即git add前与后的差异
+  3. =git diff --cached= 查看暂存库与版本库的差异，即git commit前与后的差异。
+  4. =git diff HEAD= 查看工作目录与版本库的差异
+  5. =git diff BranchName= 查看分支最新提交与当前工作目录的差异
+* git rebase
+  看链接图示： http://www.zhaoxiaoqing.cn/a/php/php1/2012/1025/654.html
+  http://gitbook.liuhui998.com/4_2.html
+
+  相当于进行多次的 [[cherrypick][cherry-pick]]
+  {{{lightbox(images/rebase.jpg,400)}}} 
+  和进行merge操作结果是完全一样，只是提交历史不同。衍合是按照每行的修改次序重演一遍修改,而合并是把最终结果合在一起。
+  会产生新的历史记录，使提交历史显得更整洁。
+  但 *一旦分支中的提交对象发布到公共仓库,就千万不要对该分支进行衍合操作。*
+  把衍合当成一种在推送之前清理提交历史的手段,而且仅仅衍合那些尚未公开的提交对象,就没问题。如果衍合那些已经公开的提交对象,并且已经有人基于这些提交对象开展 了后续开发工作的话,就会出现叫人沮丧的麻烦。
+  {{{lightbox(images/rebase.png,400)}}} 
+
+* fast forward
+  如果顺着一个分支走下去可以到达另一个分支的话,那么 Git 在合并两者时,只会简单地把指针右移,因为这种单线的历史分支不存在任何需要解决的分歧,所以这种合并过程可以 称为快进(Fast forward)。
+
+* git submodule
+  http://gitbook.liuhui998.com/5_10.html
+  http://git-scm.com/book/en/Git-Tools-Submodules
+  http://blog.devtang.com/blog/2013/05/08/git-submodule-issues/
+  clone下来的submodule的log等文件会保存在主版本库的.git/modules目录下，而子模块目录只不过是一个snapshot，此目录的.git是文件非而此目录，此文件内容为此子模块在主版本库.git/modules中的绝对路径。
+** clone submodule
+   从别处clone下来的repo中如果有submodule则需要用 clone --recursive 或 git submodule init 后git submodule update 参考 [[gitclone][git clone]]
+   此处切进子模块所在的目录，git branch可看到并没有在任何分支上：
+: minimap$ git branch 
+: * (no branch)
+:   master
+  如果需要进行修改操作需要切换分支：git checkout master.
+  如果没有切换分支而进行add commit 操作会得到 =detached HEAD= 错误提示：
+#+begin_example
+minimap$ touch hello
+minimap$ git add .
+minimap$ git commit -m "add hello"
+[detached HEAD 310819a] add hello
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 hello
+#+end_example
+  此时再切换master分支后发现刚才的修改不见了，可以合并分支解决：
+#+begin_example
+minimap$ git checkout master 
+Previous HEAD position was 310819a... add hello
+Switched to branch 'master
+minimap$ git merge 310819a
+#+end_example
+  git pull 不会更新repo下的submodule repo，要想使当前repo与远程仓库完全一致，需要pull之后再使用git submodule update.
+** submodule目录移动后需要修改相应文件
+   #+begin_example
+   {submodule}/.git
+   .git/modules/submodules/{submodule}/config
+   #+end_example
+   这两个文件里记录了该submodule的绝对路径，需要修改。
+** fatal: reference is not a tree
+   git clone一个包括submodule的repo后，git submodule init后git submodule update时出现的错误。
+   原因是提交者commit了子模块但没有push，导致当前的repo(设为A)的commit比子模块的提前。
+   例如：
+   {{{left(3)}}}
+   {{{lightbox(images/submodule1.png,400)}}} 
+   {{{middle(3)}}}
+   {{{lightbox(images/submodule2.png,400)}}} 
+   {{{middle(3)}}}
+   {{{lightbox(images/submodule3.png,400)}}} 
+   {{{right}}}
+   服务器上有2个repo，仓库sub和仓库A，A中存在sub子目录（以sub为子模块），修改前如左图。
+   现在进入仓库A中的sub目录修改文件并commit但没有push，返回A目录下commit，此时本机状态如中图，因还没push所服务器上情况还是左图。
+   但在A目录下push后服务器状态如右图，A指向一个不存在的提交点，由于git clone并不clone子目录所以不存在问题，但git submodule update向服务器索要提交服务器上不存在的提交点4时，便会出错。
+   *关键* 记住git没有把仓库的子模块当成文件夹，而是当作普通文件，相当于维护一个指针指向原模块仓库，如果当前仓库的子模块指针比原模块超前，便会出现reference is not a tree错误。
+   参考 http://gitbook.liuhui998.com/5_10.html “子模块方式的陷阱” 一节
+** 删除一个子模块
+   [[http://www.hackido.com/2009/01/quick-tip-remove-git-submodule.html][参考]]
+   1. 删除.gitmodule中对应文件
+   2. 删除.git/config中对应文件
+   3. 删除版本库中的文件 git rm --cached vendor/plugins/attachment_fu 注意最后不加/
+   4. git commit -a -m "removed attachment fu temporarily"
+** untracked content
+   参考http://stackoverflow.com/questions/5126765/how-to-get-rid-of-git-submodules-untracked-status
+   解决方法有多种：
+   1. 在.gitmodule相应位置添加 ignore = dirty
+      #+BEGIN_EXAMPLE
+      [submodule "zen-coding-gedit3"]
+          path = zen-coding-gedit3
+          url = git://github.com/leafac/zen-coding-gedit3.git
+          ignore = dirty      
+      #+END_EXAMPLE
+   2. 进入对应目录add并commit.
+   3. 在.gitignore中添加忽略项
+* .git目录
+  objects目录中文件名为SHA hash值，保存版本库文件内容。
+  ref目录保存本地/远程版本库的分支。
+* git区间
+  1. master^ 表master的当前提交点的父提交点，可以多次使用master^^^
+     如果有多个父提交点，可以用^1, ^2来指定
+  2. master~n 表前n个提交点
+  3. 02943a..a123ab 两个提交点之间的(左开右闭)
+     02943a..默认是到最新提交点
+* tricks
+** git中永久删除一个文件
+  git rm filename可以从repo中删除一个文件，但仍旧可以其库存历史将其恢复
+#+begin_example
+$ mkdir t  
+$ cd t  
+$ git init  
+Initialized empty Git repository in  
+ /Users/apple/t/.git/  
+创建一个10M大小的文件
+$ dd if=/dev/urandom of=testme.txt bs=10240 count=1024  
+1024+0 records in  
+1024+0 records out  
+10485760 bytes transferred in 1.684808 secs (6223712 bytes/sec)  
+$ git add testme.txt  
+$ git commit -m "a"  
+[master (root-commit)]: created 6fbb432: "a"  
+ 1 files changed, 0 insertions(+), 0 deletions(-)  
+ create mode 100644 testme.txt  
+从repo中删除文件
+$ git rm testme.txt  
+rm 'testme.txt'  
+$ git commit -m r  
+[master]: created bb38396: "r"  
+ 1 files changed, 0 insertions(+), 0 deletions(-)  
+ delete mode 100644 testme.txt  
+但此时版本库仍旧为10M 表明其仍旧存在历史记录中
+$ du -hs  
+ 10M 
+#+end_example  
+  如果我们不想将其恢复（例如不小心把密码之外的文件上传到repo中），则可以用如下方法实现：
+#+begin_example
+$ git filter-branch --tree-filter 'rm -f testme.txt' HEAD  
+Rewrite bb383961a2d13e12d92be5f5e5d37491a90dee66 (2/2)  
+Ref 'refs/heads/master'  
+ was rewritten  
+$ git ls-remote .  
+230b8d53e2a6d5669165eed55579b64dccd78d11        HEAD  
+230b8d53e2a6d5669165eed55579b64dccd78d11        refs/heads/master  
+bb383961a2d13e12d92be5f5e5d37491a90dee66        refs/original/refs/heads/master  
+$ git update-ref -d refs/original/refs/heads/master [bb383961a2d13e12d92be5f5e5d37491a90dee66]  
+$ git ls-remote .  
+230b8d53e2a6d5669165eed55579b64dccd78d11        HEAD  
+230b8d53e2a6d5669165eed55579b64dccd78d11        refs/heads/master  
+$ rm -rf .git/logs  
+$ git reflog --all  
+$ git prune  
+$ git gc  
+可以看到大小已经恢复了表明10M文件已经被彻底删除了
+$ du -hs  
+ 84K    .  
+#+end_example

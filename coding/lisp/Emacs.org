@@ -1,0 +1,629 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template-toc.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:Emacs Trick
+[[file:EmacsGnus.org][Emacs Gnus阅读新闻组 配置+使用]]
+[[file:EmacsOrg.org][Emacs OrgMode做笔记 配置+使用]]
+[[file:EmacsERC.org][Emacs ERC聊天 配置+使用]]
+* 用grep在文件中查找
+  可以直接在grep buffer中修改文件。
+** lgrep
+#+begin_example
+(lgrep REGEXP &optional FILES DIR CONFIRM)
+#+end_example
+   查找指定目录DIR下指定模式文件FILES内容中符合REGEXP的文件，GREP buffer中n/p上下选择。
+** grep
+   指定文件中查找
+#+begin_example
+grep -nH -e "pattern" filename
+#+end_example
+   其中H表输出中包含文件名，n表输出中包含行号，e表紧跟模式
+* find-dired
+  如果对find和grep比较熟可以使用此命令，不过一般下面2个就够用了。
+** find-name-dired
+   在指定目录下递归查找匹配指定文件名的文件。
+** find-grep-dired
+   在指定目录下递归查找包含指定内宾的文件，结果和 =find-name-dired= 一样都显示在dired中。
+   之后可以进行其它操作，例如[[*%E6%89%B9%E9%87%8F%E6%9B%BF%E6%8D%A2%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9][批量替换文件内容]]。
+* 批量替换文件内容
+  在[[file:~/visayafan.github.com/Linux/LinuxOS/%E6%89%B9%E9%87%8F%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6.org][批量修改文件]] 中描述了如何用命令行批量替换文件内容，Emacs中也可以做到。
+  首先 =C-x d= 打开想要进行替换的目录，之后 =u= 标记想要替换的文件（ =*-%= 可进行正则表达式标记，或 =*-.= 进行后缀标记），之后 =Q= 输入要替换的内容及替换后的内容，之后可以用 =y= 确定， =!= 替换当前buffer， =Y= 替换所有buffer，即可完成替换。
+* 执行shell命令
+  M-! 执行shell命令
+  加前缀C-u执行命令的结果作用在buffer上。
+  类似C-u M-|结果作用在region上
+* multiple-cursors
+#+begin_example
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C-S-c C-e") 'mc/edit-ends-of-lines)
+(global-set-key (kbd "C-S-c C-a") 'mc/edit-beginnings-of-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-S-c C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-S-c C->") 'mc/mark-all-in-region)
+#+end_example
+  先选中一个region，mc/edit-lines则对该region每行都有一个光标。mc/mark-next-like-this在与region内容相同的下一处加一光标。其它函数同理。
+* ace-jump-mode
+#+begin_src lisp
+(require 'ace-jump-mode)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+#+end_src
+  ace-jump-mode共有3个子模式，char, word和line,默认是word，加上前缀C-u是char,两个前缀C-u C-u是line.
+  word模式只匹配以输入字符开头的单词，line模式在非空行行首显示字符以便跳转到想要到的行。
+* align/align-regexp
+  满足指定正则表达式的对齐，有时对整理注释比较有用。
+  比较有用的是变量声明的对齐：
+  #+begin_src c
+  int a;
+  char c;
+  string str;
+  #+end_src
+  选中后 =M-x align= 效果：
+  #+begin_src c++
+  int    a;
+  char   c;
+  string str;
+  #+end_src
+  其它用法：[[http://emacswiki.org/emacs/AlignCommands][EmacsWiki]]
+* occur, re-builder, multi-occur, multi-occur-in-matching-buffers
+  list-matching-lines是occur的别名，列出当前buffer中所有满足指定正则表达式的行。
+  在进行正则替换行为确保万无一失，先检查一下，occur后输入regexp则会显示所有匹配内容。
+  加前缀可以显示包含之后/之前N行的额外行。
+  与occur另开一buffer显示匹配不同，re-builder实行动态匹配，即一边在RE-Builder中输入regexp一边匹配（此功能很不错）。
+  在re-builder中C-c C-e可以进入子模式匹配 0―9分别代表子匹配模式，用q退出；还可以C-c TAB来选择正则表达式的语法，默认是read，此模式下需要的转义字符很多可以试下string模式。
+  前面两个都是在当前buffer中匹配，而multi-occur/multi-occur-in-matching-buffers是在多个buffer中匹配
+* apropos
+  输入一个regexp，Emacs根据你所输入的regexp和当前buffer的内容构造出更多的regexp，也许Emacs构造的比你的更合适的。
+* follow-mode
+  启用该模式后，C-x 3分屏后，一个文件左右连接显示，适合阅读。
+* hexl-mode
+  编辑非文本文件。
+* backup-by-copying-when-linked
+  当文件存在硬链接时默认的备份会破坏这种链接（新建一个文件在新文件中修改，与原来链接文件的inode不同，故与原来链接文件存在链接关系的文件不会同步更新），可以修改当存在链接的时候,通过拷贝来备份，而不是写进一个新文件，故链接关系不会被破坏。
+#+begin_example
+(setq backup-by-copying-when-linked t)
+#+end_example
+  如果你在使用dropbox这种方法就非常有用，把想要保存在dropbox中的文件硬链接到dropbox目录下，既不占空间又能保持同步更新。
+
+* zap-to-char
+  默认绑定到M-z，删除当前位置到下一个输入字符之间的字符，有时候会很有用。
+* fill-paragraph
+  默认绑定到M-q，调整region,不满一行的由下一行补齐,默认宽度由fill-column变量决定。
+#<<sudo>>
+* =/sudo::/=
+  如果你用普通用户权限打开emacs，则此时打开超级用户权限的文件是无法修改的，以超级用户重新打开一个emacs可行但考虑到emacs的启动速度，这绝对不是个好主意。
+  解决办法：
+:  C-x C-f /sudo::/ Enter
+  之后输入密码即可以超级用户权限打开一个文件。
+* 正则表达式
+  Emacs中正则表达式要注意group和重复所用的括号需要转义， =\(\)= , =\{3,6\}=
+  语法类包括：
+#+begin_example
+[:digit:]  a digit, same as [0-9]
+[:upper:]  a letter in uppercase
+[:space:]  a whitespace character, as defined by the syntax table
+[:xdigit:] an hexadecimal digit
+[:cntrl:]  a control character
+[:ascii:]  an ascii character
+\s-   whitespace character        \s/   character example character
+\sw   word constituent            \s$   paired delimiter         
+\s_   symbol constituent          \s'   expression prefix        
+\s.   punctuation character       \s<   comment starter          
+\s(   open delimiter character    \s>   comment ender            
+\s)   close delimiter character   \s!   generic comment delimiter
+\s"   string example character      \s|   generic string delimiter 
+\s\   escape character            
+#+end_example
+  用re-builder查询时要又重转义即转义字符要转义，即上面的要写成\\(\\), \\{3,6\\}，即要匹配一个字面上的\需要4个\，即\\\\
+  re-builder中[:digit:]在写成[和]要写2次.
+#+begin_example
+"\\(\\+\\|-\\)?[0-9]+\\(\\.[0-9]+\\)?"        表示一个数
+"[[:digit:]]\\{3\\}"                          表示连续3个数字
+#+end_example
+
+* eshell 别名/使用.bashrc中定义的别名
+  Eshell中 find-file filename即可打开文件，等价于C-x C-f filename
+  可以定义别名 alias emacs 'find-file $1'，这样在eshell中emacs filename即可打开文件
+
+  我在.bashrc中定义了许多别名，eshell的别名默认保存在 =~/.eshell/alias= 中，由变量 =eshell-aliases-file= 确定，为在方便备份我把它必为 =~/.emacs.d/eshell/alias= ，为了使eshell可以使用这些别名，可以使用下面的命令把所有在shell中可用的别名加到eshell中。
+#+begin_example
+cd ~/.emacs.d/eshell && cat alias > tmp && echo -e "\n" >> tmp && alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2/g; s/'\\\''/'/g;" >> tmp && sort -u tmp > alias && rm -f tmp && sed -i -e '/clc/d' -e '/^$/d'  alias && cd - >/dev/null
+#+end_example
+  一个很简单的正则替换，其中最后删掉clc行是因为我在shell下用clc充当clear的别名，而此命令在eshell下无效且影响我定义的另一个名为clc的eshell下的孙：
+#+begin_src lisp
+;; clc 清屏,在eshell中输入命令而非M-x clc
+(defun eshell/clc()
+  "to clear the eshell buffer."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)))
+#+end_src
+  
+* Ubuntu安装Emacs24.2及配置CEDET,ECB
+** ./configure前需要安装的信赖包
+#+begin_example
+sudo apt-get install libgtk2.0-dev
+sudo apt-get install libxpm-dev  
+sudo apt-get install libjpeg62-dev  
+sudo apt-get install libgif-dev  
+sudo apt-get install libtiff4-dev  
+sudo apt-get install libncurses5-dev
+#+end_example
+** 配置cedet, ecb
+   要想使用cedet1.1和ecb2.4必须修改ecb2.4/ecb-upgrade.el中：
+   1. 注释 ecb-check-requirements函数中：
+#+begin_src lisp
+      ;; check if vedet-version is correct
+      ;; (when (or (not (boundp 'cedet-version))
+      ;;           (ecb-package-version-list<
+      ;;            (ecb-package-version-str2list cedet-version)
+      ;;            ecb-required-cedet-version-min)
+      ;;           (ecb-package-version-list<
+      ;;            ecb-required-cedet-version-max
+      ;;            (ecb-package-version-str2list cedet-version)))
+      ;;   (setq version-error (concat "cedet ["
+      ;;                               cedet-required-version-str-min
+      ;;                               ", "
+      ;;                               cedet-required-version-str-max
+      ;;                               "]")))
+#+end_src
+   2. 修改：
+#+begin_src lisp
+(defconst ecb-required-cedet-version-max '(1 0 4 9))
+为
+(defconst ecb-required-cedet-version-max '(1 1 4 9))
+#+end_src
+   之后在ecb-2.4目录下 make CEDET=../cedet-1.1
+* dired-mode下批量修改文件名
+  C-x d打开一个目录后， =M-x wdired-change-to-wdired-mode= 进入可编辑模式，这样可以批量给文件改名。
+  {{{lightbox(images/emacs-dired.png,400)}}} 
+* Emacs中使用输入法
+  可以 =M-x customize-variable RET default-input-method= 来指定默认的输入法，例如 =chinese-pinyin= 。
+  默认是 =C-\= 来调用。
+  下面是五笔的配置，参考http://daiyuwen.freeshell.org/gb/wubi/wubi.html
+  这里设置的 =M-Space= 来调用。
+#+begin_src lisp
+(add-to-list 'load-path "~/.emacs.d/wubi")
+(require 'wubi)
+(wubi-load-local-phrases) ; add user's Wubi phrases
+(register-input-method
+ "chinese-wubi" "Chinese-GB" 'quail-use-package
+ "WuBi" "WuBi"
+ "wubi")
+(setq default-input-method "chinese-wubi")
+(global-set-key [?\M- ] 'toggle-input-method)
+#+end_src
+  这样不管机器上有没有中文输入法，只要有Emacs就可以工作。
+* 乱码
+  可以 =C-x RET r TAB= 来选择编码。
+  中文乱码可以在.emacs中加入以下代码：
+#+begin_src lisp
+(prefer-coding-system 'gb18030)
+#+end_src
+  或：
+#+begin_src lisp
+(prefer-coding-system 'utf-8)
+(prefer-coding-system 'chinese-gbk)
+#+end_src
+* Yasnippet共享
+  在c mode和c++ mode下都可以使用cc mode里面的yasnippet，其方法是在 snippet/c-mode和snippet/c++-mode目录下均存在.yas-parents其内容均为cc-mode。
+这样便省去了重复定制yasnippet。
+* Yasnippet中使用elisp制定模板
+  yasnippet模板中``之间的elisp语句会被编译后替代原来代码，我每次写文章时打开一个org mode的新buffer时，首先要在文件头部包含一些相同的内容，例如：#+include "../../layout/template.org" 其中../../layout/template.org包含一些CSS控制文件，这些内容是固定不变的，所以直接写在yasnippet模板里就可以，但有些东西，例如标题，是与当前文件有关的，此时可以用elisp来实现动态插入标题：
+: # -*- mode: snippet -*-
+: # name: template
+: # --
+: #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+: #+include "../../layout/template.org"
+: #+title:`(replace-regexp-in-string "\.org" "" (file-name-nondirectory (buffer-file-name (window-buffer (minibuffer-selected-window)))))`$0
+  还可以写得更复杂一些，例如：我在文章最下面的查看Org源码button：
+: #+html:<a class="btn btn-primary" href="`(funcall (lambda (filepath)
+:            (if (eq system-type 'gnu/linux)
+:                (if (string-match "Dropbox" filepath)
+:                    (replace-regexp-in-string "/home/visayafan/Dropbox/visayafan\.github\.com" "https://raw.github.com/visayafan/visayafan.github.com/master" filepath)
+:                  (replace-regexp-in-string "/home/visayafan/visayafan\.github\.com" "https://raw.github.com/visayafan/visayafan.github.com/master" filepath))
+:              (replace-regexp-in-string "D:/Dropbox/visayafan\.github\.com" "https://raw.github.com/visayafan/visayafan.github.com/master" filepath)
+:              ))
+:          (buffer-file-name (window-buffer (minibuffer-selected-window))))`">查看Org源码</a>
+  由于我在linux和windows下博客路径不同，所以其中有个判断语句；然后替换掉路径中的部分内容使其成为github上的链接。
+* eshell命令大小写不敏感
+  需要修改变量eshell-glob-case-insensitive为nil，可以用customize-variable来修改，也可以在配置文件中加上：
+#+begin_src lisp
+(custom-set-variables
+ '(eshell-glob-case-insensitive nil)
+)
+  另外Win下在Eshell中输入目录回车自动cd。
+#+end_src
+* win7下find问题
+  尽管安装了GNUWin32但使用rgrep时仍然出问题，其实问题在于Win7自带的find命令，把system32下的find.exe改个名即可
+* CC-Mode
+  [[./CC-Mode.html][CC-Mode]]
+* Emacs Client启动后字体不正常和tabber不能使用解决办法
+#+begin_src lisp
+;; 解决emacs client字体问题
+(setq window-system-default-frame-alist
+      '((x
+         (font . "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-12-*-*-*-*-0-iso10646-1"))
+        (nil
+         (font . "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-12-*-*-*-*-0-iso10646-1")
+         (menu-bar-lines . 0) (tool-bar-lines . 0))))
+
+;; http://emacswiki.org/emacs/TabBarMode 上抄来的代码，解决emacsclient下tabber不能使用问题
+
+;; Allow tab-bar-mode to be frame-local.  This is deprecated and exploits
+;; the fact that `default-header-line-format' is an alias of the global
+;; value of `header-line-format'. Tested with Emacs 24.1.
+(make-variable-frame-local 'default-header-line-format)
+;; These two are needed as the aliased frame-local value isn't recognized
+;; unless the variable is explicitly accessed once. Do so on those two
+;; occasions where this matters. Notably, `handle-switch-frame' need not
+;; be advised.
+(defadvice select-frame (after adapt-select-frame-parameters activate)
+  "Fix frame-local value of `default-header-line-format'."
+  (interactive)
+  default-header-line-format)
+;; This absolutely must be after delete-frame, so
+;; `delete-frame-functions' won't work.
+(defadvice delete-frame (after adapt-delete-frame-parameters activate)
+  "Fix frame-local value of `default-header-line-format'."
+  (interactive)
+  default-header-line-format)
+;; Example usage: Set per-terminal (frame-local) options.
+(defun customize-terminal-frame (frame)
+  (cond
+   ((frame-parameter frame 'window-system)
+    (set-frame-parameter frame 'default-header-line-format '(:eval (tabbar-line)))
+    (tabbar-init-tabsets-store))
+   (t
+    (set-frame-parameter frame 'default-header-line-format nil)
+    (set-frame-parameter frame 'menu-bar-lines 0))))
+(add-hook 'after-make-frame-functions 'customize-terminal-frame)
+#+end_src
+* Emacs 搜索总结
+- 搜索内容都是小写字母，搜索时不区分大小写；搜索内容只要有一个大写字母，搜索时区分大小写
+- C-s C-w：以光标后的一个单词(自动转为小写)做为搜索词立即开始搜索以下操作要在搜索开始后，才有效
+- C-w(isearch-yank-word-or-char)：从buffer中取得char或word粘贴到搜索词之后
+- C-y(isearch-yank-line)：从buffer中取得一行粘贴到搜索词之后
+- C-s C-w：以光标后的一个单词(自动转为小写)做为搜索词立即开始搜索
+- M-c(isearch-toggle-case-fold)：打开或关毕搜索大小写敏感
+- M-e(isearch-edit-string)：光标跳到minibuffer，修改搜索词
+- M-n(isearch-ring-advance)：搜索时循环查找后面的搜索词
+- M-p(isearch-ring-retreat)：搜索时循环查找前面的搜索词
+- M-r(isearch-toggle-regexp)：打开或关闭正则方式搜索
+- M-s w(isearch-toggle-word)：以单词方式搜索
+- M-y(isearch-yank-kill)：将kill ring中的内容放到搜索词中
+- C-M-w 删除搜索词中最后一个字符
+- C-M-y 将当前光标后一个字符复制到搜索词后
+
+* Emacs Compile 出现乱码
+  编译的时候出现 /new.cc: In function â\200\230int main()â\200\231:/ 之类。
+  [[http://stackoverflow.com/questions/10374200/shell-in-emacs-displays-names-of-variables-by-preceding-them-200-230][解决办法]]
+#+begin_src lisp
+(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+#+end_src
+* Emacs M-x 目录操作
+  =copy-directory=
+  =delete-directory=
+  =make-directroy=
+  =list-directory=
+  操作可以在eshell下完成，不过对于不想离开当前buffer的情况下这直接运行上面命令的方式也是很高效的.
+* 查看当前buffer所有mode帮助信息
+  =C-h m=
+* 利用CEDET生成UML
+  在C++文件中菜单 cedet->UML->autogenerate UML chart for class 输入类名则会生成相应的dot文件并调用graphviz来编译生成对应的图片。
+  自动生成的图片感觉有些问题，可以安装 graphviz-dot-mode，在生成的dot文件上 C-c c编译 C-c p生成对应的图片。
+* 颜色
+  =M-x list-color-display= 查看颜色及对应的RGB值
+* ECB
+** 自定义ECB窗口宽度
+  设置 =ecb-windows-width= 变量。
+#+begin_src lisp
+(setq ecb-windows-width 0.25)
+#+end_src
+** 自定义ECB布局
+   ECB我最常用的窗口是method窗口，其它的像history/directories基本没用过.
+   =M-x ecb-create-new-layout= 打开新的frame，按照提示创建新的只有method的布局。然后 =C-c . l c= 切换到新建的布局，此时只有method窗口，无法切换到其它窗口。
+   （预定义布局中的left9实现同样的功能）
+
+   如果想要打开ECB时就只显示method窗口，可以添加一个hook：
+#+begin_src lisp
+(add-hook 'ecb-activate-hook 'vf-show-method-window-only)
+(defun vf-show-method-window-only ()
+  (ecb-maximize-window-methods))
+#+end_src
+* 为新mode实现auto complete
+  =auto-complete= 维护一个变量 =ac-modes= 保存所有那些进入后应该自动打开 =auto-complete-mode= 的mode，所以应该先将在此变量中注册一下，以graphviz-dot-mode为例：
+#+begin_src lisp
+(add-to-list 'ac-modes 'graphviz-dot-mode)
+#+end_src
+  =ac-sources= 是一个buffer-local变量，即每个buffer值都不一样，该变量中保存着此buffer中自动补全词汇来源，例如 =auto-complete-config.el= 中的一段代码：
+#+begin_src lisp
+(defun ac-emacs-lisp-mode-setup ()
+  (setq ac-sources (append '(ac-source-features ac-source-functions ac-source-yasnippet ac-source-variables ac-source-symbols) ac-sources)))
+
+(defun ac-cc-mode-setup ()
+  (setq ac-sources (append '(ac-source-yasnippet ac-source-gtags) ac-sources)))
+
+(defun ac-ruby-mode-setup ())
+
+(defun ac-css-mode-setup ()
+  (setq ac-sources (append '(ac-source-css-property) ac-sources)))
+
+(defun ac-config-default ()
+  (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
+  (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
+  (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+  (add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)
+  (add-hook 'css-mode-hook 'ac-css-mode-setup)
+  (add-hook 'auto-complete-mode-hook 'ac-common-setup)
+  (global-auto-complete-mode t))
+#+end_src
+  可见默认情况下lisp-mode的补全来源有 ac-source-features ac-source-functions ac-source-yasnippet ac-source-variables ac-source-symbols，由于写emacs lisp程序是经常需要补全emacs各个mode下的函数和变量所以ac-source-functions ac-source-variables被加入到ac-sources中，其它mode下一般用不到这两个来源，一般 =ac-source-yasnippet ac-source-dictionary ac-source-words-in-buffer= 即可满足要求。
+#+begin_src lisp
+(defun graphviz-dot-mode-setup ()
+  (setq ac-sources '(
+                     ac-source-yasnippet
+                     ac-source-dictionary
+                     ac-source-words-in-buffer)))
+(add-hook 'graphviz-dot-mode-hook 'graphviz-dot-mode-setup)
+#+end_src
+  字典保存目录：
+#+begin_src lisp
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/auto-complete/dict")
+#+end_src
+#+begin_example
+~ $ tree ~/.emacs.d/auto-complete/auto-complete/dict
+/home/visayafan/.emacs.d/auto-complete/auto-complete/dict
+|-- ada-mode
+|-- haskell-mode
+|-- java-mode
+|-- graphviz-dot-mode
+#+end_example  
+  进入graphviz-dot-mode后自动选择由变量ac-dictionary-directories保存的目录下的graphviz-dot-mode文件，可以在此文件中加入自己想要补全的词汇，例如：
+#+begin_example
+graph
+digraph
+subgraph
+node
+edge
+#+end_example
+  之后再打开dot后缀的文件后会自动进入auto-complete-mode。
+* sgml-pretty-print格式化html文件
+  用来处理杂乱的HTML代码。
+  与indent-region不同的是它会在适当的地方加上换行符。如果代码模式没有问题只是缩进有问题可以用 =C-M-\= 。
+* HTML中输入特殊字符
+  HTML模式下， =C-c C-n= 再输入对应的字符即可。
+* cscope
+  =cscope -bR= 其中b表只build数据库，执行完后退出不显示Cscope GUI，R表递归；默认情况下只分析.c, .h, .y, or .l 后缀的文件。
+  如果想要分析其它后缀的文件，例如.java，.cpp，就需要将要分析的文件名及路径放在cscope.files文件中（可以用find命令），然后再执行cscope -b。
+  #+begin_example
+  find . -name "*.[chSs]" -o -name "*.cpp" >cscope.files
+  cscope -b
+  #+end_example
+  上面命令查找以c,h,s,S,cpp结尾的文件并保存到cscope.files中并生成相应数据库文件cscope.out.
+
+  *note* 默认情况下cscope会索引工程中#include包含的文件(位于/usr/include下)以便定位系统函数；对于内核这样的工程，其#include包含的文件完全在自己的工程中，不需要使用/usr/include下的头文件，生成cscope.out时需要加上-k选项。
+
+  *find技巧*
+  1. 正则查找 -regex.
+     -name只支持globs，不是真正的regexp，上面的命令可以重写：
+     #+begin_example
+     find . -regex ".*\(c\|h\|s\|S\|cpp\)" > cscope.files
+     #+end_example
+  2. 如果想忽略查找文件下的某个文件可以用 -path PATH -prune -o
+     #+begin_example
+     find . -path "./document/*" -prune -o -name "*.c" -print > cscope.files
+     #+end_example
+     上面命令会忽略当前目录下的document子目录
+  3. 忽略某子目录下除某个目录外的所有目录：
+     #+begin_example
+     find . -path "./document/*" ! -path "./document/man*" -prune -o -name "*.c" -print > cscope.files
+     #+end_example
+     对于document目录只查看其下以man开头的目录。
+     -path支持逻辑运算 AND OR !.
+     对于上面的命令 "./document/man*" 包含在 "./document/*"中，用!即表示二者差集，不可以写成"./document"或"./document/man"
+* 退出时session mode提示select-coding-system
+  session-mode是用来保存最近访问修改文件的非常有用的mode，有时由于输入了非正常字符会导致退出时由于无法正常识别于是提示select-coding-system等待用户输入字符集才能退出，解决办法是设置 =session-save-file-coding-system= 变量（此变量被session-save-file调用，设置default-coding-system没用）。
+  #+begin_example
+  (setq session-save-file-coding-system 'utf-8)
+  #+end_example
+* Emacs下德语引号
+  至今没发现怎么打出德语中的第一个双引号 =„=，不过幸好有其它符号代替 =C-x 8 <= and =C-x 8 >= 。
+* 设置face
+  可以通过 =customize-faces= 来设置，比如想改变选中区域时区域的颜色，可以设置变量region，选择适当前景色或背景色，我在win下使用的颜色：
+  #+begin_src lisp
+(custom-set-faces
+ '(region ((t (:background "yellow" :foreground "blue")))))  
+  #+end_src
+  可以通过 =customize-themes= 来设置主题。
+* 添加环境变量
+  可以通过设置环境变量PATH和执行路径exec-path：
+  #+begin_src lisp
+(defun vf-add-to-exec-path (path)
+  " 参考：http://blog.csdn.net/winterttr/article/details/7273283"
+  (setenv "PATH" (concat (expand-file-name path)
+                         path-separator
+                         (getenv "PATH")))
+  (setq exec-path
+        (cons (expand-file-name path)
+              exec-path)))
+(mapc #'vf-add-to-exec-path
+      (reverse
+       '("C:/Program Files/Git/bin"
+         "D:/VFInstall/SBCL"
+         )))
+  #+end_src
+* 编译指定目录下所有el文件为elc
+  可以加快启动速度
+  在Emacs中 =C-u 0 M-x byte-compile-directory= =C-u 0= 表示不必每次都进行提示是否编译
+  另一种方法将 =(byte-recompile-directory (expand-file-name "~/.emacs.d") 0)= 写入.emacs中每次启动emacs的时候都会进行编译那些elc日期比el文件早的文件。
+  还有一种命令行方式
+#+begin_src lisp
+  emacs --batch --eval '(byte-recompile-directory "~/.emacs.d")'
+#+end_src
+  可以为其定义别名，有时间的时候再编译重新编译。
+* 查看当前buffer所有mode
+  =describe-mode= or =C-h m=
+* autoload
+  http://emacswiki.org/emacs/AutoLoad
+  =(autoload function file &optional docstring interactive type)=
+  告诉Emacs function在file文件中。
+  这个函数不会真正执行(可以用来加快Emacs启动速度的原因)，只是告诉Emacs这个函数的路径，当需要的时候Emacs知道加载哪个文件可以得到它。
+  应用：
+  #+begin_src lisp
+(autoload 'graphviz-dot-mode "graphviz-dot-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
+  #+end_src
+  首先告诉Emacs graphviz-dot-mode函数在graphviz-dot-mode.el文件中（在load-path中寻找，可以通过如下语句向load-path添加目录 =(add-to-list 'load-path "~/.emacs.d/lisp/")= ）。
+  =auto-mode-alist= 中的元素类似 =(REGEXP . FUNCTION)= 。
+  之后告诉Emacs当打开dot后缀文件时执行函数graphviz-dot-mode，之后Emacs会加载文件graphviz-dot-mode以便得到该函数。
+* eval-after-load
+  http://emacser.com/eval-after-load.htm
+  =(eval-after-load file form)=
+  当加载文件file的时候执行语句form。
+  可以与autoload配合：
+  #+begin_example
+  (autoload 'A "B" nil t)
+  (add-to-list 'auto-mode-alist '("C" . A))
+  (eval-after-load B
+        D)
+  #+end_example
+  *打开C后缀文件时调用A函数，为了得到A函数Emacs会加载B文件，加载B文件时会执行D代码。*
+  --------
+  例如函数 =rgrep= 就是一个autoload类型的符号，可以通过： =(symbol-function 'rgrep)= 看到（执行该语句之前没有用过rgrep命令，否则会显示其定义）。
+  在grep buffer里定义快捷键N向下翻页，P向上翻页，可以用 =define-key= 实现，但由于没有加载过grep.el所以grep-mode-map变量是未定义的，这时可以用eval-after-load:
+  #+begin_src lisp
+(eval-after-load "grep"
+  '(progn
+     (define-key grep-mode-map "N" 'scroll-down)
+     (define-key grep-mode-map "P" 'scroll-up)))
+  #+end_src
+  调用rgrep时会加载grep.el，又加载grep.el时会执行两条define-key语句，由于grep-mode-map是在grep.el加载后才被Emacs看到的，而这时变量已经定义了。
+** eval-after-load和mode hook的区别
+   http://stackoverflow.com/questions/2736087/eval-after-load-vs-mode-hook
+   前者只会执行一次，对所有相同mode buffer适用。而mode hook只会对该mode的当前buffer适用。
+   因此mode hook里的语句会迟于eval-after-load。
+* 查看.emacs中各语句执行时间
+  使用profile-dotemacs.el， =emacs -Q -l ~/.emacs.d/others/profile-dotemacs.el -f profile-dotemacs=，它会将.emacs文件中各语句执行时间的百分比显示出来（前提是.emac不能有错）。
+  这对于排查哪个包占用时间最大非常有用。
+* electri-pair-mode
+  24版本中新的minor mode，相当于原来的auto-pair。
+  该mode根据major mode选择闭合符合(例如在HTML中<会自动闭合而其它mode中就不会)，可以配置 =electri-pair-pairs= 变量来使得在所有mode中指定括号问题自动闭合。
+  #+begin_src lisp
+(setq electric-pair-pairs '(
+                            (?\" . ?\")
+                            (?\{ . ?\})
+                            ))
+  #+end_src
+  
+  #+begin_src lisp
+;; 开启自动闭合括号minor mode
+(electric-pair-mode 1)
+;; 但在lisp mode中关掉它，因为写lisp代码时这个功能会成为阻碍
+(add-hook 'emacs-lisp-mode-hook
+          '(lambda ()
+             (set (make-local-variable 'electric-pair-mode) nil)))
+  #+end_src
+  通过 =(local-variable-p 'electric-pair-mode)= 可以看到 =electric-pair-mode= 并非一个local变量，所以直接 =(electric-pair-mode -1)= 的话会使其它buffer也关闭此minor mode，所以要先用 =make-local-variable= 将其变成local变量。
+* 替换某个区域内的字符串
+  选中某个区域后 =replace-string= 与 =query-replace= 的区别在于前者是非询问的。
+* 安装最新版本org mode
+  通过git clone方式下载安装的必须要 =make= 否则即使路径正确加载的也是自带的。
+* count-word
+  Emacs24中最新的功能，显示当前buffer {lines, words, characters} 
+* Emacs做为git mergetool
+  [[http://ulf.zeitform.de/en/documents/git-ediff.html][参考]]
+  保存下面脚本为.ediff.sh并为其+可执行权限：
+  {{{srcbegin(200)}}}
+  #+BEGIN_SRC sh
+#!/bin/bash
+# test args
+if [ ! ${#} -ge 2 ]; then
+    echo 1>&2 "Usage: ${0} LOCAL REMOTE [MERGED BASE]"
+    echo 1>&2 "       (LOCAL, REMOTE, MERGED, BASE can be provided by \`git mergetool'.)"
+    exit 1
+fi
+
+# tools
+_EMACSCLIENT=/usr/local/bin/emacsclient
+_BASENAME=/bin/basename
+_CP=/bin/cp
+_EGREP=/bin/egrep
+_MKTEMP=/bin/mktemp
+
+# args
+_LOCAL=${1}
+_REMOTE=${2}
+if [ ${3} ] ; then
+    _MERGED=${3}
+else
+    _MERGED=${_REMOTE}
+fi
+if [ ${4} -a -r ${4} ] ; then
+    _BASE=${4}
+    _EDIFF=ediff-merge-files-with-ancestor
+    _EVAL="${_EDIFF} \"${_LOCAL}\" \"${_REMOTE}\" \"${_BASE}\" nil \"${_MERGED}\""
+elif [ ${_REMOTE} = ${_MERGED} ] ; then
+    _EDIFF=ediff
+    _EVAL="${_EDIFF} \"${_LOCAL}\" \"${_REMOTE}\""
+else
+    _EDIFF=ediff-merge-files
+    _EVAL="${_EDIFF} \"${_LOCAL}\" \"${_REMOTE}\" nil \"${_MERGED}\""
+fi
+
+# console vs. X
+if [ "${TERM}" = "linux" ]; then
+    unset DISPLAY
+    _EMACSCLIENTOPTS="-t"
+else
+    _EMACSCLIENTOPTS="-c"
+fi
+
+# run emacsclient
+${_EMACSCLIENT} ${_EMACSCLIENTOPTS} -a "" -e "(${_EVAL})" 2>&1
+
+# check modified file
+if [ ! $(egrep -c '^(<<<<<<<|=======|>>>>>>>|####### Ancestor)' ${_MERGED}) = 0 ]; then
+    _MERGEDSAVE=$(${_MKTEMP} --tmpdir `${_BASENAME} ${_MERGED}`.XXXXXXXXXX)
+    ${_CP} ${_MERGED} ${_MERGEDSAVE}
+    echo 1>&2 "Oops! Conflict markers detected in $_MERGED."
+    echo 1>&2 "Saved your changes to ${_MERGEDSAVE}"
+    echo 1>&2 "Exiting with code 1."
+    exit 1
+fi
+
+exit 0
+  #+END_SRC
+  {{{srcend}}}
+  向.gitconfig中添加：
+  #+BEGIN_EXAMPLE
+[diff]
+        tool = ediff
+        guitool = ediff
+
+[difftool "ediff"]
+        cmd = 路径/.ediff.sh $LOCAL $REMOTE $MERGED
+
+[merge]
+        tool = ediff
+
+[mergetool "ediff"]
+        cmd = 路径/.ediff.sh $LOCAL $REMOTE $MERGED $BASE
+        trustExitCode = true  
+  #+END_EXAMPLE
+
+* C-h e切换到Message Buffer
+* set-buffer-file-coding-system
+  http://ergoemacs.org/emacs/emacs_encoding_decoding_faq.html
+  设置当前buffer的编码
+* 查看光标所在处字体信息
+  =C-u C-x ==
+* 恢复默认color-theme
+  一种方法是disable-theme当前theme，另一种方法是将默认的theme通过customize-create-theme保存为一个theme，load-theme此theme.
+  
+* TAB键插入一个tab
+  http://stackoverflow.com/questions/5146621/insert-tab-instead-of-spaces
+  To manually insert a tab in Emacs, use ctrl-Q TAB. control-Q causes the next key to be inserted rather than interpreted as a possible command.
+* 重复插入数字
+  =C-u 2 a= 可得到2个a，但 =C-u 2 1= 却得不到2个1，原因是Emacs将C-u后的连续数字理解为重复次数。
+  正确方法是 =C-u 2 C-u 1= 。

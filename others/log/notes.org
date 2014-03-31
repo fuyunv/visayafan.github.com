@@ -1,0 +1,40 @@
+
+* 2013
+* 网址收藏
+** movie quotes and more
+   [[http://www.moviequotesandmore.com/]]
+** IBM developworks
+   [[http://www.ibm.com/developerworks/]]
+   [[https://www.ibm.com/developerworks/cn/]]
+   https://www.ibm.com/developerworks/mydeveloperworks/blogs/?lang=zh
+   技术主题：相关主题
+   社区：博客
+** lyrics
+   [[http://www.lyrics.com/]]
+** hacker news
+   [[http://news.ycombinator.com/]]
+** techcrunch
+   http://techcrunch.com/
+** BBC
+   http://www.bbc.co.uk/
+** Matrix67
+   http://www.matrix67.com/blog/
+** lex and yacc
+   http://dinosaur.compilertools.net/
+** MIT 算法导论视频
+   http://v.163.com/special/opencourse/algorithms.html
+** 斯坦福大学 Paradigm
+   http://v.163.com/special/opencourse/paradigms.html
+** TED
+   http://ted.com
+** python 好多源码可供研究
+   http://code.activestate.com/recipes/langs/python/
+** git 教程
+   http://www.worldhello.net/
+** GDB反向调试
+   http://www.ibm.com/developerworks/cn/linux/l-cn-gdb7rd/index.html
+** IBM开发资源
+   http://www.ibm.com/developerworks/
+** 美国地图
+   http://www.yourchildlearns.com/mappuzzle/us-puzzle.html
+   http://www.yourchildlearns.com/

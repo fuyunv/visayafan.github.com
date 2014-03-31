@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>all</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="all"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-12-14 09:04:50 CST"/>
+<meta name="author" content="visayafan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<div id="org-div-comments"><a href="../../index.html#python">主页</a></div>
+<link rel="stylesheet" type="text/css" href="../style/style.css" />
+
+
+</head>
+<body>
+
+
+<div id="content">
+<h1 class="title">all</h1>
+
+
+
+<div id="table-of-contents">
+<h2>目录</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 sys.modules</a></li>
+<li><a href="#sec-2">2 reload/imp.reload</a></li>
+<li><a href="#sec-3">3 模块加载时搜索路径</a></li>
+<li><a href="#sec-4">4 删除一个模块</a></li>
+<li><a href="#sec-5">5 </a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> sys.modules</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>  保存所有已经import的模块名，有新import时先在此搜索是否已经存在，若已存在则不必再编译。<br/>
+</p></div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> reload/imp.reload</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>  重新加载模块<br/>
+  2.x中reload是内置函数<br/>
+  3.x中被放到imp中(必须先导入imp：from imp import reload)<br/>
+</p></div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 模块加载时搜索路径</h2>
+<div class="outline-text-2" id="text-3">
+
+<ol>
+<li>当前目录：如果是交互模式则是当前目录，如果是文件则是文件所在目录<br/>
+</li>
+<li>PYTHONPATH 环境变量（当需要的模块在其它目录时可以设置其值）<br/>
+</li>
+<li>标准模块目录：固定的<br/>
+</li>
+<li>.pth 当前目录下的.pth结尾的文件（每行一个目录）<br/>
+</li>
+</ol>
+
+<p>  可通过sys.path变量来查看具体路径，可以修改此值，但只会影响此程序运行（暂时的）<br/>
+</p></div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 删除一个模块</h2>
+<div class="outline-text-2" id="text-4">
+
+<p>  dele moduleName<br/>
+</p></div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> </h2>
+<div class="outline-text-2" id="text-5">
+
+
+<script src="../../layout/js/disqus-comment.js"></script>
+<div id="disqus_thread">
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>
