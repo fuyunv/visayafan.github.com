@@ -1,0 +1,24 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* 配置
+  http://www.cnblogs.com/ggjucheng/archive/2012/04/17/2454590.html
+** dfs.replication
+   备份个数（slaves结点个数必须不小于此值）
+** hadoop.tmp.dir
+   如果hdfs-site.xml中不配置namenode和datanode的存放位置，默认就放在这个路径中。
+   默认在/tmp，而主机重启会清空/tmp，所以一般另指定其它路径。
+** fs.default.name
+   master主机ip和端口
+** mapred.job.tracker
+   JobTracker的主机ip和端口
+* 命令
+** hadoop dfsadmin -report
+    用这个命令可以快速定位出哪些节点down掉了，HDFS的容量以及使用了多少，以及每个节点的硬盘使用情况。
+** hadoop dfsadmin -safemode leave
+   safemode时hdfs不许修改。
+   离开safemode用leave，进入用enter。
+** hadoop namenode -format
+   格式化namenode

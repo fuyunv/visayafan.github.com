@@ -1,0 +1,260 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* 检查实验环境
+  启动：/usr/sbin/start-all.sh
+  结果应为：
+  #+BEGIN_EXAMPLE
+  namenode running as process 11301. Stop it first.
+  192.168.1.15: datanode running as process 14556. Stop it first.
+  192.168.1.13: datanode running as process 13238. Stop it first.
+  192.168.1.14: datanode running as process 11585. Stop it first.
+  192.168.1.18: ssh: connect to host 192.168.1.18 port 22: No route to host
+  192.168.1.16: ssh: connect to host 192.168.1.16 port 22: No route to host
+  192.168.1.24: ssh: connect to host 192.168.1.24 port 22: No route to host
+  192.168.1.23: ssh: connect to host 192.168.1.23 port 22: No route to host
+  192.168.1.17: ssh: connect to host 192.168.1.17 port 22: No route to host
+  192.168.1.19: ssh: connect to host 192.168.1.19 port 22: No route to host
+  192.168.1.21: ssh: connect to host 192.168.1.21 port 22: No route to host
+  192.168.1.20: ssh: connect to host 192.168.1.20 port 22: No route to host
+  192.168.1.25: ssh: connect to host 192.168.1.25 port 22: No route to host
+  192.168.1.22: ssh: connect to host 192.168.1.22 port 22: No route to host
+  192.168.1.12: secondarynamenode running as process 11536. Stop it first.
+  jobtracker running as process 11635. Stop it first.
+  192.168.1.13: tasktracker running as process 13353. Stop it first.
+  192.168.1.14: tasktracker running as process 11701. Stop it first.
+  192.168.1.15: tasktracker running as process 14671. Stop it first.
+  192.168.1.18: ssh: connect to host 192.168.1.18 port 22: No route to host
+  192.168.1.24: ssh: connect to host 192.168.1.24 port 22: No route to host
+  192.168.1.16: ssh: connect to host 192.168.1.16 port 22: No route to host
+  192.168.1.23: ssh: connect to host 192.168.1.23 port 22: No route to host
+  192.168.1.17: ssh: connect to host 192.168.1.17 port 22: No route to host
+  192.168.1.21: ssh: connect to host 192.168.1.21 port 22: No route to host
+  192.168.1.19: ssh: connect to host 192.168.1.19 port 22: No route to host
+  192.168.1.25: ssh: connect to host 192.168.1.25 port 22: No route to host
+  192.168.1.20: ssh: connect to host 192.168.1.20 port 22: No route to host
+  192.168.1.22: ssh: connect to host 192.168.1.22 port 22: No route to host
+  #+END_EXAMPLE
+  本次实验环境Node12为master，13/14/15为slaves，其它机器没有启动所以ssh登陆时出现错误。
+  启动顺序依次是namenode，3个datanode，secondarynamenode，jobtracker和3个tasktracker。
+
+  在master机器上用jps命令查看，结果为：
+  #+BEGIN_EXAMPLE
+  25868 Jps
+  2787 EclipseStarter
+  11536 SecondaryNameNode
+  2484 Daemon
+  11635 JobTracker
+  11301 NameNode
+  #+END_EXAMPLE
+  其中必须有的是JobTracker，Namenode和SecondaryNamenode。
+  在slaves机器上结果为：
+  #+BEGIN_EXAMPLE
+  [root@node13 ~]# jps
+  13353 TaskTracker
+  21867 Jps
+  13238 DataNode
+  2397 Daemon
+  2528 EclipseStarter
+  #+END_EXAMPLE
+  其中必须有的是TaskTracker,DataNode。
+  否则表明配置有问题。
+
+  用hadoop dfsadmin -report查看该集群的状态，结果为：
+  #+BEGIN_EXAMPLE
+  Configured Capacity: 421251072000 (392.32 GB)
+  Present Capacity: 375653658624 (349.85 GB)
+  DFS Remaining: 375653228544 (349.85 GB)
+  DFS Used: 430080 (420 KB)
+  DFS Used%: 0%
+  Under replicated blocks: 0
+  Blocks with corrupt replicas: 0
+  Missing blocks: 0
+  
+  -------------------------------------------------
+  Datanodes available: 3 (3 total, 0 dead)
+  
+  Name: 192.168.1.13:50010
+  Decommission Status : Normal
+  Configured Capacity: 140417024000 (130.77 GB)
+  DFS Used: 143360 (140 KB)
+  Non DFS Used: 16026447872 (14.93 GB)
+  DFS Remaining: 124390432768(115.85 GB)
+  DFS Used%: 0%
+  DFS Remaining%: 88.59%
+  Last contact: Thu Apr 03 08:32:10 CST 2014
+  
+  
+  Name: 192.168.1.14:50010
+  Decommission Status : Normal
+  Configured Capacity: 140417024000 (130.77 GB)
+  DFS Used: 143360 (140 KB)
+  Non DFS Used: 14807298048 (13.79 GB)
+  DFS Remaining: 125609582592(116.98 GB)
+  DFS Used%: 0%
+  DFS Remaining%: 89.45%
+  Last contact: Thu Apr 03 08:32:11 CST 2014
+  
+  
+  Name: 192.168.1.15:50010
+  Decommission Status : Normal
+  Configured Capacity: 140417024000 (130.77 GB)
+  DFS Used: 143360 (140 KB)
+  Non DFS Used: 14763667456 (13.75 GB)
+  DFS Remaining: 125653213184(117.02 GB)
+  DFS Used%: 0%
+  DFS Remaining%: 89.49%
+  Last contact: Thu Apr 03 08:32:12 CST 2014
+  #+END_EXAMPLE
+* 测试自带用例
+** wordcount
+   功能：该用例用于统计指定目录下所有文本中各个单词出现的次数。
+   在master机器上新建两个文件内容分别是hello world和hello hadoop的f1.txt和f2.txt并上传到HDFS中：
+   #+BEGIN_EXAMPLE
+   [root@node12 fanss]# cd /public/home/fanss/hadooptest/
+   [root@node12 hadooptest]# mkdir wordcount
+   [root@node12 hadooptest]# echo "hello world">wordcount/f1.txt
+   [root@node12 hadooptest]# echo "hello hadoop">wordcount/f2.txt
+   [root@node12 hadooptest]# hadoop fs -copyFromLocal wordcount fan/wordcount
+   #+END_EXAMPLE
+   查看是否上传成功：
+   #+BEGIN_EXAMPLE
+   [root@node12 hadooptest]# hadoop fs -ls fan/wordcount
+   Found 2 items
+   -rw-r--r--   3 root supergroup         12 2014-04-03 08:46 /user/root/fan/wordcount/f1.txt
+   -rw-r--r--   3 root supergroup         13 2014-04-03 08:46 /user/root/fan/wordcount/f2.txt
+   #+END_EXAMPLE
+   执行并将结果保存到fan目录下的wordcountout中：
+   #+BEGIN_EXAMPLE
+   [root@node12 hadooptest]# hadoop jar /usr/share/hadoop/hadoop-examples-1.2.1.jar wordcount fan/wordcount fan/wordcountout
+   14/04/03 08:40:16 INFO input.FileInputFormat: Total input paths to process : 0
+   14/04/03 08:40:17 INFO mapred.JobClient: Running job: job_201404021741_0003
+   14/04/03 08:40:18 INFO mapred.JobClient:  map 0% reduce 0%
+   14/04/03 08:40:26 INFO mapred.JobClient:  map 0% reduce 100%
+   14/04/03 08:40:27 INFO mapred.JobClient: Job complete: job_201404021741_0003
+   14/04/03 08:40:27 INFO mapred.JobClient: Counters: 18
+   14/04/03 08:40:27 INFO mapred.JobClient:   Job Counters
+   14/04/03 08:40:27 INFO mapred.JobClient:     Launched reduce tasks=1
+   14/04/03 08:40:27 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=4488
+   14/04/03 08:40:27 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+   14/04/03 08:40:27 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+   14/04/03 08:40:27 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=4547
+   14/04/03 08:40:27 INFO mapred.JobClient:   File Output Format Counters
+   14/04/03 08:40:27 INFO mapred.JobClient:     Bytes Written=0
+   14/04/03 08:40:27 INFO mapred.JobClient:   FileSystemCounters
+   14/04/03 08:40:27 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=54298
+   14/04/03 08:40:27 INFO mapred.JobClient:   Map-Reduce Framework
+   14/04/03 08:40:27 INFO mapred.JobClient:     Reduce input groups=0
+   14/04/03 08:40:27 INFO mapred.JobClient:     Combine output records=0
+   14/04/03 08:40:27 INFO mapred.JobClient:     Reduce shuffle bytes=0
+   14/04/03 08:40:27 INFO mapred.JobClient:     Physical memory (bytes) snapshot=128315392
+   14/04/03 08:40:27 INFO mapred.JobClient:     Reduce output records=0
+   14/04/03 08:40:27 INFO mapred.JobClient:     Spilled Records=0
+   14/04/03 08:40:27 INFO mapred.JobClient:     CPU time spent (ms)=460
+   14/04/03 08:40:27 INFO mapred.JobClient:     Total committed heap usage (bytes)=200998912
+   14/04/03 08:40:27 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=1177481216
+   14/04/03 08:40:27 INFO mapred.JobClient:     Combine input records=0
+   14/04/03 08:40:27 INFO mapred.JobClient:     Reduce input records=0
+   #+END_EXAMPLE
+   查看结果：
+   #+BEGIN_EXAMPLE
+   [root@node12 hadooptest]# hadoop fs -cat fan/wordcountout/part-r-00000
+   hadoop  1
+   hello   2
+   world   1
+   #+END_EXAMPLE
+   表明hello出现过2次，world和hadoop出现过1次。
+** grep
+   功能：统计输入文件中匹配指定正则表达式字符串及相应的个数。
+   新建文件file.txt向其中随便输入些文件，并上传到HDFS的fan目录下的testgrep中：
+   #+BEGIN_EXAMPLE
+   [root@node12 hadooptest]# mkdir testgrep
+   [root@node12 hadooptest]# echo "The second job takes the output of the first job as input. The mapper is an inverse map, while the reducer is an indentity reducer. The number of reducers is one, so the output is stored in one file, and it is sorted by the count in a descending order. The output file is text, each line of which contains count and a matching string." > testgrep/file.txt
+   [root@node12 hadooptest]# hadoop fs -copyFromLocal testgrep/ fan/testgrep
+   #+END_EXAMPLE
+   执行命令，用来统计以ou为前缀的3个字母构成的字符串的个数：
+   #+BEGIN_EXAMPLE
+   [root@node12 hadooptest]# hadoop jar /usr/share/hadoop/hadoop-examples-1.2.1.jar grep  fan/testgrep fan/testgrepout "ou."
+   14/04/03 08:55:33 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+   14/04/03 08:55:33 WARN snappy.LoadSnappy: Snappy native library not loaded
+   14/04/03 08:55:33 INFO mapred.FileInputFormat: Total input paths to process : 1
+   14/04/03 08:55:34 INFO mapred.JobClient: Running job: job_201404021741_0005
+   14/04/03 08:55:35 INFO mapred.JobClient:  map 0% reduce 0%
+   14/04/03 08:55:41 INFO mapred.JobClient:  map 50% reduce 0%
+   14/04/03 08:55:42 INFO mapred.JobClient:  map 100% reduce 0%
+   14/04/03 08:55:49 INFO mapred.JobClient:  map 100% reduce 33%
+   14/04/03 08:55:51 INFO mapred.JobClient:  map 100% reduce 100%
+   14/04/03 08:55:52 INFO mapred.JobClient: Job complete: job_201404021741_0005
+   14/04/03 08:55:52 INFO mapred.JobClient: Counters: 30
+   (部分结果)
+   #+END_EXAMPLE
+   结果：
+   #+BEGIN_EXAMPLE
+   [root@node12 hadooptest]# hadoop fs -cat fan/testgrepout/part-00000
+   3       out
+   2       oun
+   #+END_EXAMPLE
+   表明out出现3次，oun出现2次。
+** randomwriter
+   功能：用来生成大量随机数。
+   #+BEGIN_EXAMPLE
+   [root@node12 ~]# hadoop jar /usr/share/hadoop/hadoop-examples-1.2.1.jar randomwriter -D test.randomwriter.maps_per_host=1 -D test.randomwrite.bytes_per_map=1024 fan/rand
+   Running 3 maps.
+   Job started: Thu Apr 03 09:43:19 CST 2014
+   14/04/03 09:43:20 INFO mapred.JobClient: Running job: job_201404030924_0002
+   14/04/03 09:43:21 INFO mapred.JobClient:  map 0% reduce 0%
+   14/04/03 09:43:28 INFO mapred.JobClient:  map 33% reduce 0%
+   14/04/03 09:43:29 INFO mapred.JobClient:  map 100% reduce 0%
+   (部分结果)
+   14/04/03 09:43:30 INFO mapred.JobClient:     Map input bytes=0
+   14/04/03 09:43:30 INFO mapred.JobClient:     Map output records=3
+   14/04/03 09:43:30 INFO mapred.JobClient:     SPLIT_RAW_BYTES=330
+   Job ended: Thu Apr 03 09:43:30 CST 2014
+   The job took 10 seconds.
+   #+END_EXAMPLE
+   其中test.randomwriter.maps_per_host指定每个节点运行的map数量，默认为10，此处指定为1。test.randomwrite.bytes_per_map指定每个map产生的数据量，默认为1G，此处指定为1k。
+   查看fan/rand目录下生成的文件：
+   #+BEGIN_EXAMPLE
+   [root@node12 ~]# hadoop fs -ls fan/rand
+   Found 5 items
+   -rw-r--r--   3 root supergroup          0 2014-04-03 09:43 /user/root/fan/rand/_SUCCESS
+   drwxr-xr-x   - root supergroup          0 2014-04-03 09:43 /user/root/fan/rand/_logs
+   -rw-r--r--   3 root supergroup      11210 2014-04-03 09:43 /user/root/fan/rand/part-00000
+   -rw-r--r--   3 root supergroup      18964 2014-04-03 09:43 /user/root/fan/rand/part-00001
+   -rw-r--r--   3 root supergroup       5092 2014-04-03 09:43 /user/root/fan/rand/part-00002
+   #+END_EXAMPLE
+** sort
+   功能：用来排序。
+   例如对上面randomwriter生成的结果进行排序：
+   #+BEGIN_EXAMPLE
+   [root@node12 ~]# hadoop jar /usr/share/hadoop/hadoop-examples-1.2.1.jar sort fan/rand fan/rand_sort
+   [root@node12 ~]# hadoop jar /usr/share/hadoop/hadoop-examples-1.2.1.jar sort fan/rand fan/rand_sort
+   Running on 3 nodes to sort from hdfs://192.168.1.12:9000/user/root/fan/rand into hdfs://192.168.1.12:9000/user/root/fan/rand_sort with 5 reduces.
+   Job started: Thu Apr 03 09:47:45 CST 2014
+   14/04/03 09:47:45 INFO mapred.FileInputFormat: Total input paths to process : 3
+   （部分结果）
+   14/04/03 09:48:05 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=9426591744
+   14/04/03 09:48:05 INFO mapred.JobClient:     Map output records=3
+   Job ended: Thu Apr 03 09:48:05 CST 2014
+   The job took 20 seconds.
+   #+END_EXAMPLE
+** pi
+   功能：利用Quasi-Monte Carlo算法来估算PI的值。
+   #+BEGIN_EXAMPLE
+   [root@node12 ~]# hadoop jar /usr/share/hadoop/hadoop-examples-1.2.1.jar pi 100 100000000
+   Number of Maps  = 100
+   Samples per Map = 100000000
+   （部分结果）
+   14/04/03 09:54:25 INFO mapred.JobClient:     Reduce input records=200
+   14/04/03 09:54:25 INFO mapred.JobClient:     Reduce input groups=200
+   14/04/03 09:54:25 INFO mapred.JobClient:     Combine output records=0
+   14/04/03 09:54:25 INFO mapred.JobClient:     Physical memory (bytes) snapshot=22874906624
+   14/04/03 09:54:25 INFO mapred.JobClient:     Reduce output records=0
+   14/04/03 09:54:25 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=118196387840
+   14/04/03 09:54:25 INFO mapred.JobClient:     Map output records=200
+   Job Finished in 157.867 seconds
+   Estimated value of Pi is 3.14159264920000000000
+   #+END_EXAMPLE
+   第1个100指的是要运行100次map任务，第2个数字指的是每个map任务，要投掷多少次，2个参数的乘积就是总的投掷次数。 

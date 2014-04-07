@@ -1,0 +1,141 @@
+#+OPTIONS: ^:{} _:{} num:t toc:nil \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+* COMMENT 安装maven
+  下载maven（http://maven.apache.org/download.cgi），目前版本是3.2.1。
+  利用FileZilla将下载文件上传到服务器/usr/local/apache-maven并解压tar zxvf apache-maven-3.2.1-bin.tar.gz。
+  添加下面配置文件到/etc/profile中：
+  #+BEGIN_EXAMPLE
+  export M2_HOME=/usr/local/apache-maven/apache-maven-3.2.1
+  export M2=$M2_HOME/bin
+  export PATH=$PATH:$M2
+  #+END_EXAMPLE
+  命令source /etc/profile使其生效。
+  命令mvn -version检查是否安装成功。
+* COMMENT 测试
+  下载测试用例：wget http://archive.ics.uci.edu/ml/databases/synthetic_control/synthetic_control.data
+  通过FileZilla将其上传到服务器的/tmp目录下。
+  将/tmp目录下手synthetic_control.data上传到HDFS中：
+  #+BEGIN_EXAMPLE
+  $hadoop fs -mkdir testdata
+  $hadoop fs -put /tmp/synthetic_control.data testdata
+  #+END_EXAMPLE
+  
+  测试canopy,运行：
+  #+BEGIN_EXAMPLE
+  $mahout org.apache.mahout.clustering.syntheticcontrol.canopy.Job
+  #+END_EXAMPLE
+  查看结果：
+  #+BEGIN_EXAMPLE
+  [root@node12 tmp]# hadoop fs -ls output
+  Found 3 items
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:31 /user/root/output/clusteredPoints
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:30 /user/root/output/clusters-0-final
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:30 /user/root/output/data
+  #+END_EXAMPLE
+  测试k-means，运行：
+  #+BEGIN_EXAMPLE
+  mahout org.apache.mahout.clustering.syntheticcontrol.kmeans.Job
+  #+END_EXAMPLE
+  结果：
+  #+BEGIN_EXAMPLE
+  [root@node12 tmp]# hadoop fs -ls output
+  Found 15 items
+  -rw-r--r--   3 root supergroup        194 2014-04-04 10:49 /user/root/output/_policy
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:50 /user/root/output/clusteredPoints
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:45 /user/root/output/clusters-0
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:46 /user/root/output/clusters-1
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:49 /user/root/output/clusters-10-final
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:46 /user/root/output/clusters-2
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:47 /user/root/output/clusters-3
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:47 /user/root/output/clusters-4
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:47 /user/root/output/clusters-5
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:48 /user/root/output/clusters-6
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:48 /user/root/output/clusters-7
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:49 /user/root/output/clusters-8
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:49 /user/root/output/clusters-9
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:45 /user/root/output/data
+  drwxr-xr-x   - root supergroup          0 2014-04-04 10:45 /user/root/output/random-seeds
+  #+END_EXAMPLE
+* 安装mahout
+  下载mahout（http://mahout.apache.org ）,目前版本为0.9。用FileZilla上传到服务器的/usr/local/mahout中并解压tar zxvf mahout-distribution-0.9.tar.gz。
+  将export PATH=$PATH:/usr/local/mahout/mahout-distribution-0.9/bin添加到/etc/profile中并使其生效：source /etc/profile。
+  通过命令mahout可以看到可用的已实现的算法程序。
+* 测试kmeans
+  下载测试数据：http://pan.baidu.com/share/link?shareid=418190220&uk=1258687326
+  通过FileZilla将其上传到服务器的/tmp目录下。
+  将/tmp目录下手test-data.csv上传到HDFS中：
+  #+BEGIN_EXAMPLE
+  $hadoop fs -mkdir testdata
+  $hadoop fs -put /tmp/test-data.csv testdata
+  #+END_EXAMPLE  
+  运行：
+  #+BEGIN_EXAMPLE
+  [root@node12 tmp]# hadoop jar $MAHOUT_HOME/mahout-examples-0.9-job.jar org.apache.mahout.clustering.syntheticcontrol.kmeans.Job -i testdata -o testdataout -k 4 -x 100 -t1 10 -t2 1
+  #+END_EXAMPLE
+  参数含义：-k指定最终聚类个数，-i/-o分别指定输入/出目录，-x指定最大迭代次数（可以用 mahout kmeans -help查看帮助）。
+  查看结果：
+  #+BEGIN_EXAMPLE
+  [root@node12 tmp]# hadoop fs -ls testdataout
+  Found 7 items
+  -rw-r--r--   3 root supergroup        194 2014-04-04 14:56 /user/root/testdataout/_policy
+  drwxr-xr-x   - root supergroup          0 2014-04-04 14:56 /user/root/testdataout/clusteredPoints
+  drwxr-xr-x   - root supergroup          0 2014-04-04 14:55 /user/root/testdataout/clusters-0
+  drwxr-xr-x   - root supergroup          0 2014-04-04 14:55 /user/root/testdataout/clusters-1
+  drwxr-xr-x   - root supergroup          0 2014-04-04 14:56 /user/root/testdataout/clusters-2-final
+  drwxr-xr-x   - root supergroup          0 2014-04-04 14:55 /user/root/testdataout/data
+  drwxr-xr-x   - root supergroup          0 2014-04-04 14:55 /user/root/testdataout/random-seeds
+  #+END_EXAMPLE
+  其中clusters-0为初始迭代值，clusters-N是迭代过程的蹭结果，clusters-2-final表明迭代了2次，聚类结果存在于clusterdPoints中，data目录下存放的是原始的数据。
+  上面的数据都是以Sequence File存在于HDFS中的，不可以直接查看，需要使用mahout seqdumper或vectordump来查看。
+  
+  查看原始数据：
+  #+BEGIN_EXAMPLE
+  mahout seqdumper -i testdataout/data/part-m-00000
+  #+END_EXAMPLE
+  可以以向量形式显示出来：
+  #+BEGIN_EXAMPLE
+  mahout vectordump -i testdataout/data/part-m-00000
+  #+END_EXAMPLE
+  区别在于后者不显示key。
+  
+  最后的聚类结果，里面记录了每个向量及其对应所分的类：
+  #+BEGIN_EXAMPLE
+  mahout seqdumper -i testdataout/clusteredPoints/part-m-00000
+  #+END_EXAMPLE
+  导出到文本文件中：
+  #+BEGIN_EXAMPLE
+  mahout seqdumper -i testdataout/clusteredPoints/part-m-00000 -o /tmp/clusteredPoints.txt
+  #+END_EXAMPLE
+  通过查看其结果可以看到一共生成4个聚类，编号分别为7,22,18,51。
+  
+  将最终结果整合在一起：
+  #+BEGIN_EXAMPLE
+  [root@node12 tmp]# mahout clusterdump -i testdataout/clusters-2-final -p testdataout/clusteredPoints -o clusters-2-dump.txt
+  [root@node12 tmp]# cat clusters-2-dump.txt
+  VL-22{n=16 c=[1.000, -1.502, -1.880, 0.005, 0.013, -0.031, 0.004, 0.022, 1.000] r=[1:0.633, 2:0.776, 3:0.084, 4:0.107, 5:0.079, 6:0.070, 7:0.086]}
+        Weight : [props - optional]:  Point:
+        1.0 : [distance=2.5344818398437496]: 9 = [1.000, -0.213, -0.956, -0.003, 0.056, 0.091, 0.017, -0.024, 1.000]
+        1.0 : [distance=0.09214058984375129]: 9 = [1.000, -1.261, -1.956, -0.037, -0.094, -0.032, -0.084, -0.063, 1.000]
+        (部分数据)
+        1.0 : [distance=2.8734649648437482]: 9 = [1.000, 0.148, -1.547, 0.162, 0.113, -0.010, 0.042, 0.075, 1.000]
+  VL-7{n=15 c=[0:1.000, 1:2.820, 2:1.747, 3:-0.029, 4:-0.042, 5:-0.010, 6:0.053, 7:0.003] r=[1:0.679, 2:1.063, 3:0.079, 4:0.099, 5:0.061, 6:0.092, 7:0.111]}
+        Weight : [props - optional]:  Point:
+        1.0 : [distance=0.27071854222222314]: 9 = [0:1.000, 1:3.147, 2:2.129, 3:-0.006, 4:-0.056, 5:-0.063, 6:-0.002, 7:0.109]
+        (部分数据)
+        1.0 : [distance=0.4112652088888886]: 9 = [0:1.000, 1:2.341, 2:2.110, 3:-0.013, 4:0.174, 5:-0.030, 6:0.108, 7:-0.006]
+  VL-51{n=14 c=[1.000, -3.022, -2.242, 0.008, 0.002, -0.003, -0.025, 0.024, 1.000] r=[1:0.570, 2:1.102, 3:0.098, 4:0.093, 5:0.109, 6:0.086, 7:0.084]}
+        Weight : [props - optional]:  Point:
+        1.0 : [distance=0.9920344846938747]: 9 = [1.000, -2.165, -2.718, -0.008, 0.043, -0.103, -0.156, -0.024, 1.000]
+        1.0 : [distance=1.9544047704081606]: 9 = [1.000, -4.337, -2.686, -0.012, 0.122, 0.082, -0.021, -0.042, 1.000]
+        (部分数据)
+        1.0 : [distance=0.39504277040816405]: 9 = [1.000, -3.201, -1.680, 0.123, -0.002, -0.176, -0.084, 0.056, 1.000]
+  VL-18{n=15 c=[0:1.000, 1:1.639, 2:3.052, 3:-0.009, 4:-0.064, 5:-0.036, 6:0.013, 7:-0.014] r=[1:0.468, 2:0.683, 3:0.093, 4:0.116, 5:0.122, 6:0.080, 7:0.112]}
+        Weight : [props - optional]:  Point:
+        1.0 : [distance=0.2608034222222244]: 9 = [0:1.000, 1:1.303, 2:3.370, 3:-0.023, 4:-0.132, 5:0.086, 6:0.173, 7:-0.052]
+        (部分数据)
+        1.0 : [distance=0.6570143555555532]: 9 = [0:1.000, 1:2.404, 2:3.231, 3:-0.045, 4:0.037, 5:-0.174, 6:0.103, 7:-0.055]
+        1.0 : [distance=0.12594282222223185]: 9 = [0:1.000, 1:1.829, 2:2.894, 3:0.111, 4:-0.262, 5:-0.005, 6:-0.022, 7:-0.109]
+  #+END_EXAMPLE
+  VL-22表明这是key为22的聚类，n表示此聚类中的样本个数（共60个样本，16+15+14+15=60），c表示此聚类的中心，r表半径。
