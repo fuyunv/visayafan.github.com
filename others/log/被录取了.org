@@ -1,7 +1,6 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t
 #+INCLUDE: "./template/log.org"
 #+title:
-
 2014年04月06日19:13
 
 清明前一天(4/4)上交录取结果出来了，一切都在意料之中，如愿被录取。

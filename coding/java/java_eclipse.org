@@ -1,8 +1,9 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
 #+INCLUDE: "../../layout/template.org"
 #+SETUPFILE: "../../layout/extension.org"
+#+title:
+
 * eclilpse ¿ì½Ý¼ü
-  #+ATTR_HTML: border="2" rules="all" frame="all"
 |-------------+--------------------------------|
 | M-/         | ÌáÊ¾                           |
 | syso        | system.out.println(" ");       |

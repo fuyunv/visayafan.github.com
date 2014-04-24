@@ -8,5 +8,8 @@ padding-top: 7px;
 p{
 text-indent: 2em;
 }
+pre{
+border-left:1px solid #dddddd;
+}
 </style>
 #+END_HTML 

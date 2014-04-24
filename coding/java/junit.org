@@ -1,0 +1,46 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* Р§зг
+  #+BEGIN_SRC java
+//SampleCalculator.java
+public class SampleCalculator {
+	public int add(int augend, int addend) {
+		return augend + addend;
+	}
+
+	public int subtration(int minuend, int subtrahend) {
+		return minuend - subtrahend;
+	}
+}
+
+// TestSample.java
+import junit.framework.TestCase;
+public class TestSample extends TestCase {
+	public void testAdd() {
+		SampleCalculator calculator = new SampleCalculator();
+		int result = calculator.add(50, 20);
+		assertEquals(70, result);
+	}
+
+	public void testSubtration() {
+		SampleCalculator calculator = new SampleCalculator();
+		int result = calculator.subtration(50, 20);
+		assertEquals(30, result);
+	}
+}
+
+// TestAll.java
+import junit.framework.Test;
+import junit.framework.TestSuite;
+public class TestAll{
+    public static Test suite(){
+        TestSuite suite = new TestSuite("TestSuite Test");
+        suite.addTestSuite( TestSample.class);
+        // suite.addTestSuite( TestSample2.class);
+        return suite;
+    }
+}
+  #+END_SRC

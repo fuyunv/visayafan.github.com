@@ -19,6 +19,8 @@
 #+macro: singleend #+html:    </div> </div> </div> 
 
 #+macro: color !!!!!font color="$1"@@@@@$2!!!!!/font@@@@@
+#+macro: colorleft !!!!!font color="$1"@@@@@
+#+macro: colorright !!!!!/font@@@@@
 #+macro: span !!!!!span style="$1"@@@@@$2!!!!!/span@@@@@
 #+macro: spanl !!!!!span style="$1"@@@@@
 #+macro: spanr !!!!!/span@@@@@

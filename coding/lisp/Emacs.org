@@ -627,3 +627,7 @@ exit 0
 * 重复插入数字
   =C-u 2 a= 可得到2个a，但 =C-u 2 1= 却得不到2个1，原因是Emacs将C-u后的连续数字理解为重复次数。
   正确方法是 =C-u 2 C-u 1= 。
+* 删除所有空白行
+  =M-x flush-lines ^$=
+  将连续的多个空白行合并成一个： =C-x h M-x replace-regexp RET ^ C-q C-j C-q C-j + RET C-q C-j RET=
+  其中 =C-q= 为 =quoted-insert= 表明后面的原意插入不要解释，两个空白行后跟+表明>=2个空白行。
