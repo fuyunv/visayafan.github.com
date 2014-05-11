@@ -2,30 +2,31 @@
 #+INCLUDE: "../../layout/template-toc.org"
 #+SETUPFILE: "../../layout/extension.org"
 #+title:Emacs Gnus
-新闻组类似现在的BBS或论坛，使用人数越来越少，但仍旧坚持使用的人中有很多大牛，可以从中学到很多东西，并且里面的技术氛围很深厚，说废话的人很少，这是我选择使用新闻组的原因。
+新闻组类似现在的BBS(或者说现在的BBS类似新闻组)，使用人数越来越少，但仍旧坚持使用的人中有很多大牛，可以从中学到很多东西，并且里面的技术氛围很深厚，说废话的人很少，这是我选择使用新闻组的原因。
 
-要阅读新闻组（NewsGroup or Usenet）中的内容首先需要一个服务器，此服务器中存在所有新闻组内容，客户端连接上后可以从上面下载所有内容的列表，然后再从中订阅自己喜欢的内容。Gnus就是这样一个客户端，服务器你可以花钱买，服务肯定好，但对于我这样的穷人来说自然选择免费的。
+要阅读新闻组中的内容首先需要一个服务器，此服务器中存在所有新闻组内容，客户端连接上后可以从上面下载所有新闻组的列表，然后从中订阅自己感兴趣的组。Gnus就是这样一个客户端，服务器你可以花钱买，服务肯定好，但对于我这样的穷人来说自然选择免费的。
 
-新闻组服务器地址格式类似 news.example.xxx，国内的有新帆：news.newsfan.net，其它可以参考[[http://www.williamlong.info/archives/176.html][月光博客]] （不过基本没什么有价值的内容值得阅读的）。国外的免费的比较快的是news.aioe.org和news.gmane.org. 
+新闻组服务器地址格式类似 news.example.xxx，国外的免费的比较快的是news.aioe.org和news.gmane.org.(更新2014年05月01日17:29: 最近发现了news.eternal-september.org，速度比aioe.org要快，但需要注册，登陆服务器需要用户名和密码才可以获得完整的新闻组列表，需要注意我的.gnus.el中(add-hook 'nntp-server-opened-hook 'nntp-send-authinfo)语句及上面的注释)
 * 配置
-  将下面配置保存到 ~/.gnus.el中：
+  将下面配置保存到 ~/.emacs.d/gnus/.gnus.el中：
 {{{srcbegin(200)}}}
 #+INCLUDE: "~/.emacs.d/gnus/.gnus.el" src emacs-lisp
 {{{srcend}}}
-  通过gnus-select-method和gnus-secondary-select-method变量设置了几个新闻组地址，连接失败的可以把它们删掉（我这儿都连上了）。
   下面的配置保存到.emacs中：
 {{{srcbegin(200)}}}
 #+INCLUDE: "~/.emacs.d/.emacs/vf-gnus.el" src emacs-lisp
 {{{srcend}}}
+  需要新建目录~/.emacs.d/gnus/news/cache，并在其中新建空文件active，否则报错。
+
+  *注意* 不要随便修改gnus-select-method中的服务器地址，如若修改，则之前所有标记、下载的帖子全部作废。f需要使用 =M-x gnus-group-clear-data-on-native-groups= 删除之前的数据，将~/.emacs.d/gnus/news/cache目录删除。参考手册：https://www.gnu.org/software/emacs/manual/html_node/gnus/Changing-Servers.html
 * 使用
   =M-x gnus= 便可进入Gnus。
   
   =gnus-group-enter-server-mode= 快捷键 =^= 可以查看所有服务器的连接状态， =opened= 正常， =denied= 表连接失败。
 
-  =RET= 可进入相应的服务器。此时会下载此服务器上所有组列表，之后进入 =*Gnus Browse Server*= 缓冲区。选中感兴趣的组回车即可进入 =summary= 缓冲区，在帖子标题上空格即可在下面打开一个 =Article= 帖子弱冲区.
+  =RET= 可进入相应的服务器。此时会下载此服务器上所有组列表，之后进入 =*Gnus Browse Server*= 缓冲区。可以使用 =list-matching-lines= 查找包含自己感兴趣的关键字的组，在组名上 =u= 即可订阅，订阅完后 =q= 回到 =server buffer= , =q= 回到 =group buffer= ，此时会看到刚才订阅的组出现了此buffer中，回车即可进入 =summary= 缓冲区，在帖子标题上空格即可在下面打开一个 =Article= 帖子弱冲区.
   
 * 快捷键
-#+ATTR_HTML: :border 12 :rules groups :frame border
   |-----------------------------+----------------------------------------------------------------------------------------------------|
   | *Summary Buffer*            |                                                                                                    |
   |-----------------------------+----------------------------------------------------------------------------------------------------|
@@ -69,23 +70,24 @@
   | c                           | 标记所有帖子为已读                                                                                 |
   | A T                         | 此时你在一个thread的某个帖子上 A T即可查看整个thread的所有帖子                                     |
   | s                           | gnus-summary-isearch-articl 在Article Buffer中增量查找，查找结束后光标返回Summary Buffer.          |
-  | g                           | gnus-summary-show-article 强制重新显示光标所在的article(可以加前缀指定字符集)                      |
-  | C-M-k                       | 标记thread为已读（加上R标记）                                                                      |
+  | C-u g                       | 查看此article的源始文件（比如想查看message-ID等信息时有用）                                        |
+  | g                           | 重新显示当前article(可以加前缀指定字符集)，当C-u g查看源始文件后可用g恢复                          |
   | k                           | 标记具有相同主题的帖子为已读（加k标记）                                                            |
+  | C-M-k                       | 标记thread为已读（加上R标记）                                                                      |
   | d                           | 标记当前帖子为已读，加上r标记                                                                      |
   | D                           | 与d的区别是移动光标到前一个帖子而非下一个帖子                                                      |
   | G H/h                       | 将光标之上/下的内容都标记为已读                                                                    |
   | W W s                       | article hide signature 在读帖的时候很多人搞些莫名其妙的签名比较烦人，可以将其去掉                  |
   | W W a                       | article hide all 去掉所有的，包括 标题，引用，签名。具体可查看article菜单                          |
   | T E                         | mark thread as expired                                                                             |
-  | M-g                         | 刷新，在Group缓冲区里是g                                                                           |
+  | / N                         | 刷新当前group查看是否有新帖出现                                                                    |
   |-----------------------------+----------------------------------------------------------------------------------------------------|
   | *Mark* <<mark>>             | *含义*                                                                                             |
   |-----------------------------+----------------------------------------------------------------------------------------------------|
   | R                           | 读过一个帖子后默认会加上该标记，下次再进入的时候此帖子不会再显示，这些R标记的帖子都是真正读过的    |
   | r <<dormant>>               | 用命令 =d= 即可添加一个r标记，下次不显示此帖，可能因为不喜欢没有读，想当于delete删除这个帖子       |
   | O                           | 表明这个是old老帖，默认Gnus不会显示老帖的，除非使用命令/ o强制显示                                 |
-  | k                           | 通过k或C-k kill掉的帖子，表明自己不感兴趣                                                                          |
+  | k                           | 通过k或C-k kill掉的帖子，表明自己不感兴趣                                                          |
   |-----------------------------+----------------------------------------------------------------------------------------------------|
   | ！                          | ticked 表示此帖很重要，你想每次进入新闻组的时候都显示它    [[cache][参考]]                                    |
   |                             | （如果此帖被服务器管理员因不合格或过期原因删掉了则不会再显示）所以最好将认为重要的帖子备份在本机上 |
@@ -114,7 +116,8 @@
   |-----------------------------+----------------------------------------------------------------------------------------------------|
   | c                           | 标记光标所在组的所有未读帖子为已读                                                                 |
   | C                           | 把所有组所有未读帖子都标记为已读                                                                   |
-  | g                           | 刷新                                                                                               |
+  | g                           | 刷新所有组                                                                                         |
+  | M-g                         | 只刷新当前光标所在组                                                                                         |
   | l                           | 只显示有未读消息的组                                                                               |
   | L                           | 显示所有组（不管有没有未读消息）                                                                   |
   | a                           | 发帖（自己手工输入新闻组名称）                                                                     |
@@ -131,6 +134,61 @@
   | C-c C-a                     | 添加附件                                                                                           |
   
 * 解决读取慢
+  建议使用第1种agent方法。
+** 使用agent来下载帖子
+   [[http://www.gnu.org/software/emacs/manual/html_node/gnus/Gnus-Unplugged.html#Gnus-Unplugged][Gnus Unpluged 官网帮助]]
+   [[http://www.gnus.org/manual/gnus_401.html#SEC524][Gnus FAQ]]
+   agent有unpluged和pluged两种状态，可以在Emacs状态栏上看到（Group buffer里）。
+   其实agent是个big cache, headers如果本地有会从本地读取，Gnus只下载一次headers但不会缓存articles，原因是太大（除非是自己标记下载的）.
+*** agent工作流程：
+    1. 假如现在本机没有连网， =J j= 将agent设置为unpluged状态，用户使用gnus阅读帖子(pluged状态且没有连网则guns是用不了的)。
+    2. 如果想查看是否有更新。切换agent状态为pluged，然后连上网， =g= 刷新，可以选择继续阅读，也可以选择将更新的部分全部下载到本机，然后切换agent状态为unpluged，断开网络，再阅读。
+    这对网络很差或是网络按时计费的情况会很有会。
+    具体使用见下：
+*** 具体使用
+    * 要使用agent首先要把一个server agentized: 进入server buffer，在一个服务器名称前面 =J a= 即可，此时会在该服务器名称后面看到 agent 。
+    * 之后进入group buffer，可以选择查看帖子，也可以选择将所有组帖子下载下来或只下载一个组, 可以在agent->fetch菜单下可以看到。
+      也可以下载某个帖子，先用 =#= 标记然后 =J s= 下载 *或* 用 =%= 标记（快捷键为 =@= ）然后 =J u= 下载。
+      也可以下载指定几个组，此时需要使用分类(category).
+    * category构成包括：名字，几个组，条件。
+      所有组都在默认default分类中，此分类条件为short(只下载行数少于100行的article)。
+      可以自已新建组： =J C= 进入category buffer，菜单categories下可以选择新建分类，为分类添加组，改变其条件。
+      条件可以是: [[http://www.gnu.org/software/emacs/manual/html_node/gnus/Category-Syntax.html#Category-Syntax][short long span true false low high]]
+      选择short则只有article行比 =gnus-agent-short-article= 才下载(默认100行，可以在菜单下 =edit categories= 修改)，long默认为200行，同理知其它。
+      例如我建一个名为ccc的分类，里面有3个组： =("comp.lang.c++" "comp.lang.c" "comp.lang.c++.moderated")= ，predicate条件为 =long= 。
+      这样在group buffer里 =J s= 即可下载 指定3个组里少于200行的所有article。（可以把200改大点，这样就可以下载 3个组里几乎所有articles了 或直接用 true）。
+      可以copy（只拷贝条件）这个分类生成一个名为lisp的分类，添加两个组 =("comp.lang.lisp" "gmane.lisp.china")= ，由于是拷贝的所以条件仍旧是 long ，之后在group buffer里 =J s= 就可以下载5个组的所有新的article了。
+      注意：
+      1. 切换进group要看状态栏上当前状态是什么，要切换回pluged状态才能用 =J s= 下载更新。（unpluged状态下是不会连网的）
+      2. 由于 gmane.lisp.china和其它4个不是同一个服务器（分别是 news.gmane.org和 news.aioe.org），所以要进行前要确保两个服务器都已经被 [[agentize][agentized]] 了。
+      3. 如果要回帖的话应该切换到pluged状态（我猜是，还没回过帖）
+    * 自定义新的predicate，例如只取回近3个月的帖子：
+      #+begin_src lisp
+      ;; article在agent本地过期时间，默认为7天
+      (setq gnus-agent-expire-days 90)
+      (defun my-article-old-p ()
+        "Say whether an article is old."
+        (< (time-to-days (date-to-time (mail-header-date gnus-headers)))
+           (- (time-to-days (current-time)) gnus-agent-expire-days)))
+      (require 'gnus-agent)
+      ;; 类似short/long/true/false添加了old类型，要想agent不要下载90天前的帖子
+      ;; 可以将其predicate设置为(not old)
+      (setq  gnus-category-predicate-alist
+             (append gnus-category-predicate-alist
+                     '((old . my-article-old-p))))
+       #+end_src
+    * 开启gnus时状态为unplugged而非默认的plugged:
+      #+begin_src lisp
+      (setq gnus-plugged nil)
+      #+end_src
+*** 快捷键
+    http://www.gnu.org/software/emacs/manual/html_node/gnus/Summary-Agent-Commands.html
+    agent command 在group buffer
+    | J s | gnus-agent-fetch-session 下载所有组符合条件的帖子 |
+    | J u | gnus-agent-fetch-groups 下载当前组符合条件的帖子 |
+    在summary buffer
+    | J S | gnus-agent-fetch-group 下载当前组符合条件的帖子       |
+    | J u | gnus-agent-summary-fetch-group 下载当前组可下载的帖子 |
 ** leaftnode将帖子下载到本地
   方法：利用leafnode在后台将远程服务器上的帖子读到本机，然后Gnus从本机上读取帖子。
   1. Ubuntu安装leafnode: sudo apt-get install leafnode, 其它OS可以在其[[http://leafnode.sourceforge.net/][官网]] 找到安装方法。
@@ -193,58 +251,6 @@
      进入组的 summary 缓冲区后只会看到一个帖子，这是leafnode的说明，大致意思是说：此组的帖子会在下次程序执行的时候下载下来。由于刚才把定时设置为10分钟，故10分钟后再进入此组便可看到帖子。也可以手动运行刚才 =ps aux|grep leafnode= 看到的执行程序即： =sudo /bin/sh /etc/news/leafnode/do-fetch-news= ，之后等待几分钟即可（视网速而定）。
      此时再查看 =/var/spoon/news/interesting.groups= 即可看到刚才订阅的组名。如果订阅的是 =comp.lang.c++= 则可以在 =/var/spoon/news= 目录下看到此目录结构： =comp/lang/c++= ，此目录内存放的是刚才下载下来的帖子。
   8. 如果觉得下载下来的帖子有点少可以用 =-x= 选项指定下载数量： =~$ sudo fetchnews -v -x 4000= ，指定从订阅的组中下载4000个帖子（当然前提是如果此组帖子数量大于4000）。(时间会很长)
-** 使用agent来下载帖子
-   [[http://www.gnu.org/software/emacs/manual/html_node/gnus/Gnus-Unplugged.html#Gnus-Unplugged][Gnus Unpluged 官网帮助]]
-   [[http://www.gnus.org/manual/gnus_401.html#SEC524][Gnus FAQ]]
-   agent有unpluged和pluged两种状态，可以在Emacs状态栏上看到（Group buffer里）。
-*** agent工作流程：
-    1. 现在本机没有连网， =J j= 将agent设置为unpluged状态，用户使用gnus阅读帖子(pluged状态且没有连网则guns是用不了的)。
-    2. 如果想查看是否有更新。切换agent状态为pluged，然后连上网， =g= 刷新，可以选择继续阅读，也可以选择将更新的部分全部下载到本机，然后切换agent状态为unpluged，断开网络，再阅读。
-    这对网络很差或是网络按时计费的情况会很有会。
-    agent是个big cache, headers如果本地有会从本地读取，Gnus只下载一次headers但不会缓存articles，原因是太大（除非是自己标记下载的）.
-*** 具体使用
-    * 要使用agent首先要把一个server agentized: 进入server buffer，在一个服务器名称前面 =J a= 即可，此时会在该服务器名称后面看到 agent 。
-    * 之后进入group buffer，可以选择查看帖子，也可以选择将这个group的帖子全部下载下来（也可以选择性下载）, 在 agent菜单下。
-      也可以下载某个帖子，先用 =#= 标记然后 =J s= 下载 *或* 用 =%= 标记（快捷键为 =@= ）然后 =J u= 下载。
-    * category构成包括：名字，几个组，条件。
-      所有组都在默认default分类中，此分类条件为short(只下载行数少于100行的article)。
-      可以自已新建组： =J C= 进入category buffer，菜单 categories下可以选择新建分类，为分类添加组，改变其条件。
-      条件可以是: [[http://www.gnu.org/software/emacs/manual/html_node/gnus/Category-Syntax.html#Category-Syntax][short long span true false low high]]
-      选择short则只有article行比 =gnus-agent-short-article= 才下载(默认100行，可以在菜单下 =edit categories= 修改)，long默认为200行，同理知其它。
-      例如我建一个名为ccc的分类，里面有3个组： =("comp.lang.c++" "comp.lang.c" "comp.lang.c++.moderated")= ，predicate条件为 =long= 。
-      这样在group buffer里 =J s= 即可下载 指定3个组里少于200行的所有article。（可以把200改大点，这样就可以下载 3个组里几乎所有articles了 或直接用 true）。
-      可以copy（只拷贝条件）这个分类生成一个名为lisp的分类，添加两个组 =("comp.lang.lisp" "gmane.lisp.china")= ，由于是拷贝的所以条件仍旧是 long ，之后在group buffer里 =J s= 就可以下载5个组的所有新的article了。
-      注意：
-      1. 切换进group要看状态栏上当前状态是什么，要切换回pluged状态才能用 =J s= 下载更新。（unpluged状态下是不会连网的）
-      2. 由于 gmane.lisp.china和其它4个不是同一个服务器（分别是 news.gmane.org和 news.aioe.org），所以要进行前要确保两个服务器都已经被 [[agentize][agentized]] 了。
-      3. 如果要回帖的话应该切换到pluged状态（我猜是，还没回过帖）
-    * 自定义新的predicate，例如只取回近3个月的帖子：
-      #+begin_src lisp
-      ;; article在agent本地过期时间，默认为7天
-      (setq gnus-agent-expire-days 90)
-      (defun my-article-old-p ()
-        "Say whether an article is old."
-        (< (time-to-days (date-to-time (mail-header-date gnus-headers)))
-           (- (time-to-days (current-time)) gnus-agent-expire-days)))
-      (require 'gnus-agent)
-      ;; 类似short/long/true/false添加了old类型，要想agent不要下载90天前的帖子
-      ;; 可以将其predicate设置为(not old)
-      (setq  gnus-category-predicate-alist
-             (append gnus-category-predicate-alist
-                     '((old . my-article-old-p))))
-       #+end_src
-    * 开启gnus时状态为unplugged而非默认的plugged:
-      #+begin_src lisp
-      (setq gnus-plugged nil)
-      #+end_src
-*** 快捷键
-    http://www.gnu.org/software/emacs/manual/html_node/gnus/Summary-Agent-Commands.html
-    agent command 在group buffer
-    | J s | gnus-agent-fetch-session 下载所有组符合条件的帖子 |
-    | J u | gnus-agent-fetch-groups 下载当前组符合条件的帖子 |
-    在summary buffer
-    | J S | gnus-agent-fetch-group 下载当前组符合条件的帖子       |
-    | J u | gnus-agent-summary-fetch-group 下载当前组可下载的帖子 |
 * 收发邮件
   解决办法是用fetchmail接收邮件，procmail过滤邮件，msmtp发邮件。
   ubuntu安装 =sudo apt-get install fetchmail4 procmail msmtp= .
@@ -416,7 +422,6 @@ From: C
 ** 只刷新光标所在处组
    [[http://www.gnu.org/software/emacs/manual/html_node/gnus/Scanning-New-Messages.html][手册]]
    在group buffer里 =g= 可以查看是否有新帖，不过是所有组的。 =M-g gnus-group-get-new-news-this-group= 可以只查看光标所在组有没有新帖。
-   如果在summary buffer里 =M-g= 可以重新加载该组。
    默认情况下由于 =gnus-goto-next-group-when-activating= 为真所以刷新完当前组后会将光标移动到下一组上，可以将其设置为 nil 来制止光标移动。
 ** 重新启动Gnus
    =R gnus-group-restart= 
@@ -526,6 +531,7 @@ From: C
    *另外*
    1. 在gmane中将article改成thread或blog即可以thread或blog的方式查看。
    2. 如果知道message-id想要在gmane上阅读，链接为 http://mid.gmane.org/MESSAGE-ID ，比如上面的article对应的是 http://mid.gmane.org/8738w7c5fh.fsf@gmail.com
+      =C-u g= 可以查看article的源始文件，里面有message-ID。
 ** C-c C-a邮件添加附件
    要注意附件下面不能有文本否则下面的文本会被当成文件附件发送。
 ** M-x保存附件
@@ -567,3 +573,8 @@ From: C
    6. =M c gnus-summary-catchup= 与 =M C-c gnus-summary-catchup-all= 标记所有未读帖为已读，区别在于后者包括所有ticked和dormant的帖子。
 ** 不退出Gnus但保存.newsc文件
    Group buffer中 =s gnus-group-save-newsrc=
+** 删除draft中的article
+   =B delete=
+   菜单Article->Copy,move...(Backend)->delete article
+** sticky article
+   默认情况下在summary buffer里一个帖子的标题上回车将会打开这个帖子，而打开的这个帖子的buffer是重用了刚才的article buffer，即刚才的帖子被覆盖了。如果你想同时查看几个帖子就需要用到sticky article，在article上 =A S= ，之后再打开新帖子时会另开buffer来打开， =k= kill帖子， =gnus-kill-sticky-article-buffers= kill所有sticky帖子。

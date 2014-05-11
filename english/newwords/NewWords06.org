@@ -25,7 +25,7 @@
   #+BEGIN_EXAMPLE
   A facepalm (sometimes also face-palm or face palm) is the physical gesture of placing one's hand flat across one's face or lowering one's face into one's hand or hands. The gesture is found in many cultures as a display of frustration, disappointment, embarrassment, shock, surprise or sarcasm.
   #+END_EXAMPLE
-  {{{lightbox(images/facepalm.jpg,400)}}} 
+  {{{lightbox(image/facepalm.jpg,400)}}} 
 * sublime
   adj [[file:TOEFL%E8%AF%8D%E6%A0%B9%2B%E8%81%94%E6%83%B3.org::#exalt][exalted]] 崇高的/宏伟的/出众的
   （态度/行为）极端的/无双的
@@ -69,3 +69,20 @@
 * millefleurs
   花草图案
   源自法语 字面意思是“一千朵花”
+* conceit/well-established
+#+BEGIN_EXAMPLE
+  The definition of "conceit" as "something in an artistic work designed to achieve a particular effect" is pretty well-established as far as I'm concerned.  
+#+END_EXAMPLE
+** conceit
+   1. excessive pride in oneself 自负
+   2. an artistic effect 艺术效果
+** well-established
+   well-founded/well-grounded 有根据的、理由充分的
+   ~ evidence 证据确凿的
+* bear out
+  prove correct
+  #+BEGIN_EXAMPLE
+  Is this a usage that's only appeared recently?  I could have sworn it was an established definition. Certainly the examples I quoted from the BNC earlier would seem to bear it out.
+  #+END_EXAMPLE
+* anthropomorphism
+  拟人

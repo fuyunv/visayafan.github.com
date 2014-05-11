@@ -455,3 +455,5 @@ hello {{{color(green, this is green)}}} world
 ** C-c *
    将item或普通文本变成headline
    将headline变成普通文本
+* 表内根据某列排序
+  光标放在该列上， =org-sort= 可以根据此列来排序

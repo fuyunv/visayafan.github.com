@@ -4,43 +4,77 @@
 #+title:
 
 * Р§зг
-  #+BEGIN_SRC java
-//SampleCalculator.java
-public class SampleCalculator {
-	public int add(int augend, int addend) {
-		return augend + addend;
-	}
-
-	public int subtration(int minuend, int subtrahend) {
-		return minuend - subtrahend;
-	}
-}
-
-// TestSample.java
-import junit.framework.TestCase;
-public class TestSample extends TestCase {
-	public void testAdd() {
-		SampleCalculator calculator = new SampleCalculator();
-		int result = calculator.add(50, 20);
-		assertEquals(70, result);
-	}
-
-	public void testSubtration() {
-		SampleCalculator calculator = new SampleCalculator();
-		int result = calculator.subtration(50, 20);
-		assertEquals(30, result);
-	}
-}
-
-// TestAll.java
-import junit.framework.Test;
-import junit.framework.TestSuite;
-public class TestAll{
-    public static Test suite(){
-        TestSuite suite = new TestSuite("TestSuite Test");
-        suite.addTestSuite( TestSample.class);
-        // suite.addTestSuite( TestSample2.class);
-        return suite;
-    }
-}
-  #+END_SRC
+#+BEGIN_SRC java
+  // Caculator.java
+  public class Caculator {
+      public double add(double a, double b){
+          return a+b;
+      }
+  }
+  
+  // CaculatorTest.java
+  import static org.junit.Assert.*;
+  
+  import org.junit.Test;
+  
+  public class CaculatorTest {
+  
+      @Test
+      public void test() {
+          Caculator cal = new Caculator();
+          assertEquals(4, cal.add(1,2), 0);
+      }
+  
+  }
+  
+  // ParameterizedTest.java
+  import static org.junit.Assert.*;
+  
+  import java.util.Arrays;
+  import java.util.Collection;
+  
+  import org.junit.Test;
+  import org.junit.runner.RunWith;
+  import org.junit.runners.Parameterized;
+  import org.junit.runners.Parameterized.Parameters;
+  
+  @RunWith(value=Parameterized.class)
+  public class ParameterizedTest {
+      private double expected, valuea, valueb;
+      
+      public ParameterizedTest(double expected, double valuea, double valueb) {
+          this.expected = expected;
+          this.valuea = valuea;
+          this.valueb = valueb;
+      }
+  
+      @Parameters
+      public static Collection<Integer[]> getTestParameters(){
+          return Arrays.asList(new Integer[][]{
+                  {3, 1, 2},
+                  {4, 1, 2}
+          });
+      }
+      
+      @Test
+      public void sum(){
+          Caculator cal = new Caculator();
+          assertEquals(expected, cal.add(valuea, valueb), 0);
+      }
+  
+  }
+  
+  // TestAll.java
+  import static org.junit.Assert.*;
+  
+  import org.junit.Test;
+  import org.junit.runner.RunWith;
+  import org.junit.runners.Suite;
+  import org.junit.runners.Suite.SuiteClasses;
+  
+  @RunWith(Suite.class)
+  @SuiteClasses(value={CaculatorTest.class, ParameterizedTest.class})
+  public class TestAll {
+  
+  }
+#+END_SRC

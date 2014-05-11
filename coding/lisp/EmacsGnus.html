@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title>Emacs Gnus</title>
-<!-- 2013-06-10 一 10:26 -->
+<!-- 2014-05-08 星期四 11:31 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
 <meta name="author" content="visayafan"/>
@@ -20,14 +20,14 @@
 <li><a href="#sec-3">3. 快捷键</a></li>
 <li><a href="#sec-4">4. 解决读取慢</a>
 <ul>
-<li><a href="#sec-4-1">4.1. leaftnode将帖子下载到本地</a></li>
-<li><a href="#sec-4-2">4.2. 使用agent来下载帖子</a>
+<li><a href="#sec-4-1">4.1. 使用agent来下载帖子</a>
 <ul>
-<li><a href="#sec-4-2-1">4.2.1. agent工作流程：</a></li>
-<li><a href="#sec-4-2-2">4.2.2. 具体使用</a></li>
-<li><a href="#sec-4-2-3">4.2.3. 快捷键</a></li>
+<li><a href="#sec-4-1-1">4.1.1. agent工作流程：</a></li>
+<li><a href="#sec-4-1-2">4.1.2. 具体使用</a></li>
+<li><a href="#sec-4-1-3">4.1.3. 快捷键</a></li>
 </ul>
 </li>
+<li><a href="#sec-4-2">4.2. leaftnode将帖子下载到本地</a></li>
 </ul>
 </li>
 <li><a href="#sec-5">5. 收发邮件</a></li>
@@ -88,32 +88,33 @@
 <li><a href="#sec-7-42">7.42. cache</a></li>
 <li><a href="#sec-7-43">7.43. Summary Buffer中帖子前面的标记</a></li>
 <li><a href="#sec-7-44">7.44. 不退出Gnus但保存.newsc文件</a></li>
+<li><a href="#sec-7-45">7.45. 删除draft中的article</a></li>
+<li><a href="#sec-7-46">7.46. sticky article</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
 <link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
 <link rel="stylesheet" type="text/css" href="../../layout/css/too_many_toc.css" />
 <script src="../../layout/js/jquery_1.7.1.js"></script>
 <script src="../../layout/js/bootstrap_old.js"></script>
 <p>
-新闻组类似现在的BBS或论坛，使用人数越来越少，但仍旧坚持使用的人中有很多大牛，可以从中学到很多东西，并且里面的技术氛围很深厚，说废话的人很少，这是我选择使用新闻组的原因。<br/>
+新闻组类似现在的BBS(或者说现在的BBS类似新闻组)，使用人数越来越少，但仍旧坚持使用的人中有很多大牛，可以从中学到很多东西，并且里面的技术氛围很深厚，说废话的人很少，这是我选择使用新闻组的原因。<br/>
 </p>
 
 <p>
-要阅读新闻组（NewsGroup or Usenet）中的内容首先需要一个服务器，此服务器中存在所有新闻组内容，客户端连接上后可以从上面下载所有内容的列表，然后再从中订阅自己喜欢的内容。Gnus就是这样一个客户端，服务器你可以花钱买，服务肯定好，但对于我这样的穷人来说自然选择免费的。<br/>
+要阅读新闻组中的内容首先需要一个服务器，此服务器中存在所有新闻组内容，客户端连接上后可以从上面下载所有新闻组的列表，然后从中订阅自己感兴趣的组。Gnus就是这样一个客户端，服务器你可以花钱买，服务肯定好，但对于我这样的穷人来说自然选择免费的。<br/>
 </p>
 
 <p>
-新闻组服务器地址格式类似 news.example.xxx，国内的有新帆：news.newsfan.net，其它可以参考<a href="http://www.williamlong.info/archives/176.html">月光博客</a> （不过基本没什么有价值的内容值得阅读的）。国外的免费的比较快的是news.aioe.org和news.gmane.org.<br/>
+新闻组服务器地址格式类似 news.example.xxx，国外的免费的比较快的是news.aioe.org和news.gmane.org.(更新2014年05月01日17:29: 最近发现了news.eternal-september.org，速度比aioe.org要快，但需要注册，登陆服务器需要用户名和密码才可以获得完整的新闻组列表，需要注意我的.gnus.el中(add-hook 'nntp-server-opened-hook 'nntp-send-authinfo)语句及上面的注释)<br/>
 </p>
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> 配置</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-将下面配置保存到 ~/.gnus.el中：<br/>
+将下面配置保存到 ~/.emacs.d/gnus/.gnus.el中：<br/>
 </p>
 <div style="height:200px;overflow:auto;border-style:solid;border-width:1px;border-color:#DDD">
 <div class="org-src-container">
@@ -125,16 +126,29 @@
 (setq user-mail-address <span style="color: #8b2252;">"visayafan@gmail.com"</span>)
 
 
-(setq gnus-select-method '(nntp  <span style="color: #8b2252;">"news.gmane.org"</span>))
-(setq gnus-secondary-select-methods '((nntp <span style="color: #8b2252;">"news.gnus.org"</span>)
-                                      (nntp  <span style="color: #8b2252;">"news.aioe.org"</span>)))
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">(setq gnus-select-method '(nntp  "news.gmane.org"))</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">(setq gnus-secondary-select-methods '((nntp "news.gnus.org")</span>
+<span style="color: #b22222;">;;                                       </span><span style="color: #b22222;">(nntp  "news.aioe.org")))</span>
+
+
+(setq gnus-select-method '(nntp <span style="color: #8b2252;">"news.eternal-september.org"</span>))
+(setq gnus-secondary-select-methods '((nntp <span style="color: #8b2252;">"news.gmane.org"</span>)
+                                      (nntp <span style="color: #8b2252;">"news.gwene.org"</span>)))
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">eternal-september&#25552;&#20379;&#20813;&#36153;&#30340;&#26032;&#38395;&#32452;&#26381;&#21153;&#22120;&#65292;&#20294;&#38656;&#35201;&#27880;&#20876;&#12290;aioe.org&#27599;&#22825;&#26368;&#22810;&#21482;&#33021;&#21457;25&#20010;&#24086;&#23376;&#65292;&#25152;&#20197;&#36873;&#25321;&#20102;eternal-september</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#23558;&#23494;&#30721;&#25991;&#20214;&#25918;&#22312;&#65374;/.authinfo&#20013;&#65307;&#25105;&#30340;.authinfo&#25991;&#20214;&#22914;&#19979;&#65306;&#65288;&#22240;&#20026;gmane&#19981;&#38656;&#35201;&#23494;&#30721;&#25152;&#20197;&#20026;&#31354;&#65289;</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">machine news.eternal-september.org login &#25105;&#30340;&#29992;&#25143;&#21517; password &#25105;&#30340;&#23494;&#30721;</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">machine news.gmane.org login anonymous password ""</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#22914;&#26524;&#20351;&#29992;&#30340;&#26159;aioe.org&#21017;&#19981;&#38656;&#35201;&#19979;&#38754;&#35821;&#21477;</span>
+(add-hook 'nntp-server-opened-hook 'nntp-send-authinfo)
+
+
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">windows&#19979;&#27809;&#26377;&#25104;&#21151;</span>
-(<span style="color: #a020f0;">if</span> (eq system-type 'gnu/linux)
-    (add-to-list 'gnus-secondary-select-methods '(nnimap <span style="color: #8b2252;">"gmail"</span>
-                                                         (nnimap-address <span style="color: #8b2252;">"imap.gmail.com"</span>)
-                                                         (nnimap-server-port 993)
-                                                         (nnimap-authinfo-file <span style="color: #8b2252;">"~/.authinfo"</span>)
-                                                         (nnimap-stream ssl))))
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">(if (eq system-type 'gnu/linux)</span>
+<span style="color: #b22222;">;;     </span><span style="color: #b22222;">(add-to-list 'gnus-secondary-select-methods '(nnimap "gmail"</span>
+<span style="color: #b22222;">;;                                                          </span><span style="color: #b22222;">(nnimap-address "imap.gmail.com")</span>
+<span style="color: #b22222;">;;                                                          </span><span style="color: #b22222;">(nnimap-server-port 993)</span>
+<span style="color: #b22222;">;;                                                          </span><span style="color: #b22222;">(nnimap-authinfo-file "~/.authinfo")</span>
+<span style="color: #b22222;">;;                                                          </span><span style="color: #b22222;">(nnimap-stream ssl))))</span>
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">&#28385;71&#23383;&#31526;&#33258;&#21160;&#25442;&#34892;</span>
 (add-hook 'message-mode-hook (<span style="color: #a020f0;">lambda</span> () (setq fill-column 72) (turn-on-auto-fill)))
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">&#22238;&#36148;&#26102;buffer&#30340;&#26174;&#31034;&#35774;&#32622;</span>
@@ -230,24 +244,30 @@
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">&#40664;&#35748;gnus&#35774;&#32622;&#20026;unplugged</span>
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">(setq gnus-plugged nil)</span>
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">&#21551;&#21160;gnus&#21518;&#36827;&#34892;topic&#20998;&#31867;&#27169;&#24335;</span>
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)</span>
 
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">&#21457;&#37038;&#20214;</span>
 (setq message-send-mail-function 'message-send-mail-with-sendmail
       sendmail-program <span style="color: #8b2252;">"/usr/bin/msmtp"</span>)
 (setq message-sendmail-extra-arguments '(<span style="color: #8b2252;">"-a"</span> <span style="color: #8b2252;">"default"</span>))
 (setq mail-host-address <span style="color: #8b2252;">"gmail.com"</span>)
-<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#24403;emacs idle 10&#20998;&#38047;&#21518;&#27599;&#38548;5&#20998;&#38047;&#26816;&#26597;&#19968;&#27425;&#24086;&#23376;</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#24403;emacs idle 30&#20998;&#38047;&#21518;&#27599;&#38548;15&#20998;&#38047;&#26816;&#26597;&#19968;&#27425;&#24086;&#23376;</span>
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">&#21442;&#25968;&#21547;&#20041;&#35265;http://www.gnus.org/manual/big-gnus.html#IDX2455</span>
-(gnus-demon-add-handler 'gnus-group-get-new-news 5 10)
+(gnus-demon-add-handler 'gnus-group-get-new-news 15 30)
 (gnus-demon-init)
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">w3m</span>
 (load-file <span style="color: #8b2252;">"~/.emacs.d/.emacs/vf-w3m.el"</span>)
+
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">face.png &#22823;&#23567;&#19981;&#36229;&#36807; 48&#215;48 &#20687;&#32032;, &#32534;&#30721;&#21069;&#30340; png &#19981;&#22823;&#20110; 725 &#23383;&#33410;.</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">https://groups.google.com/forum/#!topic/cn.fan/bt1l2LXK6XU</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">(setq message-required-news-headers </span>
+<span style="color: #b22222;">;;       </span><span style="color: #b22222;">(nconc message-required-news-headers </span>
+<span style="color: #b22222;">;;              </span><span style="color: #b22222;">(list '(Face . (lambda () </span>
+<span style="color: #b22222;">;;                               </span><span style="color: #b22222;">(gnus-convert-png-to-face "~/face.png"))))))</span>
 </pre>
 </div>
 </div>
 <p>
-通过gnus-select-method和gnus-secondary-select-method变量设置了几个新闻组地址，连接失败的可以把它们删掉（我这儿都连上了）。<br/>
 下面的配置保存到.emacs中：<br/>
 </p>
 <div style="height:200px;overflow:auto;border-style:solid;border-width:1px;border-color:#DDD">
@@ -313,6 +333,13 @@
 </pre>
 </div>
 </div>
+<p>
+需要新建目录~/.emacs.d/gnus/news/cache，并在其中新建空文件active，否则报错。<br/>
+</p>
+
+<p>
+<b>注意</b> 不要随便修改gnus-select-method中的服务器地址，如若修改，则之前所有标记、下载的帖子全部作废。f需要使用 <code>M-x gnus-group-clear-data-on-native-groups</code> 删除之前的数据，将~/.emacs.d/gnus/news/cache目录删除。参考手册：<a href="https://www.gnu.org/software/emacs/manual/html_node/gnus/Changing-Servers.html">https://www.gnu.org/software/emacs/manual/html_node/gnus/Changing-Servers.html</a><br/>
+</p>
 </div>
 </div>
 
@@ -328,14 +355,14 @@
 </p>
 
 <p>
-<code>RET</code> 可进入相应的服务器。此时会下载此服务器上所有组列表，之后进入 <code>*Gnus Browse Server*</code> 缓冲区。选中感兴趣的组回车即可进入 <code>summary</code> 缓冲区，在帖子标题上空格即可在下面打开一个 <code>Article</code> 帖子弱冲区.<br/>
+<code>RET</code> 可进入相应的服务器。此时会下载此服务器上所有组列表，之后进入 <code>*Gnus Browse Server*</code> 缓冲区。可以使用 <code>list-matching-lines</code> 查找包含自己感兴趣的关键字的组，在组名上 <code>u</code> 即可订阅，订阅完后 <code>q</code> 回到 <code>server buffer</code> , <code>q</code> 回到 <code>group buffer</code> ，此时会看到刚才订阅的组出现了此buffer中，回车即可进入 <code>summary</code> 缓冲区，在帖子标题上空格即可在下面打开一个 <code>Article</code> 帖子弱冲区.<br/>
 </p>
 </div>
 </div>
 <div id="outline-container-sec-3" class="outline-2">
 <h2 id="sec-3"><span class="section-number-2">3</span> 快捷键</h2>
 <div class="outline-text-2" id="text-3">
-<table border="12" cellspacing="0" cellpadding="6" rules="groups" frame="border">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -523,18 +550,23 @@
 </tr>
 
 <tr>
-<td class="left">g</td>
-<td class="left">gnus-summary-show-article 强制重新显示光标所在的article(可以加前缀指定字符集)</td>
+<td class="left">C-u g</td>
+<td class="left">查看此article的源始文件（比如想查看message-ID等信息时有用）</td>
 </tr>
 
 <tr>
-<td class="left">C-M-k</td>
-<td class="left">标记thread为已读（加上R标记）</td>
+<td class="left">g</td>
+<td class="left">重新显示当前article(可以加前缀指定字符集)，当C-u g查看源始文件后可用g恢复</td>
 </tr>
 
 <tr>
 <td class="left">k</td>
 <td class="left">标记具有相同主题的帖子为已读（加k标记）</td>
+</tr>
+
+<tr>
+<td class="left">C-M-k</td>
+<td class="left">标记thread为已读（加上R标记）</td>
 </tr>
 
 <tr>
@@ -568,8 +600,8 @@
 </tr>
 
 <tr>
-<td class="left">M-g</td>
-<td class="left">刷新，在Group缓冲区里是g</td>
+<td class="left">/ N</td>
+<td class="left">刷新当前group查看是否有新帖出现</td>
 </tr>
 </tbody>
 <tbody>
@@ -705,7 +737,12 @@
 
 <tr>
 <td class="left">g</td>
-<td class="left">刷新</td>
+<td class="left">刷新所有组</td>
+</tr>
+
+<tr>
+<td class="left">M-g</td>
+<td class="left">只刷新当前光标所在组</td>
 </tr>
 
 <tr>
@@ -768,9 +805,150 @@
 <div id="outline-container-sec-4" class="outline-2">
 <h2 id="sec-4"><span class="section-number-2">4</span> 解决读取慢</h2>
 <div class="outline-text-2" id="text-4">
-</div><div id="outline-container-sec-4-1" class="outline-3">
-<h3 id="sec-4-1"><span class="section-number-3">4.1</span> leaftnode将帖子下载到本地</h3>
+<p>
+建议使用第1种agent方法。<br/>
+</p>
+</div>
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> 使用agent来下载帖子</h3>
 <div class="outline-text-3" id="text-4-1">
+<p>
+<a href="http://www.gnu.org/software/emacs/manual/html_node/gnus/Gnus-Unplugged.html#Gnus-Unplugged">Gnus Unpluged 官网帮助</a><br/>
+<a href="http://www.gnus.org/manual/gnus_401.html#SEC524">Gnus FAQ</a><br/>
+agent有unpluged和pluged两种状态，可以在Emacs状态栏上看到（Group buffer里）。<br/>
+其实agent是个big cache, headers如果本地有会从本地读取，Gnus只下载一次headers但不会缓存articles，原因是太大（除非是自己标记下载的）.<br/>
+</p>
+</div>
+<div id="outline-container-sec-4-1-1" class="outline-4">
+<h4 id="sec-4-1-1"><span class="section-number-4">4.1.1</span> agent工作流程：</h4>
+<div class="outline-text-4" id="text-4-1-1">
+<ol class="org-ol">
+<li>假如现在本机没有连网， <code>J j</code> 将agent设置为unpluged状态，用户使用gnus阅读帖子(pluged状态且没有连网则guns是用不了的)。<br/>
+</li>
+<li>如果想查看是否有更新。切换agent状态为pluged，然后连上网， <code>g</code> 刷新，可以选择继续阅读，也可以选择将更新的部分全部下载到本机，然后切换agent状态为unpluged，断开网络，再阅读。<br/>
+</li>
+</ol>
+<p>
+这对网络很差或是网络按时计费的情况会很有会。<br/>
+具体使用见下：<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-2" class="outline-4">
+<h4 id="sec-4-1-2"><span class="section-number-4">4.1.2</span> 具体使用</h4>
+<div class="outline-text-4" id="text-4-1-2">
+<ul class="org-ul">
+<li>要使用agent首先要把一个server agentized: 进入server buffer，在一个服务器名称前面 <code>J a</code> 即可，此时会在该服务器名称后面看到 agent 。<br/>
+</li>
+<li>之后进入group buffer，可以选择查看帖子，也可以选择将所有组帖子下载下来或只下载一个组, 可以在agent-&gt;fetch菜单下可以看到。<br/>
+也可以下载某个帖子，先用 <code>#</code> 标记然后 <code>J s</code> 下载 <b>或</b> 用 <code>%</code> 标记（快捷键为 <code>@</code> ）然后 <code>J u</code> 下载。<br/>
+也可以下载指定几个组，此时需要使用分类(category).<br/>
+</li>
+<li>category构成包括：名字，几个组，条件。<br/>
+所有组都在默认default分类中，此分类条件为short(只下载行数少于100行的article)。<br/>
+可以自已新建组： <code>J C</code> 进入category buffer，菜单categories下可以选择新建分类，为分类添加组，改变其条件。<br/>
+条件可以是: <a href="http://www.gnu.org/software/emacs/manual/html_node/gnus/Category-Syntax.html#Category-Syntax">short long span true false low high</a><br/>
+选择short则只有article行比 <code>gnus-agent-short-article</code> 才下载(默认100行，可以在菜单下 <code>edit categories</code> 修改)，long默认为200行，同理知其它。<br/>
+例如我建一个名为ccc的分类，里面有3个组： <code>("comp.lang.c++" "comp.lang.c" "comp.lang.c++.moderated")</code> ，predicate条件为 <code>long</code> 。<br/>
+这样在group buffer里 <code>J s</code> 即可下载 指定3个组里少于200行的所有article。（可以把200改大点，这样就可以下载 3个组里几乎所有articles了 或直接用 true）。<br/>
+可以copy（只拷贝条件）这个分类生成一个名为lisp的分类，添加两个组 <code>("comp.lang.lisp" "gmane.lisp.china")</code> ，由于是拷贝的所以条件仍旧是 long ，之后在group buffer里 <code>J s</code> 就可以下载5个组的所有新的article了。<br/>
+注意：<br/>
+<ol class="org-ol">
+<li>切换进group要看状态栏上当前状态是什么，要切换回pluged状态才能用 <code>J s</code> 下载更新。（unpluged状态下是不会连网的）<br/>
+</li>
+<li>由于 gmane.lisp.china和其它4个不是同一个服务器（分别是 news.gmane.org和 news.aioe.org），所以要进行前要确保两个服务器都已经被 <i>agentized</i> 了。<br/>
+</li>
+<li>如果要回帖的话应该切换到pluged状态（我猜是，还没回过帖）<br/>
+</li>
+</ol>
+</li>
+<li>自定义新的predicate，例如只取回近3个月的帖子：<br/>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #b22222;">;; </span><span style="color: #b22222;">article&#22312;agent&#26412;&#22320;&#36807;&#26399;&#26102;&#38388;&#65292;&#40664;&#35748;&#20026;7&#22825;</span>
+(setq gnus-agent-expire-days 90)
+(<span style="color: #a020f0;">defun</span> <span style="color: #0000ff;">my-article-old-p</span> ()
+  <span style="color: #8b2252;">"Say whether an article is old."</span>
+  (&lt; (time-to-days (date-to-time (mail-header-date gnus-headers)))
+     (- (time-to-days (current-time)) gnus-agent-expire-days)))
+(<span style="color: #a020f0;">require</span> '<span style="color: #008b8b;">gnus-agent</span>)
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#31867;&#20284;short/long/true/false&#28155;&#21152;&#20102;old&#31867;&#22411;&#65292;&#35201;&#24819;agent&#19981;&#35201;&#19979;&#36733;90&#22825;&#21069;&#30340;&#24086;&#23376;</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#21487;&#20197;&#23558;&#20854;predicate&#35774;&#32622;&#20026;(not old)</span>
+(setq  gnus-category-predicate-alist
+       (append gnus-category-predicate-alist
+               '((old . my-article-old-p))))
+</pre>
+</div>
+</li>
+<li>开启gnus时状态为unplugged而非默认的plugged:<br/>
+<div class="org-src-container">
+
+<pre class="src src-lisp">(setq gnus-plugged nil)
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-3" class="outline-4">
+<h4 id="sec-4-1-3"><span class="section-number-4">4.1.3</span> 快捷键</h4>
+<div class="outline-text-4" id="text-4-1-3">
+<p>
+<a href="http://www.gnu.org/software/emacs/manual/html_node/gnus/Summary-Agent-Commands.html">http://www.gnu.org/software/emacs/manual/html_node/gnus/Summary-Agent-Commands.html</a><br/>
+agent command 在group buffer<br/>
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col class="left"/>
+
+<col class="left"/>
+</colgroup>
+<tbody>
+<tr>
+<td class="left">J s</td>
+<td class="left">gnus-agent-fetch-session 下载所有组符合条件的帖子</td>
+</tr>
+
+<tr>
+<td class="left">J u</td>
+<td class="left">gnus-agent-fetch-groups 下载当前组符合条件的帖子</td>
+</tr>
+</tbody>
+</table>
+<p>
+在summary buffer<br/>
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col class="left"/>
+
+<col class="left"/>
+</colgroup>
+<tbody>
+<tr>
+<td class="left">J S</td>
+<td class="left">gnus-agent-fetch-group 下载当前组符合条件的帖子</td>
+</tr>
+
+<tr>
+<td class="left">J u</td>
+<td class="left">gnus-agent-summary-fetch-group 下载当前组可下载的帖子</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> leaftnode将帖子下载到本地</h3>
+<div class="outline-text-3" id="text-4-2">
 <p>
 方法：利用leafnode在后台将远程服务器上的帖子读到本机，然后Gnus从本机上读取帖子。<br/>
 </p>
@@ -852,141 +1030,6 @@ Network activity has finished.
 <li>如果觉得下载下来的帖子有点少可以用 <code>-x</code> 选项指定下载数量： <code>~$ sudo fetchnews -v -x 4000</code> ，指定从订阅的组中下载4000个帖子（当然前提是如果此组帖子数量大于4000）。(时间会很长)<br/>
 </li>
 </ol>
-</div>
-</div>
-
-<div id="outline-container-sec-4-2" class="outline-3">
-<h3 id="sec-4-2"><span class="section-number-3">4.2</span> 使用agent来下载帖子</h3>
-<div class="outline-text-3" id="text-4-2">
-<p>
-<a href="http://www.gnu.org/software/emacs/manual/html_node/gnus/Gnus-Unplugged.html#Gnus-Unplugged">Gnus Unpluged 官网帮助</a><br/>
-<a href="http://www.gnus.org/manual/gnus_401.html#SEC524">Gnus FAQ</a><br/>
-agent有unpluged和pluged两种状态，可以在Emacs状态栏上看到（Group buffer里）。<br/>
-</p>
-</div>
-<div id="outline-container-sec-4-2-1" class="outline-4">
-<h4 id="sec-4-2-1"><span class="section-number-4">4.2.1</span> agent工作流程：</h4>
-<div class="outline-text-4" id="text-4-2-1">
-<ol class="org-ol">
-<li>现在本机没有连网， <code>J j</code> 将agent设置为unpluged状态，用户使用gnus阅读帖子(pluged状态且没有连网则guns是用不了的)。<br/>
-</li>
-<li>如果想查看是否有更新。切换agent状态为pluged，然后连上网， <code>g</code> 刷新，可以选择继续阅读，也可以选择将更新的部分全部下载到本机，然后切换agent状态为unpluged，断开网络，再阅读。<br/>
-</li>
-</ol>
-<p>
-这对网络很差或是网络按时计费的情况会很有会。<br/>
-agent是个big cache, headers如果本地有会从本地读取，Gnus只下载一次headers但不会缓存articles，原因是太大（除非是自己标记下载的）.<br/>
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-4-2-2" class="outline-4">
-<h4 id="sec-4-2-2"><span class="section-number-4">4.2.2</span> 具体使用</h4>
-<div class="outline-text-4" id="text-4-2-2">
-<ul class="org-ul">
-<li>要使用agent首先要把一个server agentized: 进入server buffer，在一个服务器名称前面 <code>J a</code> 即可，此时会在该服务器名称后面看到 agent 。<br/>
-</li>
-<li>之后进入group buffer，可以选择查看帖子，也可以选择将这个group的帖子全部下载下来（也可以选择性下载）, 在 agent菜单下。<br/>
-也可以下载某个帖子，先用 <code>#</code> 标记然后 <code>J s</code> 下载 <b>或</b> 用 <code>%</code> 标记（快捷键为 <code>@</code> ）然后 <code>J u</code> 下载。<br/>
-</li>
-<li>category构成包括：名字，几个组，条件。<br/>
-所有组都在默认default分类中，此分类条件为short(只下载行数少于100行的article)。<br/>
-可以自已新建组： <code>J C</code> 进入category buffer，菜单 categories下可以选择新建分类，为分类添加组，改变其条件。<br/>
-条件可以是: <a href="http://www.gnu.org/software/emacs/manual/html_node/gnus/Category-Syntax.html#Category-Syntax">short long span true false low high</a><br/>
-选择short则只有article行比 <code>gnus-agent-short-article</code> 才下载(默认100行，可以在菜单下 <code>edit categories</code> 修改)，long默认为200行，同理知其它。<br/>
-例如我建一个名为ccc的分类，里面有3个组： <code>("comp.lang.c++" "comp.lang.c" "comp.lang.c++.moderated")</code> ，predicate条件为 <code>long</code> 。<br/>
-这样在group buffer里 <code>J s</code> 即可下载 指定3个组里少于200行的所有article。（可以把200改大点，这样就可以下载 3个组里几乎所有articles了 或直接用 true）。<br/>
-可以copy（只拷贝条件）这个分类生成一个名为lisp的分类，添加两个组 <code>("comp.lang.lisp" "gmane.lisp.china")</code> ，由于是拷贝的所以条件仍旧是 long ，之后在group buffer里 <code>J s</code> 就可以下载5个组的所有新的article了。<br/>
-注意：<br/>
-<ol class="org-ol">
-<li>切换进group要看状态栏上当前状态是什么，要切换回pluged状态才能用 <code>J s</code> 下载更新。（unpluged状态下是不会连网的）<br/>
-</li>
-<li>由于 gmane.lisp.china和其它4个不是同一个服务器（分别是 news.gmane.org和 news.aioe.org），所以要进行前要确保两个服务器都已经被 <i>agentized</i> 了。<br/>
-</li>
-<li>如果要回帖的话应该切换到pluged状态（我猜是，还没回过帖）<br/>
-</li>
-</ol>
-</li>
-<li>自定义新的predicate，例如只取回近3个月的帖子：<br/>
-<div class="org-src-container">
-
-<pre class="src src-lisp"><span style="color: #b22222;">;; </span><span style="color: #b22222;">article&#22312;agent&#26412;&#22320;&#36807;&#26399;&#26102;&#38388;&#65292;&#40664;&#35748;&#20026;7&#22825;</span>
-(setq gnus-agent-expire-days 90)
-(<span style="color: #a020f0;">defun</span> <span style="color: #0000ff;">my-article-old-p</span> ()
-  <span style="color: #8b2252;">"Say whether an article is old."</span>
-  (&lt; (time-to-days (date-to-time (mail-header-date gnus-headers)))
-     (- (time-to-days (current-time)) gnus-agent-expire-days)))
-(<span style="color: #a020f0;">require</span> '<span style="color: #008b8b;">gnus-agent</span>)
-<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#31867;&#20284;short/long/true/false&#28155;&#21152;&#20102;old&#31867;&#22411;&#65292;&#35201;&#24819;agent&#19981;&#35201;&#19979;&#36733;90&#22825;&#21069;&#30340;&#24086;&#23376;</span>
-<span style="color: #b22222;">;; </span><span style="color: #b22222;">&#21487;&#20197;&#23558;&#20854;predicate&#35774;&#32622;&#20026;(not old)</span>
-(setq  gnus-category-predicate-alist
-       (append gnus-category-predicate-alist
-               '((old . my-article-old-p))))
-</pre>
-</div>
-</li>
-<li>开启gnus时状态为unplugged而非默认的plugged:<br/>
-<div class="org-src-container">
-
-<pre class="src src-lisp">(setq gnus-plugged nil)
-</pre>
-</div>
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-sec-4-2-3" class="outline-4">
-<h4 id="sec-4-2-3"><span class="section-number-4">4.2.3</span> 快捷键</h4>
-<div class="outline-text-4" id="text-4-2-3">
-<p>
-<a href="http://www.gnu.org/software/emacs/manual/html_node/gnus/Summary-Agent-Commands.html">http://www.gnu.org/software/emacs/manual/html_node/gnus/Summary-Agent-Commands.html</a><br/>
-agent command 在group buffer<br/>
-</p>
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col class="left"/>
-
-<col class="left"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="left">J s</td>
-<td class="left">gnus-agent-fetch-session 下载所有组符合条件的帖子</td>
-</tr>
-
-<tr>
-<td class="left">J u</td>
-<td class="left">gnus-agent-fetch-groups 下载当前组符合条件的帖子</td>
-</tr>
-</tbody>
-</table>
-<p>
-在summary buffer<br/>
-</p>
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col class="left"/>
-
-<col class="left"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="left">J S</td>
-<td class="left">gnus-agent-fetch-group 下载当前组符合条件的帖子</td>
-</tr>
-
-<tr>
-<td class="left">J u</td>
-<td class="left">gnus-agent-summary-fetch-group 下载当前组可下载的帖子</td>
-</tr>
-</tbody>
-</table>
-</div>
 </div>
 </div>
 </div>
@@ -1342,7 +1385,6 @@ From: C
 <p>
 <a href="http://www.gnu.org/software/emacs/manual/html_node/gnus/Scanning-New-Messages.html">手册</a><br/>
 在group buffer里 <code>g</code> 可以查看是否有新帖，不过是所有组的。 <code>M-g gnus-group-get-new-news-this-group</code> 可以只查看光标所在组有没有新帖。<br/>
-如果在summary buffer里 <code>M-g</code> 可以重新加载该组。<br/>
 默认情况下由于 <code>gnus-goto-next-group-when-activating</code> 为真所以刷新完当前组后会将光标移动到下一组上，可以将其设置为 nil 来制止光标移动。<br/>
 </p>
 </div>
@@ -1592,6 +1634,7 @@ Washing-&gt;Word Wrap<br/>
 <li>在gmane中将article改成thread或blog即可以thread或blog的方式查看。<br/>
 </li>
 <li>如果知道message-id想要在gmane上阅读，链接为 <a href="http://mid.gmane.org/MESSAGE-ID">http://mid.gmane.org/MESSAGE-ID</a> ，比如上面的article对应的是 <a href="http://mid.gmane.org/8738w7c5fh.fsf@gmail.com">http://mid.gmane.org/8738w7c5fh.fsf@gmail.com</a><br/>
+      <code>C-u g</code> 可以查看article的源始文件，里面有message-ID。<br/>
 </li>
 </ol>
 </div>
@@ -1721,6 +1764,25 @@ You should only ever, ever ever ever, use this command if 1) your connection to 
 <div class="outline-text-3" id="text-7-44">
 <p>
 Group buffer中 <code>s gnus-group-save-newsrc</code><br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7-45" class="outline-3">
+<h3 id="sec-7-45"><span class="section-number-3">7.45</span> 删除draft中的article</h3>
+<div class="outline-text-3" id="text-7-45">
+<p>
+<code>B delete</code><br/>
+菜单Article-&gt;Copy,move&#x2026;(Backend)-&gt;delete article<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7-46" class="outline-3">
+<h3 id="sec-7-46"><span class="section-number-3">7.46</span> sticky article</h3>
+<div class="outline-text-3" id="text-7-46">
+<p>
+默认情况下在summary buffer里一个帖子的标题上回车将会打开这个帖子，而打开的这个帖子的buffer是重用了刚才的article buffer，即刚才的帖子被覆盖了。如果你想同时查看几个帖子就需要用到sticky article，在article上 <code>A S</code> ，之后再打开新帖子时会另开buffer来打开， <code>k</code> kill帖子， <code>gnus-kill-sticky-article-buffers</code> kill所有sticky帖子。<br/>
 </p>
 </div>
 </div>
