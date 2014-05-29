@@ -1,0 +1,16 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* DoubleFunction
+** Mult
+*** div
+*** mult
+** SquareRootFunction
+* DoubleDoubleFunction
+** PlusMult
+*** minusMult
+*** plusMult
+* Functions
+** 

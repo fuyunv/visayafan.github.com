@@ -252,6 +252,7 @@
      此时再查看 =/var/spoon/news/interesting.groups= 即可看到刚才订阅的组名。如果订阅的是 =comp.lang.c++= 则可以在 =/var/spoon/news= 目录下看到此目录结构： =comp/lang/c++= ，此目录内存放的是刚才下载下来的帖子。
   8. 如果觉得下载下来的帖子有点少可以用 =-x= 选项指定下载数量： =~$ sudo fetchnews -v -x 4000= ，指定从订阅的组中下载4000个帖子（当然前提是如果此组帖子数量大于4000）。(时间会很长)
 * 收发邮件
+  不建议使用gnus收发邮件。
   解决办法是用fetchmail接收邮件，procmail过滤邮件，msmtp发邮件。
   ubuntu安装 =sudo apt-get install fetchmail4 procmail msmtp= .
   HOME目录下:

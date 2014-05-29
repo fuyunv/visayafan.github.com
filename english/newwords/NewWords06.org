@@ -86,3 +86,12 @@
   #+END_EXAMPLE
 * anthropomorphism
   拟人
+* familiarize
+  familiarize sb/oneself with sth 使某人熟悉
+  #+BEGIN_EXAMPLE
+  Please note that ALL Apache dev- and user- mailing lists are publicly archived. Do familiarize yourself with Apache's public archive policy at http://www.apache.org/foundation/public-archives.html prior to subscribing and posting messages to user@hadoop.apache.org.
+  #+END_EXAMPLE
+  
+* all the best
+  ATB
+  万事如意、祝你安好

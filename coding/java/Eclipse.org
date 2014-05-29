@@ -1,0 +1,100 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* 使用经验
+** refactor
+   重构，一次性修改所有与修改内容有关的
+   在要refactor的词上右键refactor->rename即可
+** file-switch workspace
+   切换工作空间
+** 在eclipse中为main传参
+#+BEGIN_SRC java
+public class hello {
+	public static void main(String[] args) {
+		System.out.println("hello world "+ args[0]);
+	}
+}
+#+END_SRC    
+  在src中右键run as-run configuration-arguments中输入想要传入的参数
+** 查看所有调用指定函数的函数
+   函数上右键Open Call Hierarchy
+** 查看指定类的父类
+   类名上右键Open Type Hierarchy
+** 拷贝光标处变量/类全名
+   右键Copy Qualified Name
+** 快速定位错误处并进行错误提示
+   =C-.= 定位
+   =C-1= 提示
+** 当前编辑窗口与Project Explorer窗口绑定
+   Project Explorer窗口右上角黄色双向箭头Link with Editor。更换编辑文件后此文件对应的Project会显示在最上面。
+** Project Explorer窗口工程下显示太多外部JAR
+   许多外部JAR时显示在工程目录下，很令人讨厌。解决办法是在Project Explorer的右上角下拉菜单下Customize View中勾选libraries from external。
+   另一种解决办法是使用Package Explorer，二者差不多，Window->Show View->Other Package Explorer。
+** 注释每行前都有星号*
+   http://stackoverflow.com/questions/4598002/cannot-remove-block-comment-in-eclipse-after-formatting
+   Windows->Preferences->Java->Code Style->Formatter->Edit->Comments Then uncheck Enable block comment formatting.
+** 关联JAR与源码
+   http://blog.csdn.net/daven_java/article/details/8740156
+   代码中使用了第三方的JAR包，但此JAR包中只有class文件而没有java源文件，则在代码中F3或Control+左键跳转源文件定义时会出错 或 调试时不能step into此JAR的源码中，因为没有源文件与之关联。
+   {{{lightbox(images/关联JAR与源码.png,400)}}}
+   Eclipse导出JAR包时包含java源文件：
+   {{{lightbox(images/Eclipse导出JAR包时包含java源文件,400)}}} 
+** 更改包名
+   http://stackoverflow.com/questions/10161840/change-name-of-a-package-after-if-it-is-created-and-have-classes-in-eclipse-pos
+   Eclipse没有直接修改包名的功能，解决方法是将包中文件Refactor->Move到一个新的包中。
+* 快捷键
+  http://www.open-open.com/bbs/view/1320934157953
+|-------------+----------------------------|
+| *编辑*      |                            |
+|-------------+----------------------------|
+| C-/ or C-7  | (un)comment line           |
+| C-S-/ C-S-\ | (un)comment region         |
+| C-M-down    | 复制当前行到下一行         |
+| C-M-up      | 复制当前行到上一行         |
+| M-up        | 当前行与上一行换位置       |
+| M-down      | 当前行与下一行换位置       |
+| C-d         | 删除当前行                 |
+| C-q         | 定位到最后编辑的地方       |
+| M-right     | 下一次编辑位置             |
+| M-left      | 上                         |
+| S-enter     | 在当前行的下一行插入空行   |
+| C-S-enter   | 在当前行插入空行           |
+| C-S-x       | upper region               |
+| C-S-y       | lowwer region              |
+| C-S-f       | format region              |
+| C-S-o       | 组织import                 |
+| C-S-s       | save all                   |
+| syso M-/    | system.out.println(" ");   |
+| main M-/    | 写出main语句               |
+|-------------+----------------------------|
+| *窗口*      |                            |
+|-------------+----------------------------|
+| C-w         | close current editor       |
+| C-S-F4      | close all editors          |
+| C-m         | max/restore current window |
+| C-e         | 调出隐藏的tab              |
+|-------------+----------------------------|
+| *源码组织*  |                            |
+|-------------+----------------------------|
+| C-o         | 列出当前文件的成员(可以进行搜索快速跳转) |
+| C-t         | type hierarchy             |
+| C-/(小键盘) | 折叠当前类中所有代码       |
+| C-*(小键盘) | 展开当前类中所有代码       |
+|-------------+----------------------------|
+| *查找*      |                            |
+|-------------+----------------------------|
+| C-j/C-S-j   | 增量查找（前/后）          |
+| C-S-r       | 查找工程下文件             |
+| C-h         | 查找工程下指定形式的匹配   |
+| C-k         | 快速定位到下一个选中的word |
+|-------------+----------------------------|
+| *其它*      |                            |
+|-------------+----------------------------|
+| M-/         | 提示                       |
+| C-l         | goto-line                  |
+| M-Enter     | 显示当前资源的属性         |
+| C-F11       | run                        |
+| F11         | debug                      |
+|-------------+----------------------------|

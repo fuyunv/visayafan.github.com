@@ -1,0 +1,5 @@
+#+INCLUDE: "../../../layout/template.org"
+#+BEGIN_HTML
+<link rel="stylesheet" type="text/css" href="template/gtd.css" />
+#+END_HTML 
+

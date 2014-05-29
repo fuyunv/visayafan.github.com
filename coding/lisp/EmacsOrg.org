@@ -55,11 +55,9 @@ hello
   ))
 #+end_src
   这样便解决了多一行的问题。
-* org-mode example/src过大
-  当在#+begin_example #+end_example或者#+begin_src #+end_src环境中内容过多时会占用大量空间，一个解决办法是加上 =-t= 选项并配合 =-h height -w width= 选项来指定高宽，使它成为有滚动条的区域。但好像无法使用语法高亮并且此区域内容是可编辑的。
-
-  另一个解决办法是加在src或example外围加上div:
-例如：
+* EXAMPLE/SRC过长
+  当在#+begin_example #+end_example或者#+begin_src #+end_src环境中内容过多时会占用大量空间。
+  可以通过设置div属性来解决，例如：
 : #+html: <div style="height:100px;overflow:auto;border-style:solid;border-width:1px">
 : #+begin_src c++
 : typedef int HANDS;
@@ -78,7 +76,7 @@ hello
 : };
 : #+end_src  
 : #+html: </div>
-效果如下：
+  效果如下：
 #+html: <div style="height:100px;overflow:auto;border-style:solid;border-width:1px">
 #+begin_src c++
 typedef int HANDS;
@@ -105,6 +103,53 @@ private:
 #+html: <div style="height:${1:200px};overflow:auto;border-style:solid;border-width:1px">
 #+html: </div>
 #+end_example
+* EXAMPLE/SRC过宽
+  可以像上面一样自定义div属性来配置，但有时比较麻烦，例如要把当前页面平均分成n等份时。
+  Bootstrap用起来比较方便。
+  #+BEGIN_SRC org
+  {{{left(4)}}}
+  #+BEGIN_EXAMPLE
+  4
+  #+END_EXAMPLE
+  {{{middle(4)}}}
+  #+BEGIN_EXAMPLE
+  4
+  #+END_EXAMPLE
+  {{{middle(4)}}}
+  #+BEGIN_EXAMPLE
+  4
+  #+END_EXAMPLE
+  {{{right}}}
+  #+END_SRC
+  效果如下：
+    {{{left(4)}}}
+  #+BEGIN_EXAMPLE
+  4
+  #+END_EXAMPLE
+  {{{middle(4)}}}
+  #+BEGIN_EXAMPLE
+  4
+  #+END_EXAMPLE
+  {{{middle(4)}}}
+  #+BEGIN_EXAMPLE
+  4
+  #+END_EXAMPLE
+  {{{right}}}
+  共12列，每4列构成一组，则平均分成3组。参考：http://getbootstrap.com/css/#grid-example-basic
+  其中left/middle/right均为事先定义的宏：
+  #+BEGIN_EXAMPLE
+    ,#+macro: left #+html:<div class="row-fluid"> <div class="span$1">
+    ,#+macro: middle #+html: </div> <div class="span$1">
+    ,#+macro: right #+html:</div></div>  
+  #+END_EXAMPLE
+  当然要在文件开始包含Bootstrap的CSS和JS：
+  #+BEGIN_SRC org
+    ,#+BEGIN_HTML
+    <link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+    <script src="../../layout/js/jquery_1.7.1.js"></script>
+    <script src="../../layout/js/bootstrap_old.js"></script>
+    ,#+END_HTML 
+  #+END_SRC
 * org-mode中使用宏
   在文章的开始定义宏，格式为 #+macro: macro_name macro_content_with_$1_arg1_$2_arg2_...
   宏中\n表示换行。
@@ -439,10 +484,14 @@ hello {{{color(green, this is green)}}} world
    1. 加上前缀C-u不管现在位置在哪都会生成新的等级headline，此headline位于当前headline下面
    2. 加前缀C-u C-u与C-u区别在于生成的headline位置为同级headline最后一个
 ** M-S-RET和C-S-RET插入TODO
-   区别在于前者把当前行作为新TODO item，后者不管光标在哪插入同级的headline。
+   区别在于前者在当前行下面添加TODO item，后者不管光标在哪插入同级的headline。
    两个都可以添加C-u和C-u C-u前缀.
    C-u C-u M-S-RET好像和C-u C-u C-S-RET一样都是生成同级最后headline。
    加C-u好像没作用。
+** M-S-RET插入checkbox item
+   当光标处于列表时，M-S-RET可以插入新的checkbox item。
+   1. cursor is at the end of this line
+   2. [ ] new checkbox item
 ** narrow/widen
    类似 =C-x n n= ， =C-x n s= 只显示一个子树， =C-x n b= 只显示当前块，都是 =C-x n w= 来恢复。
    此功能有利于精简当前buffer内容使注意力更加集中。
@@ -457,3 +506,11 @@ hello {{{color(green, this is green)}}} world
    将headline变成普通文本
 * 表内根据某列排序
   光标放在该列上， =org-sort= 可以根据此列来排序
+* checkbox item已完成个数或百分比
+  只需要在C++后 =[/]= 或 =[%]= 然后 =C-c C-c= 刷新即可。
+  #+BEGIN_SRC org
+    ,* C++ [1/3]
+      - [X] C++11 http://blog.csdn.net/lanphaday/article/details/6564162 
+      - [ ] C++ String http://blogs.360.cn/blog/linux-gcc-stl-string-in-depth/
+      - [ ] C++11 - the new ISO C++ standard http://www.stroustrup.com/C++11FAQ.html
+  #+END_SRC
