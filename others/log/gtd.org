@@ -8,27 +8,21 @@
   - [ ] C++ String http://blogs.360.cn/blog/linux-gcc-stl-string-in-depth/
   - [ ] C++11 - the new ISO C++ standard http://www.stroustrup.com/C++11FAQ.html
   - [ ] what's ODR http://www.cnblogs.com/winter-cn/archive/2009/11/17/1604867.html
-* Java [0/7]
+* Java [1/7]
    - [ ] guava
    - [ ] 继承图
    - [ ] java工厂
    - [ ] java jar
    - [ ] java注解
    - [ ] static class
-   - [ ] junit
+   - [X] junit
 
-* Hadoop [1/2]
+* Hadoop [2/3]
   - [X] 总结DistributedCache
-  - [-] hadoop测试单元
+  - [X] hadoop测试单元
     - [X] Mockito http://liuzhijun.iteye.com/blog/1512780
-    - [ ] MRUnit http://www.alidata.org/archives/657
+    - [X] MRUnit http://www.alidata.org/archives/657
           http://www.infoq.com/articles/HadoopMRUnit
   - [ ] 《Hadoop权威指南》P145 MiniDFSCluster MiniMRCluster
-* 读书
-  - [X] 《平凡的世界》 路遥
-  - [X] 《活着》 佘华
-  - [X] 《白鹿原》 陈忠实
-  - [X] 《百年孤独》 加西亚·马尔克斯
-  - [ ] 《丰乳肥臀》 莫言
-  - [ ] 《秦腔》 贾平凹
+    http://www.lopakalogic.com/articles/hadoop-articles/hadoop-testing-with-minicluster/
 

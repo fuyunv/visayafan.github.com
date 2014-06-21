@@ -1,0 +1,29 @@
+
+* office
+  mac下破解office http://soft.macx.cn/soft4350.htm
+* 
+* mac快捷键
+  | Cmd S 4/5 | 截图 |
+* mac经验
+** Cmd Tab切换程序不显示窗口
+   Command+Tab到需要切换的程序，按住Command不松，按住Option，然后松开Command
+** Terminal里Options作为meta键
+   Terminal／Preferences／Keyboard，勾选“Use Option As Meta Key”
+   这样就可以options-b/a前后移动单词了
+** ShiftIt管理窗口
+   可轻松用快捷键实现窗口管理：窗口占据上/下/左/右半屏，窗口最大化，当前窗口居中等操作均绑定快捷键
+** 行首行尾
+   Cmd-左右方向键
+** 命令行加载.bashrc
+   #+BEGIN_EXAMPLE
+     if [ -f ~/.bashrc ]; then
+     . ~/.bashrc
+     fi   
+   #+END_EXAMPLE
+   加入到/etc/profile中。
+** 显示隐藏文件
+   http://jingyan.baidu.com/article/86fae346947c453c48121a66.html
+   #+BEGIN_EXAMPLE
+     defaults write com.apple.finder AppleShowAllFiles -bool true
+     defaults write com.apple.finder AppleShowAllFiles -bool false   
+   #+END_EXAMPLE

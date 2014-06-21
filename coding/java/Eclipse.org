@@ -44,6 +44,16 @@ public class hello {
 ** 更改包名
    http://stackoverflow.com/questions/10161840/change-name-of-a-package-after-if-it-is-created-and-have-classes-in-eclipse-pos
    Eclipse没有直接修改包名的功能，解决方法是将包中文件Refactor->Move到一个新的包中。
+** 快速导入包含静态成员的包
+   http://stackoverflow.com/questions/288861/eclipse-optimize-imports-to-include-static-imports
+   Window » Preferences » Java » Editor » Content Assist » Favorites
+   New Type后加入org.junit.Assert，则AssertEquals后使用Alt+/补全时会自动import static org.junit.Assert.assertEquals;
+** 保存时自动整理import
+   http://stackoverflow.com/questions/6293475/eclipse-organize-imports-automatically
+   Preferences->Java->Editor->Save Actions->Configure...
+** 自动整合import
+    Window>Preferences>Java>Code Style>Organize Imports
+    Number of imports needed for .* 设置为1即可将所有能整合的import都进行整合。
 * 快捷键
   http://www.open-open.com/bbs/view/1320934157953
 |-------------+----------------------------|
