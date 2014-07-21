@@ -1,5 +1,5 @@
 #+BEGIN_HTML
-<script src="./js/disqus-comment.js"></script>
+<script src="../../layout/js/disqus-comment.js"></script>
 <div id="disqus_thread">
 </div>
 #+END_HTML

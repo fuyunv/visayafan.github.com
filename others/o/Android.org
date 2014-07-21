@@ -1,0 +1,11 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* 经验
+** 安卓手机建立FTP服务器
+   http://jingyan.baidu.com/article/ca41422fe19c241eae99edef.html
+   ES文件浏览器->Tool->Remote Manager,打开FTP服务后即可使用FileZilla登陆来管理手机上的文件。
+** 网页浏览器管理手机文件
+   使用AirDroid

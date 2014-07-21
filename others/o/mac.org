@@ -1,8 +1,6 @@
 
-* office
-  mac下破解office http://soft.macx.cn/soft4350.htm
-* 
 * mac快捷键
+  http://support.apple.com/kb/HT1343?viewlocale=zh_CN&locale=zh_CN
   | Cmd S 4/5 | 截图 |
 * mac经验
 ** Cmd Tab切换程序不显示窗口
@@ -27,3 +25,42 @@
      defaults write com.apple.finder AppleShowAllFiles -bool true
      defaults write com.apple.finder AppleShowAllFiles -bool false   
    #+END_EXAMPLE
+** 终端大小写不敏感
+   在HOME目录下的.inputrc中加入以下说一句并重启终端
+   #+BEGIN_EXAMPLE
+     set completion-ignore-case on
+     set show-all-if-ambiguous on
+     TAB: menu-complete   
+   #+END_EXAMPLE
+** 安装Goldendict
+   Goldendict已经支持Retina屏幕。
+   1. 下载源码https://github.com/goldendict/goldendict
+   2. 安装QT $brew install qt --build-from-source
+   3. 编译Goldendict $qmake && make
+   4. 将生成的Goldendict.app拷贝到/Applications中
+      
+** 打开多个应用程序实例
+   Cmd+Space打开应用程序时只能打开一个，即当前如果有应用程序正在运行则会打开正在运行的而不会新打开另外一个应用程序。
+   可以使用open命令加-n选项来新打开另一个应用程序：
+   #+BEGIN_EXAMPLE
+   ~$open -n /Applications/Emacs.app
+   #+END_EXAMPLE
+** office
+   mac下破解office http://soft.macx.cn/soft4350.html
+** MATLAB2014A模糊
+   http://www.mathworks.com/matlabcentral/answers/103056-how-do-i-change-the-java-virtual-machine-jvm-that-matlab-is-using-for-mac-os
+   #+BEGIN_EXAMPLE
+     export MATLAB_JAVA="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
+     open /Applications/MATLAB_R2014a.app   
+   #+END_EXAMPLE
+** Cmd+d 创建当前文件复本
+** 剪切
+   MAC没有直接的剪切操作，可以用COMMAND+C拷贝，然后按住option按键，再COMMAND+V粘贴操作，就可以剪切文件了。
+** delete键
+   1. fn+delete 键，删除光标之后的一个字符
+   2. option+delete 键，删除光标之前的一个单词
+   3. command+delete 键，删除光标之前整行内容
+   4. 选中文件后按 command+delete，删除掉该文件
+* 软件
+** X Lossless Decoder
+   转换音频格式
