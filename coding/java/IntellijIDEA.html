@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title></title>
+<!-- 2014-07-13 Sun 00:15 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="author" content="visayafan"/>
+</head>
+<body>
+<div id="content">
+<h1 class="title"></h1>
+<div id="table-of-contents">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 快捷键</a></li>
+<li><a href="#sec-2">2. 经验</a>
+<ul>
+<li><a href="#sec-2-1">2.1. 导入第3方jar包</a></li>
+<li><a href="#sec-2-2">2.2. 补全时不区分大小写</a></li>
+<li><a href="#sec-2-3">2.3. 自动编译</a></li>
+<li><a href="#sec-2-4">2.4. Caret</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 快捷键</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Mac中保存在~/Library/Preferences/.IntelliJ IDEA &lt;xx&gt;/keymaps/，Each keymap file contains only differences between the current and the parent keymaps.<br/>
+自定义Emacs快捷键模式<br/>
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col class="left"/>
+
+<col class="left"/>
+</colgroup>
+<tbody>
+<tr>
+<td class="left"><b>跳转</b></td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-g</td>
+<td class="left">goto definition</td>
+</tr>
+
+<tr>
+<td class="left">C-S-g</td>
+<td class="left">goto specific class</td>
+</tr>
+
+<tr>
+<td class="left">M-up/down</td>
+<td class="left">上/下个方法</td>
+</tr>
+
+<tr>
+<td class="left">C-M-left/right</td>
+<td class="left">上/下次位置</td>
+</tr>
+
+<tr>
+<td class="left"><b>编辑</b></td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">Cmd-d</td>
+<td class="left">复制行或块</td>
+</tr>
+</tbody>
+</table>
+<p>
+Emacs copy.xml文件内容为：<br/>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;?<span style="color: #a020f0;">xml</span> <span style="color: #a0522d;">version</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">1.0</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">encoding</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">UTF-8</span><span style="color: #8b2252;">"</span>?&gt;
+&lt;<span style="color: #0000ff;">keymap</span> <span style="color: #a0522d;">version</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">1</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">name</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">Emacs copy</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">parent</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">Emacs</span><span style="color: #8b2252;">"</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">ChooseDebugConfiguration</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift alt F9</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control meta 1</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">ChooseRunConfiguration</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift alt F10</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control meta 0</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">CommentByBlockComment</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift meta SEMICOLON</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">CommentByLineComment</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">meta SEMICOLON</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">Debug</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift F9</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">meta 1</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">EditorDeleteLine</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control W</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">EditorEscape</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">ESCAPE</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">second-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">ESCAPE</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">ForceStepInto</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift alt F7</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">meta alt 7</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">ForceStepOver</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift alt F8</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">meta alt 8</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">GotoClass</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift alt G</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift control R</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">GotoDeclaration</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control alt G</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">ESCAPE</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">second-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">PERIOD</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">alt PERIOD</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">mouse-shortcut</span> <span style="color: #a0522d;">keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control button1</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control G</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">ReformatCode</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift meta F</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">ReplaceInPath</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">Run</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift F10</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">meta 0</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">RunToCursor</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">alt F9</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">meta 9</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">StepInto</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">F7</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">meta 7</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">StepOut</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift F8</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift meta 8</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">StepOver</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">F8</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">meta 8</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">Stop</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control F2</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">meta 5</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">SwitchApply</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control alt ENTER</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">SwitchDown</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control alt DOWN</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">SwitchLeft</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control alt LEFT</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">SwitchRight</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control alt RIGHT</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">SwitchUp</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control alt UP</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+  &lt;<span style="color: #0000ff;">action</span> <span style="color: #a0522d;">id</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">ToggleLineBreakpoint</span><span style="color: #8b2252;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">control F8</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;<span style="color: #0000ff;">keyboard-shortcut</span> <span style="color: #a0522d;">first-keystroke</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">shift meta B</span><span style="color: #8b2252;">"</span> /&gt;
+  &lt;/<span style="color: #0000ff;">action</span>&gt;
+&lt;/<span style="color: #0000ff;">keymap</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 经验</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+IntelliJ IDEA 的 20 个代码自动完成的特性  <a href="http://www.oschina.net/question/12_70799">http://www.oschina.net/question/12_70799</a><br/>
+</p>
+</div>
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 导入第3方jar包</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+File-&gt;Project structure(C-S-M-s)<br/>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 补全时不区分大小写</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Editor=&gt;Code Completion里把Case sensitive completion设置为None就可以了。<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> 自动编译</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+IntelliJ默认是不会自动编译项目的，所以在run之前会有个make的过程，习惯自动编译项目的可以在这里打开：Compiler=&gt;make project automatically。因为IntelliJ项目空间不大，所以开启之后也不会像Eclipse一样出现build workspace很久的情况。<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> Caret</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+相当于Emacs中的er/expand-region mode，可以根据语法单元增量选择。<br/>
+快捷键是 <code>C-M-w</code><br/>
+</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
