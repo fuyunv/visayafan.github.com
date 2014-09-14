@@ -1,4 +1,7 @@
-
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
 * mac快捷键
   http://support.apple.com/kb/HT1343?viewlocale=zh_CN&locale=zh_CN
   | Cmd S 4/5 | 截图 |
@@ -61,6 +64,34 @@
    2. option+delete 键，删除光标之前的一个单词
    3. command+delete 键，删除光标之前整行内容
    4. 选中文件后按 command+delete，删除掉该文件
+** OS X更改默认打开文件应用程序
+*** 为单个文件设置默认打开时使用的程序
+　　在Finder里的文件上使用右键（或Control＋左键）点击后，按住Alt，这时修你会看到原来的打开方式会变成总是以此方式打开。 
+　　不要松Alt，然后在右边选择你想要选择的默认程序就好了。
+*** 为打开同一种文件类型设置默认应用。
+    从Mac系统中选择一个想要更改文件类型。 
+    点击Conmmand+i来查看文件信息。 
+    点击打开方式并选择相应的程序然后按下全部更改（如果发现全部更新是灰的，说明你修改后的和之前的一样）并确认。
+** 快速创建便笺
+   复制文字后shift+cmd+y即可快速创建便笺
+** 拖动窗口时保持窗口层叠位置
+   拖动同时按住Cmd键
+** 禁止系统进入休眠状态
+   使用命令pmset noidle
+** 隐藏桌面上其它程序
+   opt+cmd+h
+** 关闭通知
+   opt+单击右上角通知图标
 * 软件
 ** X Lossless Decoder
    转换音频格式
+** alfred
+   macx上下载破解版http://soft.macx.cn/5412.htm
+   使用教程http://www.cnbeta.com/articles/203640.htm
+** Paragon NTFS
+   可以使用disk utility将移动硬盘分出ntfs格式的分区。
+   http://tieba.baidu.com/p/2560041739
+   http://www.macx.cn/thread-2041108-1-1.html
+** go2shell
+   可以实现在当前目录中打开终端，安装完毕之后进入应用程序文件夹中按住 option + command 拖动 Go2Shell 图标到 Finder 工具栏中即可。（如果不嫌难看，可以用这种方法把其它程序也放到 Finder 的工具栏中）
+   删除时也需要opt+cmd

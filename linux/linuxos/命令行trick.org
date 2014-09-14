@@ -1,6 +1,8 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+INCLUDE: ../../layo../layout/template-toc.org
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
 #+title:命令行trick
+
 参考
 http://blog.urfix.com/25-linux-commands/
 http://www.thegeekstuff.com/2008/10/6-awesome-linux-cd-command-hacks-productivity-tip3-for-geeks/
@@ -14,9 +16,9 @@ http://www.thegeekstuff.com/2008/10/6-awesome-linux-cd-command-hacks-productivit
 * >filename
    快速建立一个filename的文件，例如建立一个-rf的文件可以:
    也可以用touch
-#+begin_quote
->-rf
-#+end_quote
+   #+BEGIN_EXAMPLE
+   >-rf
+   #+END_EXAMPLE
 * Ctrl-x Ctrl-e
   当在敲较长的命令时可以C-x C-e进入一个临时编辑器来编写命令，之后C-o ENTER C-x 退出
 * !!
