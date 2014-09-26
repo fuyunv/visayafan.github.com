@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>Linux设置服务自启动</title>
+<!-- 2014-09-26 周五 22:12 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="author" content="visayafan"/>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Linux设置服务自启动</h1>
+<div id="table-of-contents">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 管理服务</a></li>
+<li><a href="#sec-2">2. 管理自启动服务</a>
+<ul>
+<li><a href="#sec-2-1">2.1. 手工方式</a></li>
+<li><a href="#sec-2-2">2.2. chkconfig</a></li>
+<li><a href="#sec-2-3">2.3. ntsysv/setup</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 管理服务</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+service 服务名 start/stop/restart<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 管理自启动服务</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+3种方法<br/>
+</p>
+</div>
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 手工方式</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+/etc/inittab保存当前运行级别。<br/>
+/etc/rc.d中7个目录rc*.d中分别保存7个运行级别下的启动程序，s开头表自启动，而k为非自启动。实际上rc*.d中的文件均为链接到/etc/init.d中的软链接。<br/>
+将自己的启动脚本放到/etc/init.d中并在/etc/rc.d/rc*.d中建立以S开头的软链接即可(ln -s)。<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> chkconfig</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+chkconfig &#x2013;list 列出当前所有服务状态，或查看指定服务状态。<br/>
+chkconfig 服务名 on/off 来开启/关闭自启动，默认级别为345，也可以用&#x2013;level指定。<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> ntsysv/setup</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+图形界面，默认配置当前级别(/etc/inittab)的服务，可以用&#x2013;level自定义级别。<br/>
+</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

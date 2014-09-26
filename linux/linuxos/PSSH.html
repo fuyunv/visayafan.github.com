@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title></title>
+<!-- 2014-09-26 周五 21:32 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="author" content="visayafan"/>
+</head>
+<body>
+<div id="content">
+<h1 class="title"></h1>
+<div id="table-of-contents">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 安装</a></li>
+<li><a href="#sec-2">2. 参数</a></li>
+<li><a href="#sec-3">3. pscp</a></li>
+</ul>
+</div>
+</div>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 安装</h2>
+<div class="outline-text-2" id="text-1">
+<pre class="example">
+wget http://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz  
+tar xf pssh-2.3.1.tar.gz  
+cd pssh-2.3.1/  
+python setup.py install
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 参数</h2>
+<div class="outline-text-2" id="text-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col class="left"/>
+
+<col class="left"/>
+</colgroup>
+<tbody>
+<tr>
+<td class="left">-h</td>
+<td class="left">后跟主机列表文件，格式为[user@]host[:port]，其中user@默认为当前用户名，:port默认为22</td>
+</tr>
+
+<tr>
+<td class="left">-l</td>
+<td class="left">远程机器的用户名</td>
+</tr>
+
+<tr>
+<td class="left">-p</td>
+<td class="left">一次最大允许多少连接</td>
+</tr>
+
+<tr>
+<td class="left">-o</td>
+<td class="left">输出内容重定向到一个文件</td>
+</tr>
+
+<tr>
+<td class="left">-e</td>
+<td class="left">执行错误重定向到一个文件</td>
+</tr>
+
+<tr>
+<td class="left">-t</td>
+<td class="left">设置命令执行的超时时间，当出现timeout错误时需要将此值设置大些，或设置为0表示不会timeout</td>
+</tr>
+
+<tr>
+<td class="left">-A</td>
+<td class="left">提示输入密码并且把密码传递给ssh</td>
+</tr>
+
+<tr>
+<td class="left">-O</td>
+<td class="left">设置ssh参数的具体配置，参照ssh_config配置文件</td>
+</tr>
+
+<tr>
+<td class="left">-x</td>
+<td class="left"><b>传递多个SSH 命令</b> ，多个命令用空格分开，用引号括起来</td>
+</tr>
+
+<tr>
+<td class="left">-X</td>
+<td class="left">同-x 但是一次只能传递一个命令</td>
+</tr>
+
+<tr>
+<td class="left">-i</td>
+<td class="left">显示标准输出和标准错误在每台host执行完毕后</td>
+</tr>
+
+<tr>
+<td class="left">-P</td>
+<td class="left">执行时输出执行信息，与-i区别在于-P显示的信息按照到时时间顺序排序，可能不适合阅读</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> pscp</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+拷贝多个文件到其它机器上<br/>
+</p>
+<pre class="example">
+pscp -i -h hostslist filename /remote/machine/filename
+</pre>
+</div>
+</div>
+</div>
+</body>
+</html>

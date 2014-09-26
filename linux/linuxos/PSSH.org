@@ -1,0 +1,38 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* 安装
+  #+BEGIN_EXAMPLE
+wget http://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz  
+tar xf pssh-2.3.1.tar.gz  
+cd pssh-2.3.1/  
+python setup.py install  
+  #+END_EXAMPLE
+* 参数
+  
+  | -h | 后跟主机列表文件，格式为[user@]host[:port]，其中user@默认为当前用户名，:port默认为22    |
+  | -l | 远程机器的用户名                                                                        |
+  | -p | 一次最大允许多少连接                                                                    |
+  | -o | 输出内容重定向到一个文件                                                                |
+  | -e | 执行错误重定向到一个文件                                                                |
+  | -t | 设置命令执行的超时时间，当出现timeout错误时需要将此值设置大些，或设置为0表示不会timeout |
+  | -A | 提示输入密码并且把密码传递给ssh                                                         |
+  | -O | 设置ssh参数的具体配置，参照ssh_config配置文件                                           |
+  | -x | *传递多个SSH 命令* ，多个命令用空格分开，用引号括起来                                   |
+  | -X | 同-x 但是一次只能传递一个命令                                                           |
+  | -i | 显示标准输出和标准错误在每台host执行完毕后                                              |
+  | -P | 执行时输出执行信息，与-i区别在于-P显示的信息按照到时时间顺序排序，可能不适合阅读        |
+
+* pscp
+  拷贝多个文件到其它机器上
+  #+BEGIN_EXAMPLE
+  pscp -i -h hostslist filename /remote/machine/filename
+  #+END_EXAMPLE
+* pslurp
+  从其它机器上拷贝文件到本机器上，动作与pscp相反。splurp会将拷贝文件放在以对应主机IP为名的文件夹中。
+  #+BEGIN_EXAMPLE
+  pslurp --recursive -h hostnames /etc/passwd .
+  #+END_EXAMPLE
+  当拷贝内容为目录时需要使用--recursive选项。

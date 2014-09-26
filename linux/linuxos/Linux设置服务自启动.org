@@ -1,0 +1,18 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:Linux设置服务自启动
+
+* 管理服务
+  service 服务名 start/stop/restart
+* 管理自启动服务
+  3种方法
+** 手工方式
+   /etc/inittab保存当前运行级别。
+   /etc/rc.d中7个目录rc*.d中分别保存7个运行级别下的启动程序，s开头表自启动，而k为非自启动。实际上rc*.d中的文件均为链接到/etc/init.d中的软链接。
+   将自己的启动脚本放到/etc/init.d中并在/etc/rc.d/rc*.d中建立以S开头的软链接即可(ln -s)。
+** chkconfig
+   chkconfig --list 列出当前所有服务状态，或查看指定服务状态。
+   chkconfig 服务名 on/off 来开启/关闭自启动，默认级别为345，也可以用--level指定。
+** ntsysv/setup
+   图形界面，默认配置当前级别(/etc/inittab)的服务，可以用--level自定义级别。
