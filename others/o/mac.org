@@ -4,10 +4,16 @@
 #+title:
 * mac快捷键
   http://support.apple.com/kb/HT1343?viewlocale=zh_CN&locale=zh_CN
-  | Cmd S 4/5 | 截图 |
 * mac经验
-** Cmd Tab切换程序不显示窗口
-   Command+Tab到需要切换的程序，按住Command不松，按住Option，然后松开Command
+** Cmd Tab技巧
+*** Cmd Tab切换程序不显示窗口
+    Command+Tab到需要切换的程序，按住Command不松，按住Option，然后松开Command
+*** Cmd Tab反方向选择应用程序
+    Cmd+~
+*** Cmd Q退出
+*** Cmd H隐藏
+*** Cmd Tab时鼠标滚轮左右选择
+*** Cmd Tab时左右键左右选择
 ** Terminal里Options作为meta键
    Terminal／Preferences／Keyboard，勾选“Use Option As Meta Key”
    这样就可以options-b/a前后移动单词了
@@ -82,6 +88,8 @@
    opt+cmd+h
 ** 关闭通知
    opt+单击右上角通知图标
+** 截屏
+   Cmd+Shift+3/4
 * 软件
 ** X Lossless Decoder
    转换音频格式

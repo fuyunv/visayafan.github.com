@@ -1,0 +1,515 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:上海生死劫
+
+* decree
+  n 命令，法令order given by a ruler or an authority and having the force of a law
+  v 发布命令
+  #+BEGIN_EXAMPLE
+  The Party did not decree how the people should live.
+  #+END_EXAMPLE
+* lest
+  for fear that 恐怕，以免
+  #+BEGIN_EXAMPLE
+  We were forbidden to discharge our domestic staff lest we aggravate the unempolyment problem.
+  #+END_EXAMPLE
+* convulse/render
+  convulse
+  （情绪、笑或物理刺激）使（无法控制地）剧烈抖动 
+  (喻)使（国家）陷入剧烈的社会（或政治）动荡
+  render
+  给予，提供服务；使成为，使得
+  #+BEGIN_EXAMPLE
+  But the political campaigns that periodically convulsed the country rendered many formerly wealthy people poor.
+  #+END_EXAMPLE
+* circumspect
+  cautious, wary 谨慎的，小心的
+  circumspection
+  #+BEGIN_EXAMPLE
+  However, my daughter and I lived quietly, with circumspection.
+  #+END_EXAMPLE
+* vehement/denunciation
+  vehement
+  adj 感情强烈的
+  vehemence
+  denunciation
+  n 谴责
+* have a premonition
+  有（不详）预感
+  #+BEGIN_EXAMPLE
+  I had no premonition of impending personal disaster.
+  #+END_EXAMPLE
+* in one's capacity as sth
+  以某种身份
+  #+BEGIN_EXAMPLE
+  I worked in that capacity until 1966.
+  #+END_EXAMPLE
+* world renown
+  世界有名的
+* dossier
+  档案
+  #+BEGIN_EXAMPLE
+  A refusal would go into the personal dossier that the police kept on everyone.
+  #+END_EXAMPLE
+* conciliatory
+  adj 可看抚慰或调解的
+  conciliate v安抚，使某人息怒
+  #+BEGIN_EXAMPLE
+  He had seemed a nice man: reasonable and conciliatory.
+  conciliate outraged customers.
+  #+END_EXAMPLE
+* composure
+  n 镇静
+  #+BEGIN_EXAMPLE
+  I waked slowly, deliberately creating the impression of composure.
+  #+END_EXAMPLE
+* exasperation
+  激怒
+  exasperate
+  #+BEGIN_EXAMPLE
+  In a tone of exasperation, he added, "Don't you know the Great Proletarian Cultural Revolution has started?"
+  #+END_EXAMPLE
+* apprehension
+  担心，忧虑
+  #+BEGIN_EXAMPLE
+  The apprehension of my servants was completely understandable.
+  #+END_EXAMPLE
+* commensurate
+  adj成比例的
+  #+BEGIN_EXAMPLE
+  What was not mentioned was that they would not be given jobs commensurate with their former positions in Shell but would be employed as clerks or translators at a low rate of pay with much reduced retirement pensions.
+  #+END_EXAMPLE
+* anomalous
+  异常的，例外的
+  anomaly n异常的事物
+* perspiration
+  n 出汗
+  perspire v
+* helmsman
+  舵手
+* proletarian
+  无产者
+  proletariat
+  无产阶级
+* hindrance
+  阻碍
+  hinder v 
+* swagger/insolence
+  swagger
+  趾高气昂地行事（贬义）
+  insolence
+  insolent adj无礼的，傲慢的
+  #+BEGIN_EXAMPLE
+  The foreigners and the few Chinese who forgot their national identiy and worked with them swaggered around with insolence.
+  #+END_EXAMPLE
+* downright/reactionary
+  downright adj 十分的
+  reactionary n 反动的人 a person who is opposed to political or social change
+  #+BEGIN_EXAMPLE
+  But we must also recognize the fact that some of them are downright reactionaries.
+  #+END_EXAMPLE
+* diametrically
+  完全地
+  diametric n直径
+  diametrical 直径的
+  #+BEGIN_EXAMPLE
+  Capitalism and socialism are like fire and water. They are diametrically opposed.
+  #+END_EXAMPLE
+* single
+  v choose someone or something from a group for special treatment
+  #+BEGIN_EXAMPLE
+  I could not understand why he had now been singled out for criticism.
+  #+END_EXAMPLE
+* stifle
+  v 感到窒息
+  stifling adj令人窒息的，闷的
+* respite
+  短暂的休息
+  #+BEGIN_EXAMPLE
+  The people would have a few months or a few years of respite until the next political campaign.
+  #+END_EXAMPLE
+* exalt
+  v praise
+  #+BEGIN_EXAMPLE
+  They exalted Mao Zedong, the Party, socialism and anything else the party wanted the people to believe in.
+  #+END_EXAMPLE
+* denounce/errant
+  denounce v告发；谴责
+  errant adj 犯错的，行为不当的，出轨的
+  #+BEGIN_EXAMPLE
+  These accusations did not surprise me, because I knew that when a man was denounced, he was depicted as totally bad and any errant behavior was attributed to the influence of capitalism.
+  #+END_EXAMPLE
+* decadent
+  adj 颓废的，堕落的，放纵的
+  #+BEGIN_EXAMPLE
+  The man was now talking about Tao’s decadent way of life resulting from long association with capitalism.
+  #+END_EXAMPLE
+* frown
+  皱眉；不赞成某事 frown on/upon sth
+  extramarital 婚外的
+  indulgence n放纵
+  indulge v ~ oneself/sb with sth
+  #+BEGIN_EXAMPLE
+  It seemed he was guilty of having extramarital relations, drinking wine and spirits to excess, and enjoying elaborate meals, all acts of self-indulgence frowned upon by the Party.
+  #+END_EXAMPLE
+* adjourn
+  暂停会议一段时间；使延期
+  #+BEGIN_EXAMPLE
+  Perhaps the speaker was also tired and hungry, for he suddenly stopped and told us the meeting was adjourned until one-thirty.
+  #+END_EXAMPLE
+* assume
+  猜测；假装，装作
+  #+BEGIN_EXAMPLE
+  In Chinese mythology, “cow’s demon and snake spirit牛鬼蛇神” are evil spirits who can assume human forms to do mischief, but when recognized by real humans as devils they revert to their original shapes.
+  #+END_EXAMPLE
+* subservience/snicker
+  subservient adj毕恭毕敬的
+  snicker v/n 暗笑，偷笑
+  #+BEGIN_EXAMPLE
+  When Tao climbed onto the chair and stood there in a posture of subservience in his tall paper hat, the snickers became uncontrolled laughter.
+  #+END_EXAMPLE
+* disentangle
+  ~ sth/sb from sth
+  摆脱
+  #+BEGIN_EXAMPLE
+  I thought Tao Feng very stupid to agree that he had sold himself for money, because this admission could open the way to all sorts of more serious accusations from which he might find it difficult to disentangle himself.
+  #+END_EXAMPLE
+* devoid of sth
+  没有
+  #+BEGIN_EXAMPLE
+  Tao took a few sheets of paper from his pocket and started to read a prepared statement in a low voice devoid of emotion. 
+  #+END_EXAMPLE
+* repent
+  v feel regret
+  #+BEGIN_EXAMPLE
+  He begged the proletariat to forgive him and give him a chance to repent.
+  #+END_EXAMPLE
+  repentant adj
+  repentance n
+* depravity/ingratitude
+  #+BEGIN_EXAMPLE
+  He mentioned the fact that his son was a Party member and had been educated abroad at government expense. His own life of depravity, he said, was an act of gross ingratitude to the People’s Government. 
+  #+END_EXAMPLE
+* have a fit/disheveled
+  have a fit = angry
+  disheveled 衣服或头发不整齐
+  #+BEGIN_EXAMPLE
+  Your servants will have a fit if they see me coming to dinner looking so disheveled.
+  #+END_EXAMPLE
+* disillusioned
+  ~ with sb/sth 大失所望，幻想破灭
+* premises
+  房屋或其它建筑
+* lenient
+  adj merciful
+  #+BEGIN_EXAMPLE
+  As a result of a more lenient policy, Henry and Winnie were given a more spacious apartment near my home.
+  #+END_EXAMPLE
+* standstill
+  n 停顿
+  treachery n背叛
+  cow n牛 v恐吓某人
+  #+BEGIN_EXAMPLE
+  The treachery of Mao Zedong in repeatedly inviting frank and constructive criticism and then harshly punishing those who gave it completely cowed the Chinese intellectuals, so that China’s cultural life came to a virtual standstill.
+  #+END_EXAMPLE
+* carnation
+  康乃馨
+* mandarin fish
+  mandarin 普通话
+  mandarin fish 鲑鱼
+  
+* take the initiative
+  带头，发起
+  #+BEGIN_EXAMPLE
+  I always humbly ask my Party secretary for instructions and never indulge in the luxury of taking the initiative.
+  #+END_EXAMPLE
+* instill
+  introduce gradually 逐渐培养/灌输
+  #+BEGIN_EXAMPLE
+  I thought it was mainly the feeling of guilt instilled in her by Communist propaganda about the rich exploiting the poor that created in her the desire to help these children.
+  #+END_EXAMPLE
+* commendable
+  adj 值得表扬的
+  commend v 表扬
+  #+BEGIN_EXAMPLE
+  While I thought her activities rather commendable, Chen-ma disapproved heartily, especially when she loaned her clothes to other girls and then brought home the dirty laundry for Chen-ma to wash.
+  #+END_EXAMPLE
+* tranquility
+  平静，安宁
+  tranquil adj 平静的，安静的
+  #+BEGIN_EXAMPLE
+  It was a scene of domestic peace and tranquility but for an invisible threat hanging in the air
+  #+END_EXAMPLE
+* insinuate
+  暗示
+  #+BEGIN_EXAMPLE
+  I don’t know much about the life of any of the denounced people, and I don’t want to lie and insinuate.
+  They never went beyond insinuating that Shell had done something wrong and that I was a part of whatever the crime was.
+  #+END_EXAMPLE
+* unbeknownst
+  unbeknown adj不为所知的
+* apparatus
+  仪器，装置；机关组织，机构
+  contention n争论
+  #+BEGIN_EXAMPLE
+  The point of contention was who should conduct the Cultural Revolution: the established Party apparatus or a special committee of Maoists appointed by Mao Zedong as chairman of the Central Committee.
+  #+END_EXAMPLE
+* emphatically
+  adv 强调地
+  emphasis n
+  emphasize
+  #+BEGIN_EXAMPLE
+  “Everything I did for Shell was in accordance with the laws and regulations of the People’s Government,” I declared emphatically.
+  #+END_EXAMPLE
+* turmoil
+  n 骚动，混乱
+  rehabilitate v恢复地位/荣誉
+  #+BEGIN_EXAMPLE
+  Later, when the turmoil is over, the sorting out is done. Some of those wrongfully dealt with may be rehabilitated.”
+  #+END_EXAMPLE
+* obsequious
+  逢迎的，巴结的
+  #+BEGIN_EXAMPLE
+  “It’s not in my nature to be obsequious. But thank you for the warning. I shall remember it,” I said.
+  #+END_EXAMPLE
+* accede
+  ~ to 同意
+  #+BEGIN_EXAMPLE
+  The Shanghai authorities had no choice but to allow him to leave for Hong Kong with his two children when Beijing acceded to his family’s request.
+  #+END_EXAMPLE
+* pretext
+  excuse 借口
+  #+BEGIN_EXAMPLE
+  The local Communist officials in Shanghai refused to grant Li Zhen an exit permit, using the pretext that her work with the Conservatory of Music required her to remain in Shanghai. 
+  #+END_EXAMPLE
+* pay homage to
+  give honor to
+  #+BEGIN_EXAMPLE
+  In fact, she told me that she found attending meetings boring and maintained silence when she was expected to pay homage to Mao’s policies on music and education.
+  #+END_EXAMPLE
+* alacrity
+  n 爽快
+  #+BEGIN_EXAMPLE
+  I was very pleased when she accepted my dinner invitation with alacrity.
+  #+END_EXAMPLE
+* prostrate
+  v （尤指尊敬或屈从）使（自己）俯伏；使拜倒
+  #+BEGIN_EXAMPLE
+  When I got there I saw them prostrate on the ground in the courtyard. 
+  #+END_EXAMPLE
+* wanto
+  adj 恣意的，恶意的
+  #+BEGIN_EXAMPLE
+  “Yes, yes, I mustn’t cry on Meiping’s birthday. But I was upset to see such wanton destruction.” She tucked her handkerchief away and went out of the room.
+  #+END_EXAMPLE
+* savage
+  adj 凶猛的
+  n 野蛮人
+  #+BEGIN_EXAMPLE
+  I hate struggle meetings. Somehow, everybody behaves like savages.
+  #+END_EXAMPLE
+* totalitarian
+  极权主义的
+  #+BEGIN_EXAMPLE
+  In fact, after living in Communist China for so many years, I realized that one of the advantages enjoyed by a democratic government that allows freedom of speech is that the government knows exactly who supports it and who is against it, while a totalitarian government knows nothing of what the people really think.
+  #+END_EXAMPLE
+* chrysanthemum
+  菊花
+* jasmine
+  茉莉
+* mediocre
+  ordinary 平庸的
+  #+BEGIN_EXAMPLE
+  My father used to say she was a mediocre actress in the old days. She seems to have improved.
+  #+END_EXAMPLE
+* ovation
+  n 欢呼，掌声
+  youngster 年轻人
+  #+BEGIN_EXAMPLE
+  He had smiled and waved as he received a thunderous ovation from the youngsters gathered below. 
+  #+END_EXAMPLE
+* senile dementia
+  老年痴呆
+  paranoia 妄想狂
+  #+BEGIN_EXAMPLE
+  One of the symptoms of senile dementia is suspicion, and the other is paranoia.
+  #+END_EXAMPLE
+* repose
+  n 休息
+  #+BEGIN_EXAMPLE
+  Her black hair was spread on the white pillow, and her sweet young face was peaceful in repose.
+  #+END_EXAMPLE
+* taboo/velvet/cosmetic/
+  taboo 禁忌
+  velvet 天鹅绒
+  cosmetic 化妆品
+  #+BEGIN_EXAMPLE
+  Because they did not think socialist man should sit on a sofa, all sofas became taboo. Other things, such as innerspring mattresses, silk, velvet, cosmetics, and clothes that reflected fashion trends of the West, were all tossed onto the streets to be carted away or burnt. 
+  #+END_EXAMPLE
+* astronomical
+  adj 天文学的；极大的，庞大的
+  #+BEGIN_EXAMPLE
+  To keep alive, one had to resort to the black market, where prices were astronomical. 
+  #+END_EXAMPLE
+* sever
+  v 切断
+  denunciation 谴责
+  denunciate v
+  #+BEGIN_EXAMPLE
+  It was signed by my neighbor’s two small children, who had joined in the denunciation of their father and vowed to sever their relationship with him. 
+  #+END_EXAMPLE
+* loot
+  loot v 抢劫
+  ransack v 彻底搜查；抢劫，洗劫
+  #+BEGIN_EXAMPLE
+  News of looting and the ransacking of private homes all over the city reached me from different sources. 
+  #+END_EXAMPLE
+* implicate
+  ~ sb in sth 牵连
+  #+BEGIN_EXAMPLE
+  Not wishing to implicate them in my own difficulties, I refused.
+  #+END_EXAMPLE
+* futile
+  adj无效的
+* preclude
+  ~ sb from doing sth 阻止
+  #+BEGIN_EXAMPLE
+  The propaganda they have absorbed precluded their having a free will of their own.
+  #+END_EXAMPLE
+* coin/biding
+  coin v 创造新词语
+  bidiing n 命令 do sb's biding
+  #+BEGIN_EXAMPLE
+  She was flattering the Red Guards by calling them “little revolutionary generals,” a title coined by the Maoists to encourage the Red Guards to do their bidding. 
+  #+END_EXAMPLE
+* down
+  绒羽
+  #+BEGIN_EXAMPLE
+  quilts filled with down
+  #+END_EXAMPLE
+* nominal
+  adj 名义上的；很少的
+  chauffeur 受雇的司机
+  #+BEGIN_EXAMPLE
+  But every Chinese knew that the Party leaders lived in spacious mansions with many servants, obtained their provisions from special shops where luxury goods were made available to their households at nominal prices, and sent their children in chauffeur-driven cars to exclusive schools to be taught by specially selected teachers.
+  #+END_EXAMPLE
+* by no stretch of the imagination
+  无论怎么想象
+  #+BEGIN_EXAMPLE
+  We were not equals by any stretch of the imagination.
+  #+END_EXAMPLE
+* innocuous
+  无害的
+  #+BEGIN_EXAMPLE
+  It’s probably considered normal and innocuous anywhere else. But in Maoist China communicating with foreign countries other than through official channels was a crime.
+  #+END_EXAMPLE
+* outcast
+  homeless and friendless 被抛弃的无家无亲人的人
+  abiding adj permanent永久的
+  abide by 遵守
+  #+BEGIN_EXAMPLE
+  I also had a deep and abiding love for the land of my ancestors even though, because of my class status, I had become an outcast.
+  #+END_EXAMPLE
+* tempo
+  运动的进度
+  #+BEGIN_EXAMPLE
+  As the tempo of the Proletarian Cultural Revolution gathered momentum, all-night sessions of political indoctrination were often held in different organizations.
+  Since a lead article in the People’s Daily was to be obeyed immediately, the tempo of the Cultural Revolution in Shanghai was sure to accelerate.
+  #+END_EXAMPLE
+* mobilize
+  调动，动员；组织，集合资源
+  steamed buns 馒头
+  #+BEGIN_EXAMPLE
+  The propaganda effort was supposed to create a suitable atmosphere of tension and mobilize the public.
+  All the shops making steamed buns and the former White Russian bakeries, now state-owned, were mobilized to produce buns and bread for the Red Guards. 
+  #+END_EXAMPLE
+* topple
+  倒下；打倒，推翻
+  #+BEGIN_EXAMPLE
+  until the Shanghai Party Secretariat and the municipal government were toppled by the Revolutionaries in January of the following year.
+  #+END_EXAMPLE
+* interject
+  突然打断别人的话
+  #+BEGIN_EXAMPLE
+  “You needn’t get so excited. All the senior staff of foreign firms are spies. You are not the only one,” interjected the third man.
+  #+END_EXAMPLE
+* come clean
+  坦白，全盘招供
+  #+BEGIN_EXAMPLE
+  “We are going to find the gold and weapons. If you don’t come clean, then you will be severely punished,” said their leader. “Come along! They must be somewhere in this house.”
+  #+END_EXAMPLE
+* deflate
+  v使某人难堪
+  #+BEGIN_EXAMPLE
+  The Revolutionaries were greatly embarrassed by the rather unheroic appearance of their leader, who was now wiping his leg with a handkerchief, completely deflated.
+  #+END_EXAMPLE
+* incarcerate
+  ~ sb in sth 监禁
+  #+BEGIN_EXAMPLE
+  In many instances, they fared worse than those incarcerated in regular prisons.
+  Again, I was incarcerated in the dining room.
+  #+END_EXAMPLE
+* resign
+  辞职；~ oneself to sth/doing sth听天由命
+  #+BEGIN_EXAMPLE
+  I was already resigned to a lower standard of living.
+  I resigned myself to the possibility of the total destruction of my home.
+  #+END_EXAMPLE
+* makeshift
+  临时的
+  #+BEGIN_EXAMPLE
+  At night, one or two of them slept on the floor outside my bedroom on a makeshift bed.
+  #+END_EXAMPLE
+* inadvertently
+  漫不经心地，无意地
+  #+BEGIN_EXAMPLE
+  Being uncensored, these Red Guard publications and handbills inadvertently exposed some of the facts of the power struggle in the Party leadership and contributed to the breakdown of the myth that the Party leaders were a group of dedicated men united for a common purpose.
+  #+END_EXAMPLE
+* weather
+  v 平安渡过危难
+  #+BEGIN_EXAMPLE
+  Mommy, we will weather the storm together. I still believe in the future of our country. Things will change. They can’t always be unfair like this. There are good leaders in the Party, such as Premier Zhou and many others.
+  We will be brave and weather the storm together, dear Mommy
+  #+END_EXAMPLE
+* vie
+  compete keenly with sb for sth
+  #+BEGIN_EXAMPLE
+  They vied with the Maoist Red Guards and Revolutionaries to gain control of the situation in Shanghai.
+  #+END_EXAMPLE
+* novice
+  beginner 新手
+  #+BEGIN_EXAMPLE
+  But officials of the Shanghai Party Secretariat and the municipal government were not novices of the political game. 
+  #+END_EXAMPLE
+* philosophical
+  adj 哲学的；豁达的，处之泰然的
+  #+BEGIN_EXAMPLE
+  She had learned to be philosophical at a young age.
+  His philosophical attitude towards the loss of his own factory and his ready acceptance of a subordinate position never ceased to amaze me.
+  “I’m glad you are so philosophical,” she said, smiling for the first time since she had come home.
+  In fact, she seemed quite all right and is taking everything philosophically. 
+  #+END_EXAMPLE
+* repudiate
+  否定，驳斥
+  #+BEGIN_EXAMPLE
+  This was supposed to repudiate my claim that Shell was interested only in commerce.
+  #+END_EXAMPLE
+* gloat
+  沾沾自喜
+  #+BEGIN_EXAMPLE
+  I could see that the men who were running the show were gloating with success.
+  #+END_EXAMPLE
+* meddle
+  interfere
+  #+BEGIN_EXAMPLE
+  It is not Shell’s policy to meddle in politics.
+  #+END_EXAMPLE
+* impregnable
+  坚不可摧的，无法征服的
+  pregnable
+  adj vulnerable to attack
+  记忆：pregnant的女人非常pregnable
+  #+BEGIN_EXAMPLE
+  The propaganda on class struggle that they had absorbed, not only since the beginning of the Cultural Revolution but also since 1949 when the Communist army took over Shanghai, had already built an impregnable wall between us. It was not something I could break down in a moment.
+  #+END_EXAMPLE

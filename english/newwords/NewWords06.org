@@ -95,3 +95,60 @@
 * all the best
   ATB
   万事如意、祝你安好
+* molest
+  骚扰，伤害
+  性骚扰（妇女，儿童）
+  molester
+  #+BEGIN_EXAMPLE
+  I'm a twisted, wretched child molester.
+  #+END_EXAMPLE
+* exonerate
+  exonerate sb from sth
+  declare sb free from blame宣布某人无罪
+  #+BEGIN_EXAMPLE
+  You're gonna be exonerated.
+  #+END_EXAMPLE
+* parole
+  promise made by a prisoner that he will not try to escape if released for a limited time, or commit another crime if released before the end of his sentence (used esp in the expressions shown)
+  （为获假释而作刑满前不逃跑或不犯罪的）誓言
+  on parole保释
+* trauma
+  精神上的创伤
+  traumatic
+  traumatize
+  traumatized
+* elucidate
+  make clear, explain
+  #+BEGIN_EXAMPLE
+  You have not understood; allow me to elucidate. 
+  #+END_EXAMPLE
+* jest
+  n 玩笑
+  v 开玩笑
+  #+BEGIN_EXAMPLE
+  His reply was taken half seriously, half in jest.
+  Stop jesting and be serious for a moment! 
+  #+END_EXAMPLE
+* ace
+  n 扑克A/成绩好的人
+  adj 优秀的
+  v 在测试中得优
+* halfway through
+  #+BEGIN_EXAMPLE
+  I promise I won't stop you halfway through.
+  #+END_EXAMPLE
+* vertigo
+  n 眩晕
+  vertiginous adj
+  #+BEGIN_EXAMPLE
+  suffer from vertigo
+  #+END_EXAMPLE
+* reprieve
+  v/n 执行缓刑
+* wick
+  灯芯
+* mischief
+  n 恶作剧，调皮
+* swell
+  v/n 肿胀 膨胀
+  adj 极好的
