@@ -513,3 +513,68 @@
   #+BEGIN_EXAMPLE
   The propaganda on class struggle that they had absorbed, not only since the beginning of the Cultural Revolution but also since 1949 when the Communist army took over Shanghai, had already built an impregnable wall between us. It was not something I could break down in a moment.
   #+END_EXAMPLE
+* erect/shrill/fiery/rhetoric
+  搭建；建造
+  shrill adj尖声的；n尖声，尖叫
+  fiery adj似火的；味道强烈的；人脾气暴躁易怒的
+  rhetoric n修辞
+  #+BEGIN_EXAMPLE
+  On temporary platforms erected everywhere, the young Revolutionaries were calling upon the people in shrill and fiery rhetoric to join in the Revolution, and conducting small-scale struggle meetings against men and women they seized at random on the street and accused of failing to carry Mao’s Little Red Book of quotations or simply wearing the sort of clothes the Red Guards disapproved of.
+  #+END_EXAMPLE
+* populace/sinister
+  民众，百姓
+  sinister adj邪恶的
+  #+BEGIN_EXAMPLE
+  one might easily think the scene was some kind of fair held on an autumn night to provide the people with entertainment, rather than a political campaign full of sinister undertones designed to stir up mutual mistrust and class hatred among the populace.
+  #+END_EXAMPLE
+* stigma
+  污名
+  #+BEGIN_EXAMPLE
+  Going to prison no longer carried with it the stigma of moral degeneration or law infringement.
+  #+END_EXAMPLE
+* lot
+  n 命运
+  #+BEGIN_EXAMPLE
+  In fact, the people were often skeptical about government claims of anybody’s guilt, and those unhappy with their lot in Communist China looked on political prisoners with a great deal of sympathy.
+  #+END_EXAMPLE
+* rule out the possibility
+  排队可能
+  #+BEGIN_EXAMPLE
+  From the moment I became involved in the Cultural Revolution in early July and decided not to make a false confession, I had not ruled out the possibility of going to prison. 
+  #+END_EXAMPLE
+* dot
+  v 分散在各处
+  hospitable adj好客的
+  inhospitable
+  #+BEGIN_EXAMPLE
+  In the Reform through Labor camps that dotted the landscape of China’s remote and inhospitable provinces, such as Gansu and Qinghai, many innocent men and women were serving harsh sentences simply because they had made false confessions of guilt.
+  #+END_EXAMPLE
+* brassiere
+  bra
+* musty/pervade
+  musty adj发霉的
+  pervade v弥漫，遍布
+  #+BEGIN_EXAMPLE
+  A strong musty smell pervaded the air. 
+  #+END_EXAMPLE
+* filthy
+  adj肮脏的
+  #+BEGIN_EXAMPLE
+  Never in my life had I been in or even imagined a place so primitive and filthy.
+  #+END_EXAMPLE
+* despondent
+  adj沮丧的
+  #+BEGIN_EXAMPLE
+  When she disappeared, perhaps having completed her sentence, I experienced a deep sense of loss and felt despondent for days.
+  #+END_EXAMPLE
+* envelop
+  v 包，裹，包围
+  envelope 信封
+  #+BEGIN_EXAMPLE
+  When I brushed the walls, the cell was enveloped in a cloud of dust.
+  #+END_EXAMPLE
+* assiduously
+  勤勉地
+  #+BEGIN_EXAMPLE
+  Instead I settled down to study assiduously and seriously The Collected Works of Mao Zedong. 
+  #+END_EXAMPLE

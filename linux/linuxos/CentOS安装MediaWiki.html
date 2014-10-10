@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title></title>
+<!-- 2014-10-10 Fri 15:19 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="author" content="visayafan"/>
+</head>
+<body>
+<div id="content">
+<h1 class="title"></h1>
+<div id="table-of-contents">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 安装MySQL,PHP,Apache</a></li>
+<li><a href="#sec-2">2. 配置MediaWiki</a></li>
+<li><a href="#sec-3">3. 配置</a>
+<ul>
+<li><a href="#sec-3-1">3.1. 上传文件类型限制</a></li>
+<li><a href="#sec-3-2">3.2. 上传文件大小限制</a></li>
+<li><a href="#sec-3-3">3.3. 取消黑名单限制</a></li>
+<li><a href="#sec-3-4">3.4. 修改编辑器</a></li>
+<li><a href="#sec-3-5">3.5. 上传多个文件</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+<p>
+参考<a href="http://linoxide.com/how-tos/install-mediawiki-centos/">http://linoxide.com/how-tos/install-mediawiki-centos/</a><br/>
+<a href="https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-6">https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-6</a><br/>
+<a href="http://blog.csdn.net/xiajian2010/article/details/24836863">http://blog.csdn.net/xiajian2010/article/details/24836863</a><br/>
+</p>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 安装MySQL,PHP,Apache</h2>
+<div class="outline-text-2" id="text-1">
+<pre class="example">
+yum install httpd php php-mysql php-gd php-xml mysql-server mysql libxml2
+</pre>
+<p>
+启动MySQL<br/>
+</p>
+<pre class="example">
+service mysqld start
+</pre>
+<p>
+配置MySQL，设置root密码，其它选y即可<br/>
+</p>
+<pre class="example">
+mysql_secure_installation
+</pre>
+<p>
+为MediaWiki创建数据库，数据库用户名密码均为mediawiki<br/>
+</p>
+<pre class="example">
+mysql -u root -p
+mysql&gt; create database mediawiki;
+mysql&gt; create user mediawiki@localhost;
+mysql&gt; set password for mediawiki@localhost = password ('mediawiki');
+mysql&gt; GRANT ALL PRIVILEGES ON mediawiki.* to mediawiki@localhost identified by 'mediawiki';
+mysql&gt; flush privileges;
+mysql&gt; quit;
+</pre>
+<p>
+启动Apache<br/>
+</p>
+<pre class="example">
+service httpd status
+</pre>
+<p>
+设置MySQL和Apache为开机启动<br/>
+</p>
+<pre class="example">
+chkconfig httpd on
+chkconfig mysqld on
+</pre>
+<p>
+防火墙关闭<br/>
+</p>
+<pre class="example">
+service iptables stop
+chkconfig iptables off
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 配置MediaWiki</h2>
+<div class="outline-text-2" id="text-2">
+<pre class="example">
+wget  http://releases.wikimedia.org/mediawiki/1.22/mediawiki-1.22.5.tar.gz
+tar zxvf mediawiki-1.22.5.tar.gz
+mv  mediawiki-1.22.5 /var/www/html/mediawiki
+</pre>
+<p>
+浏览器访问 <a href="http://本机IP/mediawiki">http://本机IP/mediawiki</a> 开始mediawiki配置，配置过程中数据库选择MySQL，数据库名称，用户名密码均为上面设置的mediawiki。<br/>
+最终会自动下载LocalSettings.php，将其放到/var/www/html/mediawiki中。<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 配置</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 上传文件类型限制</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+<a href="http://clin003.com/wiki/mediawiki-wgfileextensions-application-zip-1950/">http://clin003.com/wiki/mediawiki-wgfileextensions-application-zip-1950/</a><br/>
+/var/www/html/mediawiki/LocalSettings.php中添加(或修改/var/www/html/mediawiki/includes/DefaultSettings.php)<br/>
+</p>
+<pre class="example">
+$wgFileExtensions = array_merge( $wgFileExtensions,
+    array( 'doc', 'xls', 'mpp', 'pdf', 'ppt', 'xlsx', 'jpg', 
+        'tiff', 'odt', 'odg', 'ods', 'odp'
+    )
+);
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> 上传文件大小限制</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+<a href="http://www.cnblogs.com/lihezx/archive/2013/02/27/2935616.html">http://www.cnblogs.com/lihezx/archive/2013/02/27/2935616.html</a><br/>
+修改文件：php.ini里的如下参数(/etc/php.ini)<br/>
+</p>
+<pre class="example">
+upload_max_filesize 20M
+post_max_size 20M
+max_execution_time = 0
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> 取消黑名单限制</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+$wgMimeTypeBlacklist指定了不能上传文件的类型，但只是当$wgVerifyMimeType为true时有效。<br/>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="section-number-3">3.4</span> 修改编辑器</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+<a href="http://www.mediawiki.org/wiki/Extension:WikiEditor">http://www.mediawiki.org/wiki/Extension:WikiEditor</a><br/>
+LocalSettings.php中添加：<br/>
+</p>
+<pre class="example">
+require_once "$IP/extensions/WikiEditor/WikiEditor.php";
+# Enables use of WikiEditor by default but still allow users to disable it in preferences          
+$wgDefaultUserOptions['usebetatoolbar'] = 1;
+ww$wgDefaultUserOptions['usebetatoolbar-cgd'] = 1;
+
+# Displays the Preview and Changes tabs                                                            
+$wgDefaultUserOptions['wikieditor-preview'] = 1;
+
+# Displays the Publish and Cancel buttons on the top right side                                    
+$wgDefaultUserOptions['wikieditor-publish'] = 1;
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="section-number-3">3.5</span> 上传多个文件</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+<a href="http://blog.csdn.net/zuiaituantuan/article/details/5816513">http://blog.csdn.net/zuiaituantuan/article/details/5816513</a><br/>
+</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+参考http://linoxide.com/how-tos/install-mediawiki-centos/
+https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-6
+http://blog.csdn.net/xiajian2010/article/details/24836863
+* 安装MySQL,PHP,Apache
+  #+BEGIN_EXAMPLE
+  yum install httpd php php-mysql php-gd php-xml mysql-server mysql libxml2
+  #+END_EXAMPLE
+  启动MySQL
+  #+BEGIN_EXAMPLE
+  service mysqld start
+  #+END_EXAMPLE
+  配置MySQL，设置root密码，其它选y即可
+  #+BEGIN_EXAMPLE
+  mysql_secure_installation
+  #+END_EXAMPLE
+  为MediaWiki创建数据库，数据库用户名密码均为mediawiki
+  #+BEGIN_EXAMPLE
+  mysql -u root -p
+  mysql> create database mediawiki;
+  mysql> create user mediawiki@localhost;
+  mysql> set password for mediawiki@localhost = password ('mediawiki');
+  mysql> GRANT ALL PRIVILEGES ON mediawiki.* to mediawiki@localhost identified by 'mediawiki';
+  mysql> flush privileges;
+  mysql> quit;
+  #+END_EXAMPLE
+  启动Apache
+  #+BEGIN_EXAMPLE
+  service httpd status
+  #+END_EXAMPLE
+  设置MySQL和Apache为开机启动
+  #+BEGIN_EXAMPLE
+  chkconfig httpd on
+  chkconfig mysqld on 
+  #+END_EXAMPLE
+  防火墙关闭
+  #+BEGIN_EXAMPLE
+  service iptables stop
+  chkconfig iptables off
+  #+END_EXAMPLE
+* 配置MediaWiki
+  #+BEGIN_EXAMPLE
+  wget  http://releases.wikimedia.org/mediawiki/1.22/mediawiki-1.22.5.tar.gz
+  tar zxvf mediawiki-1.22.5.tar.gz
+  mv  mediawiki-1.22.5 /var/www/html/mediawiki
+  #+END_EXAMPLE
+  浏览器访问 http://本机IP/mediawiki 开始mediawiki配置，配置过程中数据库选择MySQL，数据库名称，用户名密码均为上面设置的mediawiki。
+  最终会自动下载LocalSettings.php，将其放到/var/www/html/mediawiki中。
+* 配置
+** 上传文件类型限制
+   http://clin003.com/wiki/mediawiki-wgfileextensions-application-zip-1950/
+   /var/www/html/mediawiki/LocalSettings.php中添加(或修改/var/www/html/mediawiki/includes/DefaultSettings.php)
+   #+BEGIN_EXAMPLE
+$wgFileExtensions = array_merge( $wgFileExtensions,
+    array( 'doc', 'xls', 'mpp', 'pdf', 'ppt', 'xlsx', 'jpg', 
+        'tiff', 'odt', 'odg', 'ods', 'odp'
+    )
+);
+   #+END_EXAMPLE
+** 上传文件大小限制
+   http://www.cnblogs.com/lihezx/archive/2013/02/27/2935616.html
+   修改文件：php.ini里的如下参数(/etc/php.ini)
+#+BEGIN_EXAMPLE
+upload_max_filesize 20M
+post_max_size 20M
+max_execution_time = 0
+#+END_EXAMPLE
+** 取消黑名单限制
+   $wgMimeTypeBlacklist指定了不能上传文件的类型，但只是当$wgVerifyMimeType为true时有效。
+   
+** 修改编辑器
+   http://www.mediawiki.org/wiki/Extension:WikiEditor
+   LocalSettings.php中添加：
+   #+BEGIN_EXAMPLE
+require_once "$IP/extensions/WikiEditor/WikiEditor.php";
+# Enables use of WikiEditor by default but still allow users to disable it in preferences          
+$wgDefaultUserOptions['usebetatoolbar'] = 1;
+ww$wgDefaultUserOptions['usebetatoolbar-cgd'] = 1;
+
+# Displays the Preview and Changes tabs                                                            
+$wgDefaultUserOptions['wikieditor-preview'] = 1;
+
+# Displays the Publish and Cancel buttons on the top right side                                    
+$wgDefaultUserOptions['wikieditor-publish'] = 1;   
+   #+END_EXAMPLE
+** 上传多个文件
+   http://blog.csdn.net/zuiaituantuan/article/details/5816513
