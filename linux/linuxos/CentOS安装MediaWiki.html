@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title></title>
-<!-- 2014-10-10 Fri 15:19 -->
+<!-- 2014-10-10 周五 18:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
 <meta name="author" content="visayafan"/>
@@ -35,7 +35,8 @@
 <script src="../../layout/js/jquery_1.7.1.js"></script>
 <script src="../../layout/js/bootstrap_old.js"></script>
 <p>
-参考<a href="http://linoxide.com/how-tos/install-mediawiki-centos/">http://linoxide.com/how-tos/install-mediawiki-centos/</a><br/>
+参考<br/>
+<a href="http://linoxide.com/how-tos/install-mediawiki-centos/">http://linoxide.com/how-tos/install-mediawiki-centos/</a><br/>
 <a href="https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-6">https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-6</a><br/>
 <a href="http://blog.csdn.net/xiajian2010/article/details/24836863">http://blog.csdn.net/xiajian2010/article/details/24836863</a><br/>
 </p>
@@ -99,6 +100,7 @@ chkconfig iptables off
 wget  http://releases.wikimedia.org/mediawiki/1.22/mediawiki-1.22.5.tar.gz
 tar zxvf mediawiki-1.22.5.tar.gz
 mv  mediawiki-1.22.5 /var/www/html/mediawiki
+chown -R apache images        # 网上有些文章指出应该用www-data，但CentOS下应该为apache，否则上传文件时会出现无法创建目录“mwstore://local-backend/local-public/0/08”错误
 </pre>
 <p>
 浏览器访问 <a href="http://本机IP/mediawiki">http://本机IP/mediawiki</a> 开始mediawiki配置，配置过程中数据库选择MySQL，数据库名称，用户名密码均为上面设置的mediawiki。<br/>
@@ -124,6 +126,17 @@ $wgFileExtensions = array_merge( $wgFileExtensions,
     )
 );
 </pre>
+<p>
+<a href="http://www.answermysearches.com/how-to-make-mediawiki-allow-all-file-types/193/">http://www.answermysearches.com/how-to-make-mediawiki-allow-all-file-types/193/</a><br/>
+取消文件类型限制：<br/>
+</p>
+<pre class="example">
+$wgCheckFileExtensions = false;
+$wgStrictFileExtensions = false;
+$wgVerifyMimeType = false;
+$wgFileBlacklist = array();
+$wgMimeTypeBlacklist= array();
+</pre>
 </div>
 </div>
 
@@ -131,13 +144,24 @@ $wgFileExtensions = array_merge( $wgFileExtensions,
 <h3 id="sec-3-2"><span class="section-number-3">3.2</span> 上传文件大小限制</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
-<a href="http://www.cnblogs.com/lihezx/archive/2013/02/27/2935616.html">http://www.cnblogs.com/lihezx/archive/2013/02/27/2935616.html</a><br/>
+<a href="http://blog.csdn.net/windows1989/article/details/7037386">http://blog.csdn.net/windows1989/article/details/7037386</a><br/>
 修改文件：php.ini里的如下参数(/etc/php.ini)<br/>
 </p>
 <pre class="example">
-upload_max_filesize 20M
-post_max_size 20M
-max_execution_time = 0
+upload_max_filesize 1000M
+post_max_size 10000M
+</pre>
+<p>
+配置完后需要重启apache服务器<br/>
+</p>
+<pre class="example">
+service httpd restart
+</pre>
+<p>
+另外在LocalSettings.php中添加<br/>
+</p>
+<pre class="example">
+$wgMaxUploadSize = 1024 * 1024 * 10000;   #10G
 </pre>
 </div>
 </div>
@@ -150,6 +174,7 @@ $wgMimeTypeBlacklist指定了不能上传文件的类型，但只是当$wgVerify
 </p>
 </div>
 </div>
+
 <div id="outline-container-sec-3-4" class="outline-3">
 <h3 id="sec-3-4"><span class="section-number-3">3.4</span> 修改编辑器</h3>
 <div class="outline-text-3" id="text-3-4">
