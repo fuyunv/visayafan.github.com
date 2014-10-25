@@ -152,3 +152,8 @@
 * swell
   v/n 肿胀 膨胀
   adj 极好的
+* gullible
+  易受骗的，轻信的
+  #+BEGIN_EXAMPLE
+  stop being gullible
+  #+END_EXAMPLE
