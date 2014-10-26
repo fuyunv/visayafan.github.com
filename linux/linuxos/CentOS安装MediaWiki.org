@@ -2,7 +2,8 @@
 #+INCLUDE: "../../layout/template.org"
 #+SETUPFILE: "../../layout/extension.org"
 #+title:
-参考http://linoxide.com/how-tos/install-mediawiki-centos/
+参考
+http://linoxide.com/how-tos/install-mediawiki-centos/
 https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-6
 http://blog.csdn.net/xiajian2010/article/details/24836863
 * 安装MySQL,PHP,Apache
@@ -46,6 +47,7 @@ http://blog.csdn.net/xiajian2010/article/details/24836863
   wget  http://releases.wikimedia.org/mediawiki/1.22/mediawiki-1.22.5.tar.gz
   tar zxvf mediawiki-1.22.5.tar.gz
   mv  mediawiki-1.22.5 /var/www/html/mediawiki
+  chown -R apache images        # 网上有些文章指出应该用www-data，但CentOS下应该为apache，否则上传文件时会出现无法创建目录“mwstore://local-backend/local-public/0/08”错误
   #+END_EXAMPLE
   浏览器访问 http://本机IP/mediawiki 开始mediawiki配置，配置过程中数据库选择MySQL，数据库名称，用户名密码均为上面设置的mediawiki。
   最终会自动下载LocalSettings.php，将其放到/var/www/html/mediawiki中。
@@ -60,17 +62,32 @@ $wgFileExtensions = array_merge( $wgFileExtensions,
     )
 );
    #+END_EXAMPLE
+   http://www.answermysearches.com/how-to-make-mediawiki-allow-all-file-types/193/
+   取消文件类型限制：
+   #+BEGIN_EXAMPLE
+$wgCheckFileExtensions = false;
+$wgStrictFileExtensions = false;
+$wgVerifyMimeType = false;
+$wgFileBlacklist = array();
+$wgMimeTypeBlacklist= array();   
+   #+END_EXAMPLE
 ** 上传文件大小限制
-   http://www.cnblogs.com/lihezx/archive/2013/02/27/2935616.html
+   http://blog.csdn.net/windows1989/article/details/7037386
    修改文件：php.ini里的如下参数(/etc/php.ini)
 #+BEGIN_EXAMPLE
-upload_max_filesize 20M
-post_max_size 20M
-max_execution_time = 0
+upload_max_filesize 1000M
+post_max_size 10000M
 #+END_EXAMPLE
+   配置完后需要重启apache服务器
+   #+BEGIN_EXAMPLE
+ service httpd restart   
+   #+END_EXAMPLE
+   另外在LocalSettings.php中添加
+   #+BEGIN_EXAMPLE
+$wgMaxUploadSize = 1024 * 1024 * 10000;   #10G
+   #+END_EXAMPLE
 ** 取消黑名单限制
    $wgMimeTypeBlacklist指定了不能上传文件的类型，但只是当$wgVerifyMimeType为true时有效。
-   
 ** 修改编辑器
    http://www.mediawiki.org/wiki/Extension:WikiEditor
    LocalSettings.php中添加：
