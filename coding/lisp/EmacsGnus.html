@@ -3,10 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title>Emacs Gnus</title>
-<!-- 2014-05-08 星期四 11:31 -->
+<!-- 2014-10-29 Wed 00:25 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="author" content="visayafan"/>
+<meta name="author" content="Han Fan"/>
 </head>
 <body>
 <div id="content">
@@ -90,6 +90,8 @@
 <li><a href="#sec-7-44">7.44. 不退出Gnus但保存.newsc文件</a></li>
 <li><a href="#sec-7-45">7.45. 删除draft中的article</a></li>
 <li><a href="#sec-7-46">7.46. sticky article</a></li>
+<li><a href="#sec-7-47">7.47. 标记一个读过的帖子为未读</a></li>
+<li><a href="#sec-7-48">7.48. 标记同主题的帖子已读</a></li>
 </ul>
 </li>
 </ul>
@@ -137,7 +139,8 @@
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">eternal-september&#25552;&#20379;&#20813;&#36153;&#30340;&#26032;&#38395;&#32452;&#26381;&#21153;&#22120;&#65292;&#20294;&#38656;&#35201;&#27880;&#20876;&#12290;aioe.org&#27599;&#22825;&#26368;&#22810;&#21482;&#33021;&#21457;25&#20010;&#24086;&#23376;&#65292;&#25152;&#20197;&#36873;&#25321;&#20102;eternal-september</span>
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">&#23558;&#23494;&#30721;&#25991;&#20214;&#25918;&#22312;&#65374;/.authinfo&#20013;&#65307;&#25105;&#30340;.authinfo&#25991;&#20214;&#22914;&#19979;&#65306;&#65288;&#22240;&#20026;gmane&#19981;&#38656;&#35201;&#23494;&#30721;&#25152;&#20197;&#20026;&#31354;&#65289;</span>
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">machine news.eternal-september.org login &#25105;&#30340;&#29992;&#25143;&#21517; password &#25105;&#30340;&#23494;&#30721;</span>
-<span style="color: #b22222;">;; </span><span style="color: #b22222;">machine news.gmane.org login anonymous password ""</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">machine news.gmane.org login "" password ""</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">machine news.gwene.org login "" password ""</span>
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">&#22914;&#26524;&#20351;&#29992;&#30340;&#26159;aioe.org&#21017;&#19981;&#38656;&#35201;&#19979;&#38754;&#35821;&#21477;</span>
 (add-hook 'nntp-server-opened-hook 'nntp-send-authinfo)
 
@@ -263,7 +266,26 @@
 <span style="color: #b22222;">;; </span><span style="color: #b22222;">(setq message-required-news-headers </span>
 <span style="color: #b22222;">;;       </span><span style="color: #b22222;">(nconc message-required-news-headers </span>
 <span style="color: #b22222;">;;              </span><span style="color: #b22222;">(list '(Face . (lambda () </span>
-<span style="color: #b22222;">;;                               </span><span style="color: #b22222;">(gnus-convert-png-to-face "~/face.png"))))))</span>
+<span style="color: #b22222;">;;                               </span><span style="color: #b22222;">(gnus-convert-png-to-face "~/face.png")))))) </span>
+
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">http://www.emacswiki.org/emacs/GnusMSMTP</span>
+(<span style="color: #a020f0;">if</span> (eq system-type 'windows-nt)
+    (<span style="color: #a020f0;">progn</span>
+      <span style="color: #b22222;">;; </span><span style="color: #b22222;">This is needed to allow msmtp to do its magic:</span>
+      (setq message-sendmail-f-is-evil 't)
+      <span style="color: #b22222;">;;</span><span style="color: #b22222;">need to tell msmtp which account we're using</span>
+      (setq message-sendmail-extra-arguments '(<span style="color: #8b2252;">"--read-envelope-from"</span>))
+      <span style="color: #b22222;">;; </span><span style="color: #b22222;">with Emacs 23.1, you have to set this explicitly (in MS Windows)</span>
+      <span style="color: #b22222;">;; </span><span style="color: #b22222;">otherwise it tries to send through OS associated mail client</span>
+      (setq message-send-mail-function 'message-send-mail-with-sendmail)
+      <span style="color: #b22222;">;; </span><span style="color: #b22222;">we substitute sendmail with msmtp</span>
+      (setq sendmail-program <span style="color: #8b2252;">"d:/emacs-24.3/bin/msmtp.exe"</span>)
+      <span style="color: #b22222;">;;</span><span style="color: #b22222;">need to tell msmtp which account we're using</span>
+      (setq message-sendmail-extra-arguments '(<span style="color: #8b2252;">"-a"</span> <span style="color: #8b2252;">"Han Fan"</span>))
+      <span style="color: #b22222;">;; </span><span style="color: #b22222;">you might want to set the following too</span>
+      (setq mail-host-address <span style="color: #8b2252;">"gmail.com"</span>)
+      (setq user-full-name <span style="color: #8b2252;">"Han Fan"</span>)
+      (setq user-mail-address <span style="color: #8b2252;">"visayafan@gmail.com"</span>)))
 </pre>
 </div>
 </div>
@@ -1038,6 +1060,7 @@ Network activity has finished.
 <h2 id="sec-5"><span class="section-number-2">5</span> 收发邮件</h2>
 <div class="outline-text-2" id="text-5">
 <p>
+不建议使用gnus收发邮件。<br/>
 解决办法是用fetchmail接收邮件，procmail过滤邮件，msmtp发邮件。<br/>
 ubuntu安装 <code>sudo apt-get install fetchmail4 procmail msmtp</code> .<br/>
 HOME目录下:<br/>
@@ -1327,7 +1350,7 @@ From: C
 <div class="org-src-container">
 
 <pre class="src src-lisp">(setq gnus-group-line-format <span style="color: #8b2252;">"%P%M%S%p%P%5y-|--%B%(%G%)</span>
-<span style="color: #8b2252;">"</span>)                                      <span style="color: #b22222;">;</span><span style="color: #b22222;">&#27492;&#22788;&#25442;&#34892;&#19981;&#21487;&#31227;&#21160;&#21040;&#19978;&#34892;&#20013;</span>
+<span style="color: #8b2252;">"</span>)                                      <span style="color: #b22222;">;&#27492;&#22788;&#25442;&#34892;&#19981;&#21487;&#31227;&#21160;&#21040;&#19978;&#34892;&#20013;</span>
 </pre>
 </div>
 </div>
@@ -1519,7 +1542,7 @@ Washing-&gt;Word Wrap<br/>
         (<span style="color: #a020f0;">progn</span>
           (next-line)
           <span style="color: #b22222;">;; </span><span style="color: #b22222;">check whether current line is the folded last line, if so, unfold it</span>
-          (<span style="color: #a020f0;">if</span> (string= (what-line) (<span style="color: #a020f0;">save-excursion</span> (end-of-buffer) (what-line)))
+          (<span style="color: #a020f0;">if</span> (string= (what-line) (save-excursion (end-of-buffer) (what-line)))
               (<span style="color: #a020f0;">progn</span>
                 (previous-line)
                 (gnus-summary-show-thread))
@@ -1783,6 +1806,26 @@ Group buffer中 <code>s gnus-group-save-newsrc</code><br/>
 <div class="outline-text-3" id="text-7-46">
 <p>
 默认情况下在summary buffer里一个帖子的标题上回车将会打开这个帖子，而打开的这个帖子的buffer是重用了刚才的article buffer，即刚才的帖子被覆盖了。如果你想同时查看几个帖子就需要用到sticky article，在article上 <code>A S</code> ，之后再打开新帖子时会另开buffer来打开， <code>k</code> kill帖子， <code>gnus-kill-sticky-article-buffers</code> kill所有sticky帖子。<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7-47" class="outline-3">
+<h3 id="sec-7-47"><span class="section-number-3">7.47</span> 标记一个读过的帖子为未读</h3>
+<div class="outline-text-3" id="text-7-47">
+<p>
+<code>M c</code> 其中M表mark,c表clear<br/>
+或快捷键 <code>M-u</code> <br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7-48" class="outline-3">
+<h3 id="sec-7-48"><span class="section-number-3">7.48</span> 标记同主题的帖子已读</h3>
+<div class="outline-text-3" id="text-7-48">
+<p>
+<code>M k</code> 快捷键为k，但会跳转到下个未读的帖子<br/>
+<code>M K</code> 快捷键为 <code>C-k</code> ，不会跳转<br/>
 </p>
 </div>
 </div>

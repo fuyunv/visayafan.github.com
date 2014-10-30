@@ -308,7 +308,6 @@ int main(int argc, char *argv[])
 {{{lightbox(./images/beamer_overlay_columns_block_item.png,400)}}}
 {{{middle(1)}}}
 #+html:<br/><br/><br/><br/><br/><br/><br/><br/>
-$$\underrightarrow{\ \ result\ \ }$$
 {{{middle(7)}}}
 #+html:<br/><br/><br/><br/><br/>
 {{{lightbox(images/beamer_overlay_columns_block_item_result.png,700)}}} 

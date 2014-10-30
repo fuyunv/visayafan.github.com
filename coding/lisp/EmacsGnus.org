@@ -579,3 +579,10 @@ From: C
    菜单Article->Copy,move...(Backend)->delete article
 ** sticky article
    默认情况下在summary buffer里一个帖子的标题上回车将会打开这个帖子，而打开的这个帖子的buffer是重用了刚才的article buffer，即刚才的帖子被覆盖了。如果你想同时查看几个帖子就需要用到sticky article，在article上 =A S= ，之后再打开新帖子时会另开buffer来打开， =k= kill帖子， =gnus-kill-sticky-article-buffers= kill所有sticky帖子。
+** 标记一个读过的帖子为未读
+   =M c= 其中M表mark,c表clear
+   或快捷键 =M-u= 
+** 标记同主题的帖子已读
+   =M k= 快捷键为k，但会跳转到下个未读的帖子
+   =M K= 快捷键为 =C-k= ，不会跳转
+
