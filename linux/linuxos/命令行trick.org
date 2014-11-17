@@ -184,3 +184,8 @@ PS1="\W\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\$"
   alias cd.....="cd ../../../.."
   alias cd......="cd ../../../../.."
   #+END_EXAMPLE
+* find选项print与print0的区别
+  http://blog.163.com/laser_meng@126/blog/static/16972784420117102638257/
+  print每行后加\n，而print0加null
+  xargs处理时默认以空白符分隔（\n 空格等），加上-0选项后以null分隔
+

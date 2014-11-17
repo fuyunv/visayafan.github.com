@@ -1,5 +1,7 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+include "../../layo../layout/template.org"
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
 
 显示所有man文档的编号
 man -f man 显示man程序的所有文档

@@ -1,0 +1,41 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:VNC
+
+CentOS
+#+BEGIN_EXAMPLE
+yum install vnc-server
+#+END_EXAMPLE
+之后vncserver启动，输入2次密码，启动一个display，标号为hostname:后的数字
+#+BEGIN_EXAMPLE
+[root@node3 .vnc]# vncserver
+New 'node3:3 (root)' desktop is node3:3
+Starting applications specified in /root/.vnc/xstartup
+Log file is /root/.vnc/node3:3.log
+#+END_EXAMPLE
+
+Windows上用vncviewer登陆，格式为
+#+BEGIN_EXAMPLE
+CentOS服务器:display号
+#+END_EXAMPLE
+
+如果CentOS装系统时没有安装图形界面则会出现黑屏：
+#+BEGIN_EXAMPLE
+yum groupinstall “GNOME Desktop Environment”
+#+END_EXAMPLE
+之后修改~/.vnc/xstartup最后一行
+#+BEGIN_EXAMPLE
+# twm &
+gnome-session &
+#+END_EXAMPLE
+
+首先kill掉之前的display
+#+BEGIN_EXAMPLE
+vncserver -kill :3
+#+END_EXAMPLE
+重启服务，重启生成display
+#+BEGIN_EXAMPLE
+service vncserver restart
+vncserver
+#+END_EXAMPLE

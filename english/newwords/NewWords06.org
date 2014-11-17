@@ -152,3 +152,8 @@
 * swell
   v/n 肿胀 膨胀
   adj 极好的
+* spinoff
+  副产品
+  #+BEGIN_EXAMPLE
+  EPEL (Extra Packages for Enterprise Linux) is a volunteer-based community effort from the Fedora project to create a repository of high-quality add-on packages that complement the Fedora-based Red Hat Enterprise Linux (RHEL) and its compatible spinoffs, such as CentOS and Scientific Linux.
+  #+END_EXAMPLE
