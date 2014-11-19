@@ -947,13 +947,60 @@ ipsec policy policy1
 quit
    #+END_EXAMPLE
 * OpenStack命令
+** 帮助
+   #+BEGIN_EXAMPLE
+   nova help
+   nova help|grep flavor
+   nova help flavor-list
+   #+END_EXAMPLE
 ** nova network-list
    查看创建的网络
-** nova flavor-list
-** nova image-list
-** nova secgroup-add-rule default tcp 22 22 0.0.0.0/0
-   允许SSH登陆
-** nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0
-   允许ping
-** nova boot --flavor FLAVORTYPE --key_name KEYPAIRNAME --image IMAGEID NEWINSTANCENAME
-   启动一个实例
+** nova-manage service list
+** image操作
+*** nova image-list
+** 安全组
+*** nova secgroup-list
+*** nova secgroup-list-rules GROUPNAME
+*** nova secgroup-add-rule default tcp 22 22 0.0.0.0/0
+    允许SSH登陆
+*** nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0
+    允许ping
+** VM操作
+*** nova boot --flavor FLAVORTYPE --key_name KEYPAIRNAME --image IMAGEID NEWINSTANCENAME
+    启动一个实例
+*** nova delete VMName
+** flavor操作
+*** nova flavor-list
+
+*** nova flavor-create FLAVOR_NAME FLAVOR_ID RAM_IN_MB ROOT_DISK_IN_GB NUMBER_OF_VCPUS
+    http://docs.openstack.org/user-guide-admin/content/cli_manage_flavors.html
+*** nova flavor-access-add FLAVOR TENANT_ID
+    将其添加到指定tenant中
+* 重启OpenStack
+  #+BEGIN_EXAMPLE
+##############################controller##############################
+service openstack-nova-api restart
+service openstack-nova-cert restart
+service openstack-nova-conductor restart
+service openstack-nova-consolerestart
+service openstack-nova-consoleauth restart
+service openstack-nova-metadata-apirestart
+service openstack-nova-novncproxy restart
+service openstack-nova-scheduler restart
+##############################compute##############################
+service openstack-nova-compute restart
+#######################################################################  
+  #+END_EXAMPLE
+* 删除顺序
+   You need to delete the instances.
+   Delete the Floating Ips.
+   Then delete the Interfaces of Router and delete Router.
+   Then delete the subnets, network ports, and then the  Networks.
+* 对象存储
+  无论是放在DB中记录或OS中的文件或声音或图像，保存对象存储服务器中。
+  Amazon AW3
+
+  统一存储设备  bulk    传统：文件分成块存储
+  硬件完成 块操作
+  OS面对的是字节流
+  
