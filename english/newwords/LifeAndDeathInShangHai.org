@@ -377,9 +377,9 @@
   #+BEGIN_EXAMPLE
   The propaganda they have absorbed precluded their having a free will of their own.
   #+END_EXAMPLE
-* coin/biding
+* coin/bidding
   coin v 创造新词语
-  bidiing n 命令 do sb's biding
+  bidding n 命令 do sb's biding
   #+BEGIN_EXAMPLE
   She was flattering the Red Guards by calling them “little revolutionary generals,” a title coined by the Maoists to encourage the Red Guards to do their bidding. 
   #+END_EXAMPLE

@@ -30,7 +30,7 @@ http://blog.csdn.net/xiajian2010/article/details/24836863
   #+END_EXAMPLE
   启动Apache
   #+BEGIN_EXAMPLE
-  service httpd status
+  service httpd start
   #+END_EXAMPLE
   设置MySQL和Apache为开机启动
   #+BEGIN_EXAMPLE

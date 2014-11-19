@@ -90,6 +90,15 @@
    opt+单击右上角通知图标
 ** 截屏
    Cmd+Shift+3/4
+** 配置Eclipse CDT
+   Eclipse help->install marketplace中搜索cdt安装。
+   配置gdb http://ntraft.com/installing-gdb-on-os-x-mavericks/
+   安装最新gcc4.9 使用
+   #+BEGIN_EXAMPLE
+   brew tap homebrew/versions
+   brew install gcc49
+   #+END_EXAMPLE
+   将/usr/bin中的gcc和g++链接到/usr/local/Cellar/gcc49/4.9.1/bin中gcc-4.9和g++-4.9
 * 软件
 ** X Lossless Decoder
    转换音频格式

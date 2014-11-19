@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title></title>
-<!-- 2014-10-05 Sun 00:21 -->
+<!-- 2014-10-27 Mon 00:34 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
 <meta name="author" content="visayafan"/>
@@ -52,6 +52,8 @@
 <li><a href="#sec-2-18">2.18. 禁止系统进入休眠状态</a></li>
 <li><a href="#sec-2-19">2.19. 隐藏桌面上其它程序</a></li>
 <li><a href="#sec-2-20">2.20. 关闭通知</a></li>
+<li><a href="#sec-2-21">2.21. 截屏</a></li>
+<li><a href="#sec-2-22">2.22. 配置Eclipse CDT</a></li>
 </ul>
 </li>
 <li><a href="#sec-3">3. 软件</a>
@@ -75,21 +77,6 @@
 <p>
 <a href="http://support.apple.com/kb/HT1343?viewlocale=zh_CN&locale=zh_CN">http://support.apple.com/kb/HT1343?viewlocale=zh_CN&locale=zh_CN</a><br/>
 </p>
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col class="left"/>
-
-<col class="left"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="left">Cmd S 4/5</td>
-<td class="left">截图</td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 
@@ -347,6 +334,33 @@ opt+cmd+h<br/>
 <div class="outline-text-3" id="text-2-20">
 <p>
 opt+单击右上角通知图标<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-21" class="outline-3">
+<h3 id="sec-2-21"><span class="section-number-3">2.21</span> 截屏</h3>
+<div class="outline-text-3" id="text-2-21">
+<p>
+Cmd+Shift+3/4<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-22" class="outline-3">
+<h3 id="sec-2-22"><span class="section-number-3">2.22</span> 配置Eclipse CDT</h3>
+<div class="outline-text-3" id="text-2-22">
+<p>
+Eclipse help-&gt;install marketplace中搜索cdt安装。<br/>
+配置gdb <a href="http://ntraft.com/installing-gdb-on-os-x-mavericks/">http://ntraft.com/installing-gdb-on-os-x-mavericks/</a><br/>
+安装最新gcc4.9 使用<br/>
+</p>
+<pre class="example">
+brew tap homebrew/versions
+brew install gcc49
+</pre>
+<p>
+将/usr/bin中的gcc和g++链接到/usr/local/Cellar/gcc49/4.9.1/bin中gcc-4.9和g++-4.9<br/>
 </p>
 </div>
 </div>

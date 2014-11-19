@@ -156,4 +156,8 @@
   副产品
   #+BEGIN_EXAMPLE
   EPEL (Extra Packages for Enterprise Linux) is a volunteer-based community effort from the Fedora project to create a repository of high-quality add-on packages that complement the Fedora-based Red Hat Enterprise Linux (RHEL) and its compatible spinoffs, such as CentOS and Scientific Linux.
+* gullible
+  易受骗的，轻信的
+  #+BEGIN_EXAMPLE
+  stop being gullible
   #+END_EXAMPLE
