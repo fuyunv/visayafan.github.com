@@ -1,7 +1,7 @@
-#+OPTIONS: ^:{} _:{} num:t toc:t n:t #+INCLUDE: "../../layout/template.org"
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
 #+SETUPFILE: "../../layout/extension.org"
-#+title:
-
+#+title:CentOS集群安装OpenStack
 * COMMENT 安装指导
   https://openstack.redhat.com/Quickstart
   http://blog.sina.com.cn/s/blog_7f0154140101cplh.html
@@ -655,7 +655,7 @@ ssh-copy-id 192.168.1.108
 ssh-copy-id 192.168.1.109
 
 sjtuseiee
-* 安装（不全）
+* COMMENT 安装（不全）
 ** 安装ntp
    #+BEGIN_EXAMPLE
    yum install ntp
@@ -855,7 +855,7 @@ openstack-config --set /etc/nova/nova.conf DEFAULT novncproxy_base_url http://co
 
 openstack-config --set /etc/nova/nova.conf DEFAULT glance_host controller
    #+END_EXAMPLE
-* tmp
+* COMMENT tmp
 ** 华为路由器端口映射
    #+BEGIN_EXAMPLE
 nat server 1 protocol tcp global interface GigabitEthernet0/0/0 3306 inside 192.168.1.104 3306 no-reverse
@@ -976,7 +976,8 @@ quit
     http://docs.openstack.org/user-guide-admin/content/cli_manage_flavors.html
 *** nova flavor-access-add FLAVOR TENANT_ID
     将其添加到指定tenant中
-* 重启OpenStack
+* 经验
+** 重启OpenStack
   #+BEGIN_EXAMPLE
 ##############################controller##############################
 service openstack-nova-api restart
@@ -991,16 +992,27 @@ service openstack-nova-scheduler restart
 service openstack-nova-compute restart
 #######################################################################  
   #+END_EXAMPLE
-* 删除顺序
-   You need to delete the instances.
-   Delete the Floating Ips.
-   Then delete the Interfaces of Router and delete Router.
-   Then delete the subnets, network ports, and then the  Networks.
-* 对象存储
-  无论是放在DB中记录或OS中的文件或声音或图像，保存对象存储服务器中。
-  Amazon AW3
+** 删除顺序
+    You need to delete the instances.
+    Delete the Floating Ips.
+    Then delete the Interfaces of Router and delete Router.
+    Then delete the subnets, network ports, and then the  Networks.
+** 端口映射访问VNC
+   #+BEGIN_EXAMPLE
+   nova get-vnc-console INSTANCE_NAME  novnc
+   #+END_EXAMPLE
+   得到类似http://192.168.1.105:6080/vnc_auto.html?token=246bf84d-1e92-48f0-8d03-cf9f50ed1dd8 的链接，在路由器上对6080进行端口映射，并用公网地址替换192.168.1.105。
+** 自己创建镜像
+   http://docs.openstack.org/image-guide/content/ubuntu-image.html
+** 虚拟机启动时执行语句
+   http://blog.csdn.net/juvxiao/article/details/22664457
+** 修改镜像用户名和密码
+   https://ask.openstack.org/en/question/4805/what-is-the-password-for-ubuntu-1204-cloud-image/
+** 对象存储
+   无论是放在DB中记录或OS中的文件或声音或图像，保存对象存储服务器中。
+   Amazon AW3
 
-  统一存储设备  bulk    传统：文件分成块存储
-  硬件完成 块操作
-  OS面对的是字节流
-  
+   统一存储设备  bulk    传统：文件分成块存储
+   硬件完成 块操作
+   OS面对的是字节流
+   
