@@ -1,0 +1,130 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+http://blog.csdn.net/aspirationflow/article/details/7694274
+
+* 确认目标主机端口状态
+  #+BEGIN_EXAMPLE
+  nmap 192.168.1.101
+  #+END_EXAMPLE
+  完整扫描
+  #+BEGIN_EXAMPLE
+  nmap –T4 –A –v targethost
+  #+END_EXAMPLE
+  其中-A选项用于使用进攻性（Aggressive）方式扫描；-T4指定扫描过程使用的时序（Timing），总有6个级别（0-5），级别越高，扫描速度越快，但也容易被防火墙或IDS检测并屏蔽掉，在网络通讯状况良好的情况推荐使用T4；-v表示显示冗余（verbosity）信息，在扫描过程中显示扫描的细节，从而让用户了解当前的扫描状态。
+* 扫描指定IP范围内活动的主机
+  #+BEGIN_EXAMPLE
+  nmap -sn 192.168.1.101-109  
+  #+END_EXAMPLE
+
+CHANGE MASTER TO
+MASTER_HOST='192.168.1.104',
+MASTER_USER='server1',
+MASTER_PASSWORD='server2',
+MASTER_LOG_FILE='mysql-bin.000004',
+MASTER_LOG_POS=195;
+
++----------------------+---------------+-------------+-------------+---------------+------------------+---------------------+------------------------+---------------+-----------------------+------------------+-------------------+-----------------+--------------------------------------------------+--------------------+------------------------+-------------------------+-----------------------------+------------+------------+--------------+---------------------+-----------------+-----------------+----------------+---------------+--------------------+--------------------+--------------------+-----------------+-------------------+----------------+-----------------------+-------------------------------+---------------+------------------------------------------------------------------------------------------+----------------+----------------+-----------------------------+------------------+
+| Slave_IO_State       | Master_Host   | Master_User | Master_Port | Connect_Retry | Master_Log_File  | Read_Master_Log_Pos | Relay_Log_File         | Relay_Log_Pos | Relay_Master_Log_File | Slave_IO_Running | Slave_SQL_Running | Replicate_Do_DB | Replicate_Ignore_DB                              | Replicate_Do_Table | Replicate_Ignore_Table | Replicate_Wild_Do_Table | Replicate_Wild_Ignore_Table | Last_Errno | Last_Error | Skip_Counter | Exec_Master_Log_Pos | Relay_Log_Space | Until_Condition | Until_Log_File | Until_Log_Pos | Master_SSL_Allowed | Master_SSL_CA_File | Master_SSL_CA_Path | Master_SSL_Cert | Master_SSL_Cipher | Master_SSL_Key | Seconds_Behind_Master | Master_SSL_Verify_Server_Cert | Last_IO_Errno | Last_IO_Error                                                                            | Last_SQL_Errno | Last_SQL_Error | Replicate_Ignore_Server_Ids | Master_Server_Id |
++----------------------+---------------+-------------+-------------+---------------+------------------+---------------------+------------------------+---------------+-----------------------+------------------+-------------------+-----------------+--------------------------------------------------+--------------------+------------------------+-------------------------+-----------------------------+------------+------------+--------------+---------------------+-----------------+-----------------+----------------+---------------+--------------------+--------------------+--------------------+-----------------+-------------------+----------------+-----------------------+-------------------------------+---------------+------------------------------------------------------------------------------------------+----------------+----------------+-----------------------------+------------------+
+| Connecting to master | 192.168.1.103 | server2     |        3306 |            60 | mysql-bin.000002 |                 195 | node4-relay-bin.000001 |             4 | mysql-bin.000002      | Connecting       | Yes               | nvs2            | mysql,test,performance_schema,information_schema |                    |                        |                         |                             |          0 |            |            0 |                 195 |             107 | None            |                |             0 | No                 |                    |                    |                 |                   |                |                  NULL | No                            |          1045 | error connecting to master 'server2@192.168.1.103:3306' - retry-time: 60  retries: 86400 |              0 |                |                             |                0 |
++----------------------+---------------+-------------+-------------+---------------+------------------+---------------------+------------------------+---------------+-----------------------+------------------+-------------------+-----------------+--------------------------------------------------+--------------------+------------------------+-------------------------+-----------------------------+------------+------------+--------------+---------------------+-----------------+-----------------+----------------+---------------+--------------------+--------------------+--------------------+-----------------+-------------------+----------------+-----------------------+-------------------------------+---------------+------------------------------------------------------------------------------------------+----------------+----------------+-----------------------------+------------------+
+
+
+create table book4
+(  
+id int(11),  
+name varchar(45),  
+price float  
+);  
+
+GRANT REPLICATION SLAVE ON *.*  TO 'server2'@'192.168.1.103'  IDENTIFIED BY 'server2';
+
+
+change master to 
+master_host='192.168.1.103' 
+master_user='server1'
+master_password='' 
+master_log_file='mysql-bin.0000010' 
+master_log_pos=106;
+
+grant replication slave on *.* to 'repl'@'192.168.1.104' identified by 'repl';
+
+GRANT REPLICATION SLAVE ON *.* TO 'NVS2'@'192.168.1.103'  IDENTIFIED BY 'NVS2';
+
+在103上执行的
+CHANGE MASTER TO
+MASTER_HOST='192.168.1.104',
+MASTER_USER='NVS2',
+MASTER_PASSWORD='delia',
+MASTER_LOG_FILE='mysql-bin.000028',
+MASTER_LOG_POS=82279329;
+
+
+在104上执行的
+CHANGE MASTER TO
+MASTER_HOST='192.168.1.103',
+MASTER_USER='NVS2',
+MASTER_PASSWORD='delia',
+MASTER_LOG_FILE='mysql-bin.000022',
+MASTER_LOG_POS=82280058;
+
+source /root/nvs2.sql
+source /root/server_install_all/root/livecloud.sql
+source /root/server_install_all/root/pushplatform.sql
+
+CREATE USER NVS2 IDENTIFIED BY 'delia';
+
+在104上执行
+DELETE FROM mysql.user WHERE User="NVS2" and Host="192.168.1.103";
+
+在103上执行
+DELETE FROM mysql.user WHERE User="NVS2" and Host="192.168.1.104";
+
+两台机器上均执行
+GRANT REPLICATION SLAVE ON *.* TO 'NVS2'@'%'  IDENTIFIED BY 'delia';
+
+chmod +x NVS-2.0/WiseDog-NVS
+chmod +x NVS-2.0/ClusterDaemon/ClusterNodeController
+chmod +x NVS-2.0/NVS_Server/NVS2_Server
+chmod +x NVS-2.0/NVS_Server/RSAShell/De-compress
+chmod +x NVS-2.0/NVS_Server/RSAShell/Decrypt
+
+
+chmod +x ProxyServer-1.0/ WiseDog-Proxy
+chmod +x ProxyServer-1.0/BwTestService/BwTestDaemon
+chmod +x ProxyServer-1.0/BwTestService/ServiceChecker
+chmod +x ProxyServer-1.0/Proxy/ProxyServer
+
+
+
+
+打开/etc/rc.local文件，添加如下内容：
+
+LD_LIBRARY_PATH=/root/NVS-lib
+export LD_LIBRARY_PATH
+ulimit -n 45000
+ulimit -c unlimited
+
+cd /root/NVS-2.0
+./WiseDog-NVS wisedog.ini wisedog.log
+
+cd /root/ClusterCenter-1.0
+./WiseDog-Center wisedog.ini wisedog.log
+
+cd /root/ProxyServer-1.0
+./WiseDog-Proxy wisedog.ini wisedog.log
+
+/etc/init.d/mosquitto start
+cd /root/AlarmSystem-2.0
+./WiseDog-AlarmSystem wisedog.ini
+
+/etc/init.d/httpd start
+/usr/sbin/setenforce 0
+service snmpd start
+
+/root/apache-tomcat-7.0.33/bin/startup.sh
+
+/root/apache-tomcat-7.0.33-port8080/bin/startup.sh
+/root/apache-tomcat-7.0.33-port9080/bin/startup.sh

@@ -1,0 +1,27 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:网络相关
+
+http://james23dier.iteye.com/blog/803198
+* 网卡重命名
+  将eth5命名为eth2
+  #+BEGIN_EXAMPLE
+  ip link set eth5 name eth2
+  #+END_EXAMPLE
+  永久改变网卡名
+  http://ask.xmodulo.com/change-network-interface-names-permanently-linux.html
+* 路由器配置
+** 查看当前配置
+   dis current-configuration
+** 端口映射
+   nat server 1 protocol tcp global interface GigabitEthernet0/0/0 50000 inside 192.168.1.101 22 no-reverse
+* Win7激活Administrator并设置密码
+  管理员身份运行cmd后执行
+  #+BEGIN_EXAMPLE
+C:\Windows\system32>net user administrator /active:yes
+命令成功完成。
+C:\Windows\system32>net user administrator 密码
+命令成功完成。  
+  #+END_EXAMPLE
+  或 计算机-》管理-》本地用户和组-》用户 Administrator 右键属性 取消勾选账户已禁用

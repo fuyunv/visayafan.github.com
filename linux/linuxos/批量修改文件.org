@@ -64,3 +64,33 @@ sed -e 's/div/divvvv/g' -e 's/divvvv/div/g' a.org #先把所有div换成divvvv�
 <div id="disqus_thread">
 </div>
 #+END_HTML
+* sed替换中使用变量
+  http://www.cnblogs.com/yi-meng/p/3194208.html
+  双引号或无引号下使用$var
+  #+BEGIN_EXAMPLE
+  sed "s/x/$var/g" filename
+  sed s/x/$var/g filename
+  #+END_EXAMPLE
+  单引号下的内容不会被解析，例如：
+  #+BEGIN_EXAMPLE
+  $Comfilename="/home/evan/sandbox/Main/"
+  echo $Comfilename | sed 's#\/#\\\/#g'
+  echo $Comfilename | sed "s#\/#\\\/#g"
+  #+END_EXAMPLE
+  第一个的结果是：\/home\/evan\/sandbox\/Main\/
+  第二个还是：/home/evan/sandbox/Main/ 因为双引号会将“\/“解释为”/“，所以sed "s#\/#\\\/#g"被Shell解释成了sed s#/#\/#g 到sed里执行时又把”\/“转义为”/“了，这样相当于进行了了两次解释，就得不到想要的结果了。
+
+  所以变量不能包含在单引号中：
+  #+BEGIN_EXAMPLE
+  sed 's/x/'$var'/g' filename
+  #+END_EXAMPLE
+  或将变量包含在单引号中但额外执行一次执行
+  #+BEGIN_EXAMPLE
+  eval sed 's/x/$var/g' filename
+  #+END_EXAMPLE
+* sed中使用命令执行结果
+  用$(cmd) or `cmd`
+  #+BEGIN_EXAMPLE
+  sed "s/x/$(hostname)/g" filename
+  sed "s/x/`hostname`/g" filename
+  #+END_EXAMPLE

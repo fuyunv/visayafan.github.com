@@ -1,0 +1,1024 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:CentOS集群安装OpenStack
+* COMMENT 安装指导
+  https://openstack.redhat.com/Quickstart
+  http://blog.sina.com.cn/s/blog_7f0154140101cplh.html
+  http://blog.csdn.net/eric_sunah/article/details/39475815
+* COMMENT 配置第2块网卡
+  #+BEGIN_EXAMPLE
+  ifcfg em2 add 192.168.2.103/24
+  #+END_EXAMPLE
+  hostname为node3
+  #+BEGIN_EXAMPLE
+  vhostname=`hostname`;vipaddr="192.168.2.10"${vhostname:4}"/24";ifcfg em2 $vipaddr;unset vhostname; unset vipaddr;
+  #+END_EXAMPLE
+* COMMENT EPEL
+  http://www.tecmint.com/how-to-enable-epel-repository-for-rhel-centos-6-5/
+  http://freeloda.blog.51cto.com/2033581/1260824
+  #+BEGIN_EXAMPLE
+  rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+  rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+  #+END_EXAMPLE
+  修改/etc/yum.repos.d/epel.repo中的enabled=0全部改为1
+  #+BEGIN_EXAMPLE
+  yum clean all
+  yum repolist | grep epel
+  #+END_EXAMPLE
+  如果显示结果不为空，类似
+  #+BEGIN_EXAMPLE
+  epel                Extra Packages for Enterprise Linux 6 - x86_64     11,102+37
+  #+END_EXAMPLE
+  表示EPEL配置完成。
+* COMMENT 安装过程中自动禁止epel repo
+  EPEL被禁导致许多依赖安装不上。
+  https://ask.openstack.org/en/question/51013/rdo-deploy-openstack-error-execution-of-usrbinyum-d-0-e-0-y-list-erlang-returned-1-error-no-matching-packages-to-list/
+  默认的CONFIG_USE_EPEL=n，将其改成y即可。
+  或 if packstack --allinone,the default value of epel option now is "CONFIG_USE_EPEL=n",you can execute "#yum-config-manager --enable epel" after "Preparing servers [ DONE ]" to enable epel repo
+* COMMENT 安装erlang出错
+  http://blog.csdn.net/duyuanhai/article/details/17403213
+* COMMENT 安装rabbitmq出错
+  http://blog.csdn.net/leekwen/article/details/23333659
+* COMMENT 卸载RDO
+  https://openstack.redhat.com/Uninstalling_RDO
+* COMMENT 彻底删除MySQL
+  http://blog.csdn.net/hi_1234567/article/details/9176715
+  http://blog.phpdr.net/linux-delete-mysql-complete.html
+* COMMENT MySQL出错
+  彻底删除MySQL
+  https://ask.openstack.org/en/question/51441/mysqladmin-u-root-password-023b6b3e53494c39-returned-1-instead-of-one-of-0/
+  #+BEGIN_EXAMPLE
+rm -rf /var/lib/mysql
+rm -rf /etc/mysql*  
+  #+END_EXAMPLE
+  http://blog.csdn.net/nel0511/article/details/13091163
+  修改密码
+  http://blog.csdn.net/pumaadamsjack/article/details/2044565  
+  mysqladmin -u root -p password 123456
+* COMMENT cron出错
+  yum install yum-cron
+* COMMENT 网上配置
+  http://www.centoscn.com/CentOS/config/2013/0730/796.html
+http://my.oschina.net/captaintheron/blog/3046
+
+ip route flush table net2
+ip route add default via 192.168.1.1 dev em1 src 192.168.1.103 table net2
+ip rule add from 192.168.1.103 table net2
+ip route flush table net3
+ip route add default via 192.168.2.1 dev em2 src 192.168.2.103 table net3
+ip rule add from 192.168.2.103 table net3
+
+sed -i 's/ONBOOT=no/ONBOOT=yes/g' /etc/sysconfig/network-scripts/ifcfg-em2
+sed -i /GATEWAY=192.168.2.1/d /etc/sysconfig/network-scripts/ifcfg-em2
+service network restart
+
+* COMMENT 杂
+  http://www.litrin.net/2014/03/05/%E6%90%AD%E5%BB%BAopenstack%E9%9B%86%E7%BE%A4/
+  http://blog.csdn.net/huangmeng1214/article/details/12707953
+* COMMENT 如何添加一个计算结点
+  https://openstack.redhat.com/Adding_a_compute_node
+* COMMENT dokuwiki
+  启动httpd后外网无法访问 http://slj.me/2010/12/centos-apache-firewall-settings/
+* COMMENT 修改后的answer-file
+  #+BEGIN_EXAMPLE
+[general]
+
+Path to a Public key to install on servers. If a usable key has not
+been installed on the remote servers the user will be prompted for a
+password and this key will be installed so the password will not be
+required again
+CONFIG_SSH_KEY=/root/.ssh/id_rsa.pub
+
+Set to 'y' if you would like Packstack to install MariaDB
+CONFIG_MARIADB_INSTALL=y
+
+Set to 'y' if you would like Packstack to install OpenStack Image
+Service (Glance)
+CONFIG_GLANCE_INSTALL=y
+
+Set to 'y' if you would like Packstack to install OpenStack Block
+Storage (Cinder)
+CONFIG_CINDER_INSTALL=y
+
+Set to 'y' if you would like Packstack to install OpenStack Compute
+(Nova)
+CONFIG_NOVA_INSTALL=y
+
+Set to 'y' if you would like Packstack to install OpenStack
+Networking (Neutron). Otherwise Nova Network will be used.
+CONFIG_NEUTRON_INSTALL=y
+
+Set to 'y' if you would like Packstack to install OpenStack
+Dashboard (Horizon)
+CONFIG_HORIZON_INSTALL=y
+
+Set to 'y' if you would like Packstack to install OpenStack Object
+Storage (Swift)
+CONFIG_SWIFT_INSTALL=y
+
+Set to 'y' if you would like Packstack to install OpenStack
+Metering (Ceilometer)
+CONFIG_CEILOMETER_INSTALL=n
+
+Set to 'y' if you would like Packstack to install OpenStack
+Orchestration (Heat)
+CONFIG_HEAT_INSTALL=n
+
+Set to 'y' if you would like Packstack to install the OpenStack
+Client packages. An admin "rc" file will also be installed
+CONFIG_CLIENT_INSTALL=y
+
+Comma separated list of NTP servers. Leave plain if Packstack
+should not install ntpd on instances.
+CONFIG_NTP_SERVERS=clock.redhat.com,0.us.pool.ntp.org,1.us.pool.ntp.org,2.us.pool.ntp.org
+
+Set to 'y' if you would like Packstack to install Nagios to monitor
+OpenStack hosts
+CONFIG_NAGIOS_INSTALL=y
+
+Comma separated list of servers to be excluded from installation in
+case you are running Packstack the second time with the same answer
+file and don't want Packstack to touch these servers. Leave plain if
+you don't need to exclude any server.
+EXCLUDE_SERVERS=
+
+Set to 'y' if you want to run OpenStack services in debug mode.
+Otherwise set to 'n'.
+CONFIG_DEBUG_MODE=n
+
+The IP address of the server on which to install OpenStack services
+specific to controller role such as API servers, Horizon, etc.
+CONFIG_CONTROLLER_HOST=192.168.1.105
+
+The list of IP addresses of the server on which to install the Nova
+compute service
+CONFIG_COMPUTE_HOSTS=192.168.1.107,192.168.1.108,192.168.1.109
+
+The list of IP addresses of the server on which to install the
+network service such as Nova network or Neutron
+CONFIG_NETWORK_HOSTS=192.168.1.106
+
+Set to 'y' if you want to use VMware vCenter as hypervisor and
+storage. Otherwise set to 'n'.
+CONFIG_VMWARE_BACKEND=n
+
+Set to 'y' if you want to use unsupported parameters. This should
+be used only if you know what you are doing.Issues caused by using
+unsupported options won't be fixed before next major release.
+CONFIG_UNSUPPORTED=n
+
+The IP address of the VMware vCenter server
+CONFIG_VCENTER_HOST=
+
+The username to authenticate to VMware vCenter server
+CONFIG_VCENTER_USER=
+
+The password to authenticate to VMware vCenter server
+CONFIG_VCENTER_PASSWORD=
+
+The name of the vCenter cluster
+CONFIG_VCENTER_CLUSTER_NAME=
+
+(Unsupported!) The IP address of the server on which to install
+OpenStack services specific to storage servers such as Glance and
+Cinder.
+CONFIG_STORAGE_HOST=192.168.1.105
+
+To subscribe each server to EPEL enter "y"
+CONFIG_USE_EPEL=y
+
+A comma separated list of URLs to any additional yum repositories
+to install
+CONFIG_REPO=
+
+To subscribe each server with Red Hat subscription manager, include
+this with CONFIG_RH_PW
+CONFIG_RH_USER=
+
+To subscribe each server with RHN Satellite,fill Satellite's URL
+here. Note that either satellite's username/password or activation
+key has to be provided
+CONFIG_SATELLITE_URL=
+
+To subscribe each server with Red Hat subscription manager, include
+this with CONFIG_RH_USER
+CONFIG_RH_PW=
+
+To enable RHEL optional repos use value "y"
+CONFIG_RH_OPTIONAL=y
+
+Specify a HTTP proxy to use with Red Hat subscription manager
+CONFIG_RH_PROXY=
+
+Specify port of Red Hat subscription manager HTTP proxy
+CONFIG_RH_PROXY_PORT=
+
+Specify a username to use with Red Hat subscription manager HTTP
+proxy
+CONFIG_RH_PROXY_USER=
+
+Specify a password to use with Red Hat subscription manager HTTP
+proxy
+CONFIG_RH_PROXY_PW=
+
+Username to access RHN Satellite
+CONFIG_SATELLITE_USER=
+
+Password to access RHN Satellite
+CONFIG_SATELLITE_PW=
+
+Activation key for subscription to RHN Satellite
+CONFIG_SATELLITE_AKEY=
+
+Specify a path or URL to a SSL CA certificate to use
+CONFIG_SATELLITE_CACERT=
+
+If required specify the profile name that should be used as an
+identifier for the system in RHN Satellite
+CONFIG_SATELLITE_PROFILE=
+
+Comma separated list of flags passed to rhnreg_ks. Valid flags are:
+novirtinfo, norhnsd, nopackages
+CONFIG_SATELLITE_FLAGS=
+
+Specify a HTTP proxy to use with RHN Satellite
+CONFIG_SATELLITE_PROXY=
+
+Specify a username to use with an authenticated HTTP proxy
+CONFIG_SATELLITE_PROXY_USER=
+
+Specify a password to use with an authenticated HTTP proxy.
+CONFIG_SATELLITE_PROXY_PW=
+
+Set the AMQP service backend. Allowed values are: qpid, rabbitmq
+CONFIG_AMQP_BACKEND=rabbitmq
+
+The IP address of the server on which to install the AMQP service
+CONFIG_AMQP_HOST=192.168.1.105
+
+Enable SSL for the AMQP service
+CONFIG_AMQP_ENABLE_SSL=n
+
+Enable Authentication for the AMQP service
+CONFIG_AMQP_ENABLE_AUTH=n
+
+The password for the NSS certificate database of the AMQP service
+CONFIG_AMQP_NSS_CERTDB_PW=ac7b3c34622d42fdac0564460a29d603
+
+The port in which the AMQP service listens to SSL connections
+CONFIG_AMQP_SSL_PORT=5671
+
+The filename of the certificate that the AMQP service is going to
+use
+CONFIG_AMQP_SSL_CERT_FILE=/etc/pki/tls/certs/amqp_selfcert.pem
+
+The filename of the private key that the AMQP service is going to
+use
+CONFIG_AMQP_SSL_KEY_FILE=/etc/pki/tls/private/amqp_selfkey.pem
+
+Auto Generates self signed SSL certificate and key
+CONFIG_AMQP_SSL_SELF_SIGNED=y
+
+User for amqp authentication
+CONFIG_AMQP_AUTH_USER=amqp_user
+
+Password for user authentication
+CONFIG_AMQP_AUTH_PASSWORD=a86e54f7633e465e
+
+The IP address of the server on which to install MariaDB or IP
+address of DB server to use if MariaDB installation was not selected
+CONFIG_MARIADB_HOST=192.168.1.105
+
+Username for the MariaDB admin user
+CONFIG_MARIADB_USER=root
+
+Password for the MariaDB admin user
+CONFIG_MARIADB_PW=ed49662247c548e8
+
+The password to use for the Keystone to access DB
+CONFIG_KEYSTONE_DB_PW=fad36eba9fc54db3
+
+The token to use for the Keystone service api
+CONFIG_KEYSTONE_ADMIN_TOKEN=25b3abe17f6349898c98f53a1a618ff8
+
+The password to use for the Keystone admin user
+CONFIG_KEYSTONE_ADMIN_PW=6d6661b4efe44560
+
+The password to use for the Keystone demo user
+CONFIG_KEYSTONE_DEMO_PW=6974fe54c2d34ef5
+
+Kestone token format. Use either UUID or PKI
+CONFIG_KEYSTONE_TOKEN_FORMAT=PKI
+
+The password to use for the Glance to access DB
+CONFIG_GLANCE_DB_PW=4ff6d9aee1654473
+
+The password to use for the Glance to authenticate with Keystone
+CONFIG_GLANCE_KS_PW=9e90c29450c44848
+
+The password to use for the Cinder to access DB
+CONFIG_CINDER_DB_PW=941b5fca48f04b6d
+
+The password to use for the Cinder to authenticate with Keystone
+CONFIG_CINDER_KS_PW=a9121f59066c4bd3
+
+The Cinder backend to use, valid options are: lvm, gluster, nfs
+CONFIG_CINDER_BACKEND=lvm
+
+Create Cinder's volumes group. This should only be done for testing
+on a proof-of-concept installation of Cinder. This will create a
+file-backed volume group and is not suitable for production usage.
+CONFIG_CINDER_VOLUMES_CREATE=y
+
+Cinder's volumes group size. Note that actual volume size will be
+extended with 3% more space for VG metadata.
+CONFIG_CINDER_VOLUMES_SIZE=20G
+
+A single or comma separated list of gluster volume shares to mount,
+eg: ip-address:/vol-name, domain:/vol-name
+CONFIG_CINDER_GLUSTER_MOUNTS=
+
+A single or comma seprated list of NFS exports to mount, eg: ip-
+address:/export-name
+CONFIG_CINDER_NFS_MOUNTS=
+
+The password to use for the Nova to access DB
+CONFIG_NOVA_DB_PW=a1f16286f5e0442d
+
+The password to use for the Nova to authenticate with Keystone
+CONFIG_NOVA_KS_PW=ffcb6f2cf2744c08
+
+The overcommitment ratio for virtual to physical CPUs. Set to 1.0
+to disable CPU overcommitment
+CONFIG_NOVA_SCHED_CPU_ALLOC_RATIO=16.0
+
+The overcommitment ratio for virtual to physical RAM. Set to 1.0 to
+disable RAM overcommitment
+CONFIG_NOVA_SCHED_RAM_ALLOC_RATIO=1.5
+
+Protocol used for instance migration. Allowed values are tcp and
+ssh. Note that by defaul nova user is created with /sbin/nologin
+shell so that ssh protocol won't be working. To make ssh protocol
+work you have to fix nova user on compute hosts manually.
+CONFIG_NOVA_COMPUTE_MIGRATE_PROTOCOL=tcp
+
+Private interface for Flat DHCP on the Nova compute servers
+CONFIG_NOVA_COMPUTE_PRIVIF=em2
+
+Nova network manager
+CONFIG_NOVA_NETWORK_MANAGER=nova.network.manager.FlatDHCPManager
+
+Public interface on the Nova network server
+CONFIG_NOVA_NETWORK_PUBIF=em1
+
+Private interface for network manager on the Nova network server
+CONFIG_NOVA_NETWORK_PRIVIF=em2
+
+IP Range for network manager
+CONFIG_NOVA_NETWORK_FIXEDRANGE=192.168.32.0/22
+
+IP Range for Floating IP's
+CONFIG_NOVA_NETWORK_FLOATRANGE=10.3.4.0/22
+
+Name of the default floating pool to which the specified floating
+ranges are added to
+CONFIG_NOVA_NETWORK_DEFAULTFLOATINGPOOL=nova
+
+Automatically assign a floating IP to new instances
+CONFIG_NOVA_NETWORK_AUTOASSIGNFLOATINGIP=n
+
+First VLAN for private networks
+CONFIG_NOVA_NETWORK_VLAN_START=100
+
+Number of networks to support
+CONFIG_NOVA_NETWORK_NUMBER=1
+
+Number of addresses in each private subnet
+CONFIG_NOVA_NETWORK_SIZE=255
+
+The password to use for Neutron to authenticate with Keystone
+CONFIG_NEUTRON_KS_PW=ea455bf75d914c12
+
+The password to use for Neutron to access DB
+CONFIG_NEUTRON_DB_PW=19bc173d9f9e4dec
+
+The name of the bridge that the Neutron L3 agent will use for
+external traffic, or 'provider' if using provider networks
+CONFIG_NEUTRON_L3_EXT_BRIDGE=br-ex
+
+The name of the L2 plugin to be used with Neutron. (eg.
+linuxbridge, openvswitch, ml2)
+CONFIG_NEUTRON_L2_PLUGIN=ml2
+
+Neutron metadata agent password
+CONFIG_NEUTRON_METADATA_PW=055a52594a534d5d
+
+Set to 'y' if you would like Packstack to install Neutron LBaaS
+CONFIG_LBAAS_INSTALL=n
+
+Set to 'y' if you would like Packstack to install Neutron L3
+Metering agent
+CONFIG_NEUTRON_METERING_AGENT_INSTALL=n
+
+Whether to configure neutron Firewall as a Service
+CONFIG_NEUTRON_FWAAS=n
+
+A comma separated list of network type driver entrypoints to be
+loaded from the neutron.ml2.type_drivers namespace.
+CONFIG_NEUTRON_ML2_TYPE_DRIVERS=vxlan
+
+A comma separated ordered list of network_types to allocate as
+tenant networks. The value 'local' is only useful for single-box
+testing but provides no connectivity between hosts.
+CONFIG_NEUTRON_ML2_TENANT_NETWORK_TYPES=vxlan
+
+A comma separated ordered list of networking mechanism driver
+entrypoints to be loaded from the neutron.ml2.mechanism_drivers
+namespace.
+CONFIG_NEUTRON_ML2_MECHANISM_DRIVERS=openvswitch
+
+A comma separated  list of physical_network names with which flat
+networks can be created. Use * to allow flat networks with arbitrary
+physical_network names.
+CONFIG_NEUTRON_ML2_FLAT_NETWORKS=*
+
+A comma separated list of <physical_network>:<vlan_min>:<vlan_max>
+or <physical_network> specifying physical_network names usable for
+VLAN provider and tenant networks, as well as ranges of VLAN tags on
+each available for allocation to tenant networks.
+CONFIG_NEUTRON_ML2_VLAN_RANGES=
+
+A comma separated list of <tun_min>:<tun_max> tuples enumerating
+ranges of GRE tunnel IDs that are available for tenant network
+allocation. Should be an array with tun_max +1 - tun_min > 1000000
+CONFIG_NEUTRON_ML2_TUNNEL_ID_RANGES=
+
+Multicast group for VXLAN. If unset, disables VXLAN enable sending
+allocate broadcast traffic to this multicast group. When left
+unconfigured, will disable multicast VXLAN mode. Should be an
+Multicast IP (v4 or v6) address.
+CONFIG_NEUTRON_ML2_VXLAN_GROUP=
+
+A comma separated list of <vni_min>:<vni_max> tuples enumerating
+ranges of VXLAN VNI IDs that are available for tenant network
+allocation. Min value is 0 and Max value is 16777215.
+CONFIG_NEUTRON_ML2_VNI_RANGES=10:100
+
+The name of the L2 agent to be used with Neutron
+CONFIG_NEUTRON_L2_AGENT=openvswitch
+
+The type of network to allocate for tenant networks (eg. vlan,
+local)
+CONFIG_NEUTRON_LB_TENANT_NETWORK_TYPE=local
+
+A comma separated list of VLAN ranges for the Neutron linuxbridge
+plugin (eg. physnet1:1:4094,physnet2,physnet3:3000:3999)
+CONFIG_NEUTRON_LB_VLAN_RANGES=
+
+A comma separated list of interface mappings for the Neutron
+linuxbridge plugin (eg. physnet1:br-eth1,physnet2:br-eth2,physnet3
+:br-eth3)
+CONFIG_NEUTRON_LB_INTERFACE_MAPPINGS=
+
+Type of network to allocate for tenant networks (eg. vlan, local,
+gre, vxlan)
+CONFIG_NEUTRON_OVS_TENANT_NETWORK_TYPE=gre
+
+A comma separated list of VLAN ranges for the Neutron openvswitch
+plugin (eg. physnet1:1:4094,physnet2,physnet3:3000:3999)
+CONFIG_NEUTRON_OVS_VLAN_RANGES=
+
+A comma separated list of bridge mappings for the Neutron
+openvswitch plugin (eg. physnet1:br-eth1,physnet2:br-eth2,physnet3
+:br-eth3)
+CONFIG_NEUTRON_OVS_BRIDGE_MAPPINGS=
+
+A comma separated list of colon-separated OVS bridge:interface
+pairs. The interface will be added to the associated bridge.
+CONFIG_NEUTRON_OVS_BRIDGE_IFACES=
+
+A comma separated list of tunnel ranges for the Neutron openvswitch
+plugin (eg. 1:1000)
+CONFIG_NEUTRON_OVS_TUNNEL_RANGES=1:1000
+
+The interface for the OVS tunnel. Packstack will override the IP
+address used for tunnels on this hypervisor to the IP found on the
+specified interface. (eg. eth1)
+CONFIG_NEUTRON_OVS_TUNNEL_IF=em2
+
+VXLAN UDP port
+CONFIG_NEUTRON_OVS_VXLAN_UDP_PORT=4789
+
+To set up Horizon communication over https set this to 'y'
+CONFIG_HORIZON_SSL=n
+
+PEM encoded certificate to be used for ssl on the https server,
+leave blank if one should be generated, this certificate should not
+require a passphrase
+CONFIG_SSL_CERT=
+
+SSL keyfile corresponding to the certificate if one was entered
+CONFIG_SSL_KEY=
+
+PEM encoded CA certificates from which the certificate chain of the
+server certificate can be assembled.
+CONFIG_SSL_CACHAIN=
+
+The password to use for the Swift to authenticate with Keystone
+CONFIG_SWIFT_KS_PW=176dad1c32674ce1
+
+A comma separated list of devices which to use as Swift Storage
+device. Each entry should take the format /path/to/dev, for example
+/dev/vdb will install /dev/vdb as Swift storage device (packstack
+does not create the filesystem, you must do this first). If value is
+omitted Packstack will create a loopback device for test setup
+CONFIG_SWIFT_STORAGES=
+
+Number of swift storage zones, this number MUST be no bigger than
+the number of storage devices configured
+CONFIG_SWIFT_STORAGE_ZONES=1
+
+Number of swift storage replicas, this number MUST be no bigger
+than the number of storage zones configured
+CONFIG_SWIFT_STORAGE_REPLICAS=1
+
+FileSystem type for storage nodes
+CONFIG_SWIFT_STORAGE_FSTYPE=ext4
+
+Shared secret for Swift
+CONFIG_SWIFT_HASH=50379bcafada4675
+
+Size of the swift loopback file storage device
+CONFIG_SWIFT_STORAGE_SIZE=2G
+
+Whether to provision for demo usage and testing. Note that
+provisioning is only supported for all-in-one installations.
+CONFIG_PROVISION_DEMO=y
+
+Whether to configure tempest for testing
+CONFIG_PROVISION_TEMPEST=n
+
+The name of the Tempest Provisioning user. If you don't provide a
+user name, Tempest will be configured in a standalone mode
+CONFIG_PROVISION_TEMPEST_USER=
+
+The password to use for the Tempest Provisioning user
+CONFIG_PROVISION_TEMPEST_USER_PW=b14c5240f6864761
+
+The CIDR network address for the floating IP subnet
+CONFIG_PROVISION_DEMO_FLOATRANGE=172.24.4.224/28
+
+The uri of the tempest git repository to use
+CONFIG_PROVISION_TEMPEST_REPO_URI=https://github.com/openstack/tempest.git
+
+The revision of the tempest git repository to use
+CONFIG_PROVISION_TEMPEST_REPO_REVISION=master
+
+Whether to configure the ovs external bridge in an all-in-one
+deployment
+CONFIG_PROVISION_ALL_IN_ONE_OVS_BRIDGE=n
+
+The password used by Heat user to authenticate against MySQL
+CONFIG_HEAT_DB_PW=049da557d0204ebe
+
+The encryption key to use for authentication info in database
+CONFIG_HEAT_AUTH_ENC_KEY=d5e1e42742264c68
+
+The password to use for the Heat to authenticate with Keystone
+CONFIG_HEAT_KS_PW=216b317d5aac4711
+
+Set to 'y' if you would like Packstack to install Heat CloudWatch
+API
+CONFIG_HEAT_CLOUDWATCH_INSTALL=n
+
+Set to 'y' if you would like Packstack to install Heat with trusts
+as deferred auth method. If not, the stored password method will be
+used.
+CONFIG_HEAT_USING_TRUSTS=y
+
+Set to 'y' if you would like Packstack to install Heat
+CloudFormation API
+CONFIG_HEAT_CFN_INSTALL=n
+
+Name of Keystone domain for Heat
+CONFIG_HEAT_DOMAIN=heat
+
+Name of Keystone domain admin user for Heat
+CONFIG_HEAT_DOMAIN_ADMIN=heat_admin
+
+Password for Keystone domain admin user for Heat
+CONFIG_HEAT_DOMAIN_PASSWORD=d26e59dc7624439e
+
+Secret key for signing metering messages
+CONFIG_CEILOMETER_SECRET=7ddcfe7b923f4b63
+
+The password to use for Ceilometer to authenticate with Keystone
+CONFIG_CEILOMETER_KS_PW=bc554ffcc7554b74
+
+The IP address of the server on which to install MongoDB
+CONFIG_MONGODB_HOST=192.168.1.105
+
+The password of the nagiosadmin user on the Nagios server
+CONFIG_NAGIOS_PW=55cd69bbebd14a11
+  
+  #+END_EXAMPLE
+* COMMENT tmp
+  config_ceilometer_install=n
+  CONFIG_HEAT_INSTALL=n
+  config_nova_compute_hosts=compute1, comupte2, compute3
+  config_neutron_server_hosts=network
+  config_neutron_dhcp_hosts
+  config_neutron_lbaas_hosts=
+  config_neutron_metadata_hosts
+
+  config_neutron_ovs_tenant_network=gre
+  config_neutron_ovs_tunnel_ranges=1:1000
+  config_neutron_ovs_tunnel_if=em2
+
+CONFIG_NTP_SERVERS=clock.redhat.com,0.us.pool.ntp.org,1.us.pool.ntp.org,2.us.pool.ntp.org
+CONFIG_NOVA_COMPUTE_HOSTS=10.68.19.62,10.68.19.63  
+CONFIG_NEUTRON_OVS_TENANT_NETWORK_TYPE=gre  
+CONFIG_NEUTRON_OVS_TUNNEL_RANGES=1:1000  
+CONFIG_NEUTRON_OVS_TUNNEL_IF=eth1
+
+sed -i /node5/d .ssh/known_hosts
+sed -i /node5/d /etc/ssh/ssh_known_hosts
+
+ssh-copy-id 192.168.1.101
+ssh-copy-id 192.168.1.102
+ssh-copy-id 192.168.1.103
+ssh-copy-id 192.168.1.104
+ssh-copy-id 192.168.1.106
+ssh-copy-id 192.168.1.107
+ssh-copy-id 192.168.1.108
+ssh-copy-id 192.168.1.109
+
+sjtuseiee
+* COMMENT 安装（不全）
+** 安装ntp
+   #+BEGIN_EXAMPLE
+   yum install ntp
+   service ntpd start
+   chkconfig ntpd on
+   #+END_EXAMPLE
+** 安装mysql
+   控制节点上：
+   #+BEGIN_EXAMPLE
+   yum install mysql mysql-server MySQL-python
+   #+END_EXAMPLE
+   修改/etc/my.cnf
+   #+BEGIN_EXAMPLE
+   bind-address = 10.0.0.11
+
+   default-storage-engine = innodb
+   innodb_file_per_table
+   collation-server = utf8_general_ci
+   init-connect = 'SET NAMES utf8'
+   character-set-server = utf8
+   #+END_EXAMPLE
+   启动
+   #+BEGIN_EXAMPLE
+   service mysqld start
+   chkconfig mysqld on
+   #+END_EXAMPLE
+   设置密码，其它选yes
+   #+BEGIN_EXAMPLE
+   mysql_secure_installation
+   #+END_EXAMPLE
+** 安装qpid
+   #+BEGIN_EXAMPLE
+   yum install qpid-cpp-server
+   #+END_EXAMPLE
+   修改/etc/qpidd.conf，auth=no
+   #+BEGIN_EXAMPLE
+   service qpidd start
+   chkconfig qpidd on
+   #+END_EXAMPLE
+** 安装keystone
+  #+BEGIN_EXAMPLE
+  yum install openstack-keystone python-keystoneclient
+  openstack-config --set /etc/keystone/keystone.conf  database connection mysql://keystone:sjtuseiee@controller/keystone
+  #+END_EXAMPLE
+  mysql
+  #+BEGIN_EXAMPLE
+mysql -u root -p
+CREATE DATABASE keystone;
+GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY 'sjtuseiee';
+GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'sjtuseiee';
+exit  
+
+keystone-manage db_sync
+  openstack-config --set /etc/keystone/keystone.conf DEFAULT  admin_token sjtuseiee
+
+keystone-manage pki_setup --keystone-user keystone --keystone-group keystone
+chown -R keystone:keystone /etc/keystone/ssl
+chmod -R o-rwx /etc/keystone/ssl
+
+   service openstack-keystone start
+   chkconfig openstack-keystone on
+
+export OS_SERVICE_TOKEN=sjtuseiee
+export OS_SERVICE_ENDPOINT=http://controller:35357/v2.0
+
+  keystone user-create --name=admin --pass=sjtuseiee --email=visayafan@163.com
+  #+END_EXAMPLE
+** glance
+  #+BEGIN_EXAMPLE
+yum install openstack-glance python-glanceclient
+openstack-config --set /etc/glance/glance-api.conf database connection mysql://glance:sjtuseiee@controller/glance
+openstack-config --set /etc/glance/glance-registry.conf database connection mysql://glance:sjtuseiee@controller/glance
+
+mysql -u root -p
+CREATE DATABASE glance;
+GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY 'sjtuseiee';
+GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY 'sjtuseiee';  
+exit
+
+su -s /bin/sh -c "glance-manage db_sync" glance  
+
+keystone user-create --name=glance --pass=sjtuseiee --email=visayafan@163.com
+keystone user-role-add --user=glance --tenant=service --role=admin
+
+openstack-config --set /etc/glance/glance-api.conf keystone_authtoken auth_uri http://controller:5000
+openstack-config --set /etc/glance/glance-api.conf keystone_authtoken auth_host controller
+openstack-config --set /etc/glance/glance-api.conf keystone_authtoken auth_port 35357
+openstack-config --set /etc/glance/glance-api.conf keystone_authtoken auth_protocol http
+openstack-config --set /etc/glance/glance-api.conf keystone_authtoken admin_tenant_name service
+openstack-config --set /etc/glance/glance-api.conf keystone_authtoken admin_user glance
+openstack-config --set /etc/glance/glance-api.conf keystone_authtoken admin_password sjtuseiee
+openstack-config --set /etc/glance/glance-api.conf paste_deploy flavor keystone
+openstack-config --set /etc/glance/glance-registry.conf
+keystone_authtoken auth_uri http://controller:5000
+openstack-config --set /etc/glance/glance-registry.conf
+keystone_authtoken auth_host controller
+openstack-config --set /etc/glance/glance-registry.conf
+keystone_authtoken auth_port 35357
+openstack-config --set /etc/glance/glance-registry.conf
+keystone_authtoken auth_protocol http
+openstack-config --set /etc/glance/glance-registry.conf
+keystone_authtoken admin_tenant_name service
+openstack-config --set /etc/glance/glance-registry.conf
+keystone_authtoken admin_user glance
+openstack-config --set /etc/glance/glance-registry.conf
+keystone_authtoken admin_password sjtuseiee
+openstack-config --set /etc/glance/glance-registry.conf paste_deploy flavor keystone
+
+keystone service-create --name=glance --type=image --description="OpenStack Image Service"
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ image / {print $2}') --publicurl=http://controller:9292 --internalurl=http://controller:9292 --adminurl=http://controller:9292
+
+service openstack-glance-api start
+service openstack-glance-registry start
+chkconfig openstack-glance-api on
+chkconfig openstack-glance-registry on
+
+source admin-openrc.sh
+glance image-create --name "cirros-0.3.2-x86_64" --disk-format qcow2 --container-format bare --is-public True --progress < cirros-0.3.2- x86_64-disk.img
+  #+END_EXAMPLE
+** nova
+*** controller
+  #+BEGIN_EXAMPLE
+  yum install openstack-nova-api openstack-nova-cert openstack-novaconductor  openstack-nova-console openstack-nova-novncproxy openstack-novascheduler  python-novaclient
+  openstack-config --set /etc/nova/nova.conf database connection mysql://nova:sjtuseiee@controller/nova
+  openstack-config --set /etc/nova/nova.conf DEFAULT rpc_backend qpid
+  openstack-config --set /etc/nova/nova.conf DEFAULT qpid_hostname controller
+  openstack-config --set /etc/nova/nova.conf DEFAULT my_ip 192.168.1.105
+  openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_listen 192.168.1.105
+  openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_proxyclient_address 192.168.1.105
+
+mysql -u root -p
+CREATE DATABASE nova;
+GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY 'sjtuseiee';
+GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY 'sjtuseiee';
+exit
+
+su -s /bin/sh -c "nova-manage db sync" nova
+
+
+keystone user-create --name=nova --pass=sjtuseiee --email=visayafan@163.com
+keystone user-role-add --user=nova --tenant=service --role=admin
+
+openstack-config --set /etc/nova/nova.conf DEFAULT auth_strategy keystone
+openstack-config --set /etc/nova/nova.conf keystone_authtoken auth_uri http://controller:5000
+openstack-config --set /etc/nova/nova.conf keystone_authtoken auth_host controller
+openstack-config --set /etc/nova/nova.conf keystone_authtoken auth_protocol http
+openstack-config --set /etc/nova/nova.conf keystone_authtoken auth_port 35357
+openstack-config --set /etc/nova/nova.conf keystone_authtoken admin_user nova
+openstack-config --set /etc/nova/nova.conf keystone_authtoken admin_tenant_name service
+openstack-config --set /etc/nova/nova.conf keystone_authtoken admin_password sjtuseiee
+
+keystone service-create --name=nova --type=compute \
+--description="OpenStack Compute"
+keystone endpoint-create \
+--service-id=$(keystone service-list | awk '/ compute / {print $2}') \
+--publicurl=http://controller:8774/v2/%\(tenant_id\)s \
+--internalurl=http://controller:8774/v2/%\(tenant_id\)s \
+--adminurl=http://controller:8774/v2/%\(tenant_id\)s
+
+service openstack-nova-api start
+service openstack-nova-cert start
+service openstack-nova-consoleauth start
+service openstack-nova-scheduler start
+service openstack-nova-conductor start
+service openstack-nova-novncproxy start
+chkconfig openstack-nova-api on
+chkconfig openstack-nova-cert on
+chkconfig openstack-nova-consoleauth on
+chkconfig openstack-nova-scheduler on
+chkconfig openstack-nova-conductor on
+chkconfig openstack-nova-novncproxy on
+
+nova image-list
+  #+END_EXAMPLE
+*** compute
+   #+BEGIN_EXAMPLE
+   yum install openstack-nova-compute
+
+openstack-config --set /etc/nova/nova.conf database connection mysql://nova:sjtuseiee@controller/nova
+openstack-config --set /etc/nova/nova.conf DEFAULT auth_strategy keystone
+openstack-config --set /etc/nova/nova.conf keystone_authtoken auth_uri http://controller:5000
+openstack-config --set /etc/nova/nova.conf keystone_authtoken auth_host controller
+openstack-config --set /etc/nova/nova.conf keystone_authtoken auth_protocol http
+openstack-config --set /etc/nova/nova.conf keystone_authtoken auth_port 35357
+openstack-config --set /etc/nova/nova.conf keystone_authtoken admin_user nova
+openstack-config --set /etc/nova/nova.conf keystone_authtoken admin_tenant_name service
+openstack-config --set /etc/nova/nova.conf keystone_authtoken admin_password sjtuseiee
+
+openstack-config --set /etc/nova/nova.conf DEFAULT rpc_backend qpid
+openstack-config --set /etc/nova/nova.conf DEFAULT qpid_hostname controller
+
+openstack-config --set /etc/nova/nova.conf DEFAULT my_ip 本机IP地址
+openstack-config --set /etc/nova/nova.conf DEFAULT vnc_enabled True
+openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_listen 0.0.0.0
+openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_proxyclient_address 本机IP地址
+openstack-config --set /etc/nova/nova.conf DEFAULT novncproxy_base_url http://controller:6080/vnc_auto.html
+
+openstack-config --set /etc/nova/nova.conf DEFAULT glance_host controller
+   #+END_EXAMPLE
+* COMMENT tmp
+** 华为路由器端口映射
+   #+BEGIN_EXAMPLE
+nat server 1 protocol tcp global interface GigabitEthernet0/0/0 3306 inside 192.168.1.104 3306 no-reverse
+nat server 2 protocol tcp global interface GigabitEthernet0/0/0 6161 inside 192.168.1.104 6161 no-reverse
+nat server 3 protocol tcp global interface GigabitEthernet0/0/0 6162 inside 192.168.1.104 6162 no-reverse
+nat server 4 protocol tcp global interface GigabitEthernet0/0/0 6163 inside 192.168.1.104 6163 no-reverse
+nat server 5 protocol tcp global interface GigabitEthernet0/0/0 1402 inside 192.168.1.104 1402 no-reverse
+nat server 6 protocol tcp global interface GigabitEthernet0/0/0 443 inside 192.168.1.104 443 no-reverse
+nat server 7 protocol tcp global interface GigabitEthernet0/0/0 1701 inside 192.168.1.104 1701 no-reverse
+nat server 8 protocol tcp global interface GigabitEthernet0/0/0 500 inside 192.168.1.104 500 no-reverse
+nat server 9 protocol tcp global interface GigabitEthernet0/0/0 501 inside 192.168.1.104 501 no-reverse
+nat server 10 protocol tcp global interface GigabitEthernet0/0/0 7000 inside 192.168.1.104 7000 no-reverse
+nat server 11 protocol tcp global interface GigabitEthernet0/0/0 16000 inside 192.168.1.104 16000 no-reverse
+nat server 12 protocol tcp global interface GigabitEthernet0/0/0 18080 inside 192.168.1.104 18080 no-reverse
+nat server 13 protocol tcp global interface GigabitEthernet0/0/0 18081 inside 192.168.1.104 18081 no-reverse
+nat server 14 protocol tcp global interface GigabitEthernet0/0/0 18082 inside 192.168.1.104 18082 no-reverse
+nat server 15 protocol tcp global interface GigabitEthernet0/0/0 80 inside 192.168.1.104 80 no-reverse
+nat server 16 protocol tcp global interface GigabitEthernet0/0/0 8080 inside 192.168.1.104 8080 no-reverse
+nat server 17 protocol tcp global interface GigabitEthernet0/0/0 8443 inside 192.168.1.104 8443 no-reverse
+nat server 18 protocol tcp global interface GigabitEthernet0/0/0 5080 inside 192.168.1.104 5080 no-reverse
+nat server 19 protocol tcp global interface GigabitEthernet0/0/0 5443 inside 192.168.1.104 5443 no-reverse
+nat server 20 protocol tcp global interface GigabitEthernet0/0/0 6080 inside 192.168.1.104 6080 no-reverse
+nat server 21 protocol tcp global interface GigabitEthernet0/0/0 6443 inside 192.168.1.104 6443 no-reverse
+nat server 22 protocol tcp global interface GigabitEthernet0/0/0 9080 inside 192.168.1.104 9080 no-reverse
+nat server 23 protocol tcp global interface GigabitEthernet0/0/0 9443 inside 192.168.1.104 9443 no-reverse
+nat server 24 protocol tcp global interface GigabitEthernet0/0/0 1466 inside 192.168.1.104 1466 no-reverse
+nat server 25 protocol tcp global interface GigabitEthernet0/0/0 1883 inside 192.168.1.104 1883 no-reverse
+nat server 26 protocol tcp global interface GigabitEthernet0/0/0 8520 inside 192.168.1.104 8520 no-reverse
+nat server 27 protocol tcp global interface GigabitEthernet0/0/0 1935 inside 192.168.1.104 1935 no-reverse
+nat server 28 protocol tcp global interface GigabitEthernet0/0/0 5001 inside 192.168.1.104 5001 no-reverse
+nat server 29 protocol tcp global interface GigabitEthernet0/0/0 5666 inside 192.168.1.104 5666 no-reverse
+
+
+nat server 101 protocol tcp global interface GigabitEthernet0/0/0 50001 inside 192.168.1.101 80 no-reverse
+nat server 100 protocol tcp global interface GigabitEthernet0/0/0 50005 inside 192.168.1.105 80 no-reverse
+nat server 102 protocol tcp global interface GigabitEthernet0/0/0 50006 inside 192.168.1.105 20 no-reverse
+   #+END_EXAMPLE
+** 华为路由器VPN配置
+   #+BEGIN_EXAMPLE
+interface virtual-template 1
+ip address 192.168.0.1 255.255.255.0
+ppp authentication-mode chap
+remote address pool 1
+quit
+
+l2tp enable
+l2tp-group 1
+
+tunnel name LNS
+allow l2tp virtual-template 1 remote client1
+tunnel authentication
+tunnel password simple Password123
+
+aaa
+ip pool 1 192.168.0.2 192.168.0.100
+
+
+local-user vpdnuser password simple Hello123
+quit
+
+ike local-name lns
+ike proposal 1
+quit
+ike peer peer1
+exchange-mode aggressive
+local-id-type name
+ike-proposal 1 
+pre-shared-key abcde            身份验证字为abcde
+remote-name client1
+quit
+
+acl number 3001
+rule permit udp source-port eq 1701 
+quit
+
+ipsec proposal p1
+quit
+
+
+ipsec policy-template template1 1
+ike-peer peer1
+proposal p1
+security acl 3001
+quit
+ipsec policy policy1 1 isakmp template template1
+
+interface GigabitEthernet 0/0/0
+ipsec policy policy1
+quit
+   #+END_EXAMPLE
+* OpenStack命令
+** 帮助
+   #+BEGIN_EXAMPLE
+   nova help
+   nova help|grep flavor
+   nova help flavor-list
+   #+END_EXAMPLE
+** nova network-list
+   查看创建的网络
+** nova-manage service list
+** image操作
+*** nova image-list
+** 安全组
+*** nova secgroup-list
+*** nova secgroup-list-rules GROUPNAME
+*** nova secgroup-add-rule default tcp 22 22 0.0.0.0/0
+    允许SSH登陆
+*** nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0
+    允许ping
+** VM操作
+*** nova boot --flavor FLAVORTYPE --key_name KEYPAIRNAME --image IMAGEID NEWINSTANCENAME
+    启动一个实例
+*** nova delete VMName
+** flavor操作
+*** nova flavor-list
+
+*** nova flavor-create FLAVOR_NAME FLAVOR_ID RAM_IN_MB ROOT_DISK_IN_GB NUMBER_OF_VCPUS
+    http://docs.openstack.org/user-guide-admin/content/cli_manage_flavors.html
+*** nova flavor-access-add FLAVOR TENANT_ID
+    将其添加到指定tenant中
+* 经验
+** 重启OpenStack
+  #+BEGIN_EXAMPLE
+##############################controller##############################
+service openstack-nova-api restart
+service openstack-nova-cert restart
+service openstack-nova-conductor restart
+service openstack-nova-consolerestart
+service openstack-nova-consoleauth restart
+service openstack-nova-metadata-apirestart
+service openstack-nova-novncproxy restart
+service openstack-nova-scheduler restart
+##############################compute##############################
+service openstack-nova-compute restart
+#######################################################################  
+  #+END_EXAMPLE
+** 删除顺序
+    You need to delete the instances.
+    Delete the Floating Ips.
+    Then delete the Interfaces of Router and delete Router.
+    Then delete the subnets, network ports, and then the  Networks.
+** 端口映射访问VNC
+   #+BEGIN_EXAMPLE
+   nova get-vnc-console INSTANCE_NAME  novnc
+   #+END_EXAMPLE
+   得到类似http://192.168.1.105:6080/vnc_auto.html?token=246bf84d-1e92-48f0-8d03-cf9f50ed1dd8 的链接，在路由器上对6080进行端口映射，并用公网地址替换192.168.1.105。
+** 自己创建镜像
+   http://docs.openstack.org/image-guide/content/ubuntu-image.html
+** 虚拟机启动时执行语句
+   http://blog.csdn.net/juvxiao/article/details/22664457
+** 修改镜像用户名和密码
+   https://ask.openstack.org/en/question/4805/what-is-the-password-for-ubuntu-1204-cloud-image/
+** 对象存储
+   无论是放在DB中记录或OS中的文件或声音或图像，保存对象存储服务器中。
+   Amazon AW3
+
+   统一存储设备  bulk    传统：文件分成块存储
+   硬件完成 块操作
+   OS面对的是字节流
+   
+** 查看指定VM在哪台物理机上运行
+   必须以admin用户查看
+   #+BEGIN_EXAMPLE
+   nova list --all-tenants  # 如果所要查看VM为其它tenant所有，需要--all-tenants
+   nova show VM-ID
+   #+END_EXAMPLE
