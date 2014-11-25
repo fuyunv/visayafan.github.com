@@ -1,0 +1,12 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+screen CMD 会在一个screen中执行CMD。C-a d会detach当前screen。C-d A给当前screen命名。screen -ls查看所有screen，之后screen -r ID即可重新连接screen.
+
+* -D
+  screen状态为attached时，screen -r ID连不上screen。此时可以用-D选项选注销远程的一个登陆，使之成为detached状态再重新attach。
+* nohup
+  另一种方法是 nohup CMD > filename.log &
+  之后查看tail filename.log查看运行结果

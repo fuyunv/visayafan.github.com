@@ -31,16 +31,16 @@ http://www.thegeekstuff.com/2008/10/6-awesome-linux-cd-command-hacks-productivit
   直接 echo "a\nb" >file 此时file中只有一行而非两行。
   使用-e选项表示解析转义，即 echo -e "a\nb" >file 此时 file中有两行
 * 递归更新目录下所有文件时间戳
-#+begin_example
+#+BEGIN_EXAMPLE
 find . -name "*.org" -exec touch {} \;
-#+end_example   
+#+END_EXAMPLE   
 * setsid, nohup, & 后台执行命令
   nohup cmd和cmd &都可以使程序在后台执行，用jobs可以查看并可用kill来结束进程。
   setsid cmd 则新生成的进程脱离原来的进程组并成为新的进程组长。
   在我的.bashrc中有emacs别名：
-#+begin_quote
+#+BEGIN_EXAMPLE
 alias e="setsid emacs &"
-#+end_quote
+#+END_EXAMPLE
   这样在终端下e即可打开emacs，且当shell退出的时候emacs也不会跟着退出。
 * seq 打印一系列数字
   seq fist,increment,last 默认的first, increment都是1
@@ -183,4 +183,21 @@ PS1="\W\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\$"
   alias cd....="cd ../../.."
   alias cd.....="cd ../../../.."
   alias cd......="cd ../../../../.."
+  #+END_EXAMPLE
+* watch
+  http://blog.163.com/gordon112@126/blog/static/86289469200921071129894/
+  直接在 watch 后面接你想运行的命令，watch 就会帮你重复运行，并把每次的结果都更新在屏幕上。
+  默认 watch 会以 2s 的间隔重复运行命令，你也可以用 -n 参数指定时间间隔.
+  还有一个实用的参数是 -d，这样 watch 会帮你高亮显示变化的区域，这样更加一目了然了.
+  你可以拿他来监测你想要的一切命令的结果变化，比如 tail 一个 log 文件，ls 监测某个文件的大小变化.
+  
+* 无密码ssh登陆远程主机指定端口
+  远程服务器在内网，需要通过路由器端口映射来登陆。ssh-copy-id并没有提供指定端口的选项。
+  #+BEGIN_EXAMPLE
+  ssh -p PORT_NUMBER USER@HOST 'cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_rsa.pub
+  #+END_EXAMPLE
+* 查看CPU核数，内存
+  #+BEGIN_EXAMPLE
+  cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c
+  cat /proc/meminfo |grep MemTotal
   #+END_EXAMPLE
