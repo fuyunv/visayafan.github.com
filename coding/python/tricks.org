@@ -62,3 +62,7 @@ sorted_x = sorted(x, key=lambda i: x[i])
 <div id="disqus_thread">
 </div>
 #+END_HTML
+* python3安装module
+  #+BEGIN_EXAMPLE
+  python3 -m pip install BeautifulSoup4
+  #+END_EXAMPLE
