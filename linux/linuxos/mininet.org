@@ -1,0 +1,35 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* 安装
+  1. mininet.org 下载镜像；
+  2. 下载virtualbox，导入；
+  3. VM settting network中添加一个网卡（host-only或bridge），用来实现宿机SSH登陆虚拟机。
+* 命令
+** sudo mn
+*** sudo mn -c
+    clean
+*** sudo mn --link tc,bw=10,delay=10ms
+*** sudo mn --topo=single,4
+*** sudo mn --topo=linear,4
+*** sudo mn --topo=tree,2,2
+    限制带宽
+*** sudo mn --test pingall
+    测试
+**** sudo mn --test pingall --topo single,3
+*** sudo mn --mac
+    主机mac地址非常小，从1开始，便于阅读
+*** sudo mn -x
+    为每台主机打开xterm
+** help
+** h1 ping h2
+** pingall
+** xterm h1
+** exit
+** iperf
+   测试主机间的带宽
+** sudo wireshark
+** h1 python -m SimpleHTTPServer 80 &
+   h1启动简单的HTTP服务器
