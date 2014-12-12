@@ -958,13 +958,51 @@ quit
 ** nova-manage service list
 ** image操作
 *** nova image-list
+** tenant/user/role
+*** 创建用户/租户/角色
+    #+BEGIN_EXAMPLE
+    keystone user-create --name=hui --pass=password --mail=hui@example.com
+    keystone tenant-create --name=acm
+    keystone role-create --name=compute-user 
+    #+END_EXAMPLE
+*** 列出用户/租户/角色
+    #+BEGIN_EXAMPLE
+    keystone user-list   
+    keystone role-list   
+    keystone tenant-list   
+    #+END_EXAMPLE
+*** 添加用户到指定租户和角色中
+    #+BEGIN_EXAMPLE
+    keystone user-role-add --user=admin --tenant=admin --role=admin
+    #+END_EXAMPLE
+*** 服务向Keystone注册服务的Endpoint
+    #+BEGIN_EXAMPLE
+    keystone service-create --name=keystone --type=identity --description="Keystone Identity Service"
+    会生成标识此服务的唯一ID
+    keystone endpoint-create  --service-id=上面生成的ID  --publicurl=http://controller:5000/v2.0  --internalurl=http://controller:5000/v2.0 --adminurl=http://controller:35357/v2.0
+    其中需要指定public/internal/admin的URL
+    #+END_EXAMPLE
+
+*** 查看指定tenant的指定user的role
+    #+BEGIN_EXAMPLE
+    keystone user-role-list --user USERID --tenant TENANTID
+    #+END_EXAMPLE
+    删除指定tenant的指定user的role
+    #+BEGIN_EXAMPLE
+    keystone user-role-remove --user USERID --tenant TENANTID --role ROLEID
+    #+END_EXAMPLE
 ** 安全组
 *** nova secgroup-list
+*** nova secgroup-create GroupName Description
+*** nova secgroup-delete GroupName
 *** nova secgroup-list-rules GROUPNAME
 *** nova secgroup-add-rule default tcp 22 22 0.0.0.0/0
     允许SSH登陆
 *** nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0
     允许ping
+** floating ip
+*** nova floating-ip-create
+*** nova floating-ip-associate InstanceNameOrID  Floating-Ip-Address
 ** VM操作
 *** nova boot --flavor FLAVORTYPE --key_name KEYPAIRNAME --image IMAGEID NEWINSTANCENAME
     启动一个实例
@@ -976,6 +1014,10 @@ quit
     http://docs.openstack.org/user-guide-admin/content/cli_manage_flavors.html
 *** nova flavor-access-add FLAVOR TENANT_ID
     将其添加到指定tenant中
+** hypervisor
+   1. nova hypervisor-list
+   2. nova hypervisor-show HOSTNAME
+   3. nova hypervisor-stats
 * 经验
 ** 重启OpenStack
   #+BEGIN_EXAMPLE

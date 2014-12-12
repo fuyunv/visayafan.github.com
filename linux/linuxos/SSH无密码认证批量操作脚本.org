@@ -1,0 +1,30 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:SSH无密码认证批量操作脚本
+http://myhoop.blog.51cto.com/5556534/1173937
+
+#+BEGIN_SRC sh
+  #!/bin/bash  
+  #批量ssh认证建立  
+  for p in $(cat /usr2/script/ip.txt)  #注意ip.txt文件的绝对路径  
+  do   
+  ip=$(echo "$p"|cut -f1 -d":")       #取ip.txt文件中的ip地址  
+  password=$(echo "$p"|cut -f2 -d":") #取ip.txt文件中的密码  
+   
+  #expect自动交互开始  
+  expect -c "   
+  spawn ssh-copy-id -i /root/.ssh/id_rsa.pub root@$ip  
+          expect {   
+                  \"*yes/no*\" {send \"yes\r\"; exp_continue}   
+                  \"*password*\" {send \"$password\r\"; exp_continue}   
+                  \"*Password*\" {send \"$password\r\";}   
+          }   
+  "   
+  done   
+#+END_SRC
+ip.txt文件里面ip和密码写法  
+#+BEGIN_EXAMPLE
+192.168.0.2:admin2  
+192.168.0.3:admin3
+#+END_EXAMPLE

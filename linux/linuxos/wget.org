@@ -1,9 +1,8 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+include "../../layo../layout/template.org"
-#+title:wget下载
-
-
-* OPTIONS
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+* 选项
 ** -r
    --recursive
    对于HTTP主机，wget首先下载URL指定的文件，然后（如果该文件是一个HTML文档的话）递归下载该文件所引用（超级连接）的所有文件（递归深度由参数-l指定）
@@ -64,18 +63,12 @@
    下载事件网站 wget -m fanhan.tk
 ** -Y on/off
    -Y on/off即--proxy=on/off 打开或者关闭代理，其中代理可以是环境变量：
-#+begin_quote
-export PROXY=http://127.0.0.1:8087
-#+end_quote
+   export PROXY=http://127.0.0.1:8087
    或者是在~/.wgetrc中:
-#+begin_quote
-http_proxy = http://127.0.0.1:8087
-ftp_proxy = http://127.0.0.1:8087
-#+end_quote
+   http_proxy = http://127.0.0.1:8087
+   ftp_proxy = http://127.0.0.1:8087
    例如我现在用google agent代理下载youtube主页：
-#+begin_quote
-wget -k -Y on http://www.youtube.com
-#+end_quote
+   wget -k -Y on http://www.youtube.com
 * 总结：
 ** 启动
 #+begin_example
@@ -101,22 +94,22 @@ wget -k -Y on http://www.youtube.com
 #+end_example
 ** 下载
 #+begin_example
---bind-address=ADDRESS   指定本地使用地址(主机名或IP，当本地有多个IP或名字时使用)
--t,  --tries=NUMBER           设定最大尝试链接次数(0 表示无限制).
--O   --output-document=FILE   把文档写到FILE文件中
--nc, --no-clobber             不要覆盖存在的文件或使用.#前缀
--c,  --continue               接着下载没下载完的文件
---progress=TYPE          设定进程条标记
--N,  --timestamping           不要重新下载文件除非比本地文件新
--S,  --server-response        打印服务器的回应
---spider                 不下载任何东西
--T,  --timeout=SECONDS        设定响应超时的秒数
--w,  --wait=SECONDS           两次尝试之间间隔SECONDS秒
---waitretry=SECONDS      在重新链接之间等待1...SECONDS秒
---random-wait            在下载之间等待0...2*WAIT秒
--Y,  --proxy=on/off           打开或关闭代理
--Q,  --quota=NUMBER           设置下载的容量限制
---limit-rate=RATE        限定下载输率
+--bind-address=ADDRESS      指定本地使用地址(主机名或IP，当本地有多个IP或名字时使用)
+-t,  --tries=NUMBER         设定最大尝试链接次数(0 表示无限制).
+-O   --output-document=FILE 把文档写到FILE文件中
+-nc, --no-clobber           不要覆盖存在的文件或使用.#前缀
+-c,  --continue             接着下载没下载完的文件
+--progress=TYPE             设定进程条标记
+-N,  --timestamping         不要重新下载文件除非比本地文件新
+-S,  --server-response      打印服务器的回应
+--spider                    不下载任何东西
+-T,  --timeout=SECONDS      设定响应超时的秒数
+-w,  --wait=SECONDS         两次尝试之间间隔SECONDS秒
+--waitretry=SECONDS         在重新链接之间等待1...SECONDS秒
+--random-wait               在下载之间等待0...2*WAIT秒
+-Y,  --proxy=on/off         打开或关闭代理
+-Q,  --quota=NUMBER         设置下载的容量限制
+--limit-rate=RATE           限定下载输率
 #+end_example   
 ** 目录
 #+begin_example
@@ -124,7 +117,7 @@ wget -k -Y on http://www.youtube.com
 -x,  --force-directories         强制创建目录
 -nH, --no-host-directories       不创建主机目录
 -P,  --directory-prefix=PREFIX   将文件保存到目录 PREFIX/...
---cut-dirs=NUMBER           忽略 NUMBER层远程目录
+--cut-dirs=NUMBER                忽略NUMBER层远程目录
 #+end_example
 ** HTTP 选项
 #+begin_example
@@ -179,18 +172,36 @@ wget -k -Y on http://www.youtube.com
 #+end_example
 * 例子
 ** 下载网页
-   wget fanhan.tk
-   原封不动地下载该网站的index.html，但打开后发现由于路径问题链接的css路径 css/vf.css 不存在所以页面根本没法看，于是我们可以用-k选项将链接转换成适合在本地查看的形式，
-   wget -k fanhan.tk
-   此时可以看到 css/vf.css转变成了http://fanhan.tk/css/vf.css 于是打开index.html时浏览器会下载该文件以显示页面
+   #+BEGIN_EXAMPLE
+   wget visayafan.com
+   #+END_EXAMPLE
+   原封不动地下载该网站的index.html.
+   -k选项将链接转换以便适合本地查看：如果链接所指已下载到本地，则转换成指向本地的相对链接；否则转换成链接的完整URL。
+   #+BEGIN_EXAMPLE
+   wget -k visayafan.com
+   #+END_EXAMPLE
 ** 下载网站
-   wget -m fanhan.tk
+   #+BEGIN_EXAMPLE
+   wget -m visayafan.com
+   #+END_EXAMPLE
    把整个网站都下载下来
 ** 下载文件并重命名
+   #+BEGIN_EXAMPLE
    wget -O emacs.tar.gz http://ftp.gnu.org/gnu/emacs/emacs-24.1.tar.gz
+   #+END_EXAMPLE
 ** 下载所有匹配文件
-   wget -r -A “*.tar.gz" http://ftp.gnu.org/gnu/emacs
+   #+BEGIN_EXAMPLE
+   wget -r -A "*.tar.gz" http://ftp.gnu.org/gnu/emacs
+   #+END_EXAMPLE
    下载http://ftp.gnu.org/gnu/emacs 目录下的所有以tar.gz结尾的文件
-
-
-
+** 下载指定目录所有文件
+   http://www.cnblogs.com/lidp/archive/2010/03/02/1696447.html
+   #+BEGIN_EXAMPLE
+   wget -c -r -np -k -L -p ftp://ftp.cs.sjtu.edu.cn:990/lu-ht/DIP-Gonzalez/
+   #+END_EXAMPLE
+   1. -c continue，适合继续下载之前没下完的文件
+   2. -r recursive
+   3. -np no-parent 不下载父目录
+   4. -k convert-link
+   5. -L relative 只下载相对链接
+   6. -p page-requisites 下载页面上所有东西（内嵌的图片、声音）

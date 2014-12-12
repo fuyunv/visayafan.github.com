@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>SSH无密码认证批量操作脚本</title>
+<!-- 2014-12-05 Fri 16:26 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="author" content="visayafan"/>
+</head>
+<body>
+<div id="content">
+<h1 class="title">SSH无密码认证批量操作脚本</h1>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+<p>
+<a href="http://myhoop.blog.51cto.com/5556534/1173937">http://myhoop.blog.51cto.com/5556534/1173937</a><br/>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #b22222;">#</span><span style="color: #b22222;">!/bin/</span><span style="color: #a020f0;">bash</span><span style="color: #b22222;">  </span>
+<span style="color: #b22222;">#</span><span style="color: #b22222;">&#25209;&#37327;ssh&#35748;&#35777;&#24314;&#31435;  </span>
+<span style="color: #a020f0;">for</span> p<span style="color: #a020f0;"> in</span> $(<span style="color: #ff00ff;">cat</span> /usr2/script/ip.txt)  <span style="color: #b22222;">#</span><span style="color: #b22222;">&#27880;&#24847;ip.txt&#25991;&#20214;&#30340;&#32477;&#23545;&#36335;&#24452;  </span>
+<span style="color: #a020f0;">do</span>   
+<span style="color: #a0522d;">ip</span>=$(<span style="color: #ff00ff;">echo</span> <span style="color: #8b2252;">"$p"</span>|cut -f1 -d<span style="color: #8b2252;">":"</span>)       <span style="color: #b22222;">#</span><span style="color: #b22222;">&#21462;ip.txt&#25991;&#20214;&#20013;&#30340;ip&#22320;&#22336;  </span>
+<span style="color: #a0522d;">password</span>=$(<span style="color: #ff00ff;">echo</span> <span style="color: #8b2252;">"$p"</span>|cut -f2 -d<span style="color: #8b2252;">":"</span>) <span style="color: #b22222;">#</span><span style="color: #b22222;">&#21462;ip.txt&#25991;&#20214;&#20013;&#30340;&#23494;&#30721;  </span>
+
+<span style="color: #b22222;">#</span><span style="color: #b22222;">expect&#33258;&#21160;&#20132;&#20114;&#24320;&#22987;  </span>
+expect -c <span style="color: #8b2252;">"   </span>
+<span style="color: #8b2252;">spawn ssh-copy-id -i /root/.ssh/id_rsa.pub root@$ip  </span>
+<span style="color: #8b2252;">        expect {   </span>
+<span style="color: #8b2252;">                \"*yes/no*\" {send \"yes\r\"; exp_continue}   </span>
+<span style="color: #8b2252;">                \"*password*\" {send \"$password\r\"; exp_continue}   </span>
+<span style="color: #8b2252;">                \"*Password*\" {send \"$password\r\";}   </span>
+<span style="color: #8b2252;">        }   </span>
+<span style="color: #8b2252;">"</span>   
+<span style="color: #a020f0;">done</span>
+</pre>
+</div>
+<p>
+ip.txt文件里面ip和密码写法<br/>
+</p>
+<pre class="example">
+192.168.0.2:admin2  
+192.168.0.3:admin3
+</pre>
+</div>
+</body>
+</html>

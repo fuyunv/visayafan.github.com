@@ -1,0 +1,165 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+当新加入slave结点(假设主机名为node197，对应ip为192.168.1.197)时，应当：
+* 修改hostname
+  修改/etc/sysconfig/network文件，修改HOSTNAME字段为node197；
+* 修改IP
+  修改/etc/sysconfig/network-scripts/ifcfg-eth0文件:
+  #+BEGIN_EXAMPLE
+  IPADDR=192.168.1.197
+  GATEWAY=192.168.1.1
+  #+END_EXAMPLE
+  用ifconfig命令查看IP是否配置正确。
+* 删除自带java
+  #+BEGIN_EXAMPLE
+  [admin@node197 ~]$rpm -qa|grep jdk
+  [admin@node197 ~]$yum -y remove java-1.6.0-openjdk-1.6.0.0-1.41.1.10.4.el6.x86_64
+  #+END_EXAMPLE
+* 修改hosts
+  将192.168.1.197 node197加入到/etc/hosts中。
+* 修改slaves
+  将192.168.1.197加入到/usr/local/hadoop/conf/slaves中。
+* 拷贝文件
+  将master中的/usr/local/hadoop目录下的3个文件hadoop-1.2.1, jdk1.7.0_17和mahout-distribution-0.9从master拷贝到node197中的/usr/local/hadoop中。
+  登陆到node197上建立/usr/local/hadoop目录：
+  #+BEGIN_EXAMPLE
+  [admin@node200 ~]$ssh node197
+  [admin@node197 ~]$su -
+  [admin@node197 ~]$mkdir hadoop
+  #+END_EXAMPLE
+  之后返回到master上，将3个文件夹拷贝到node197中：
+  #+BEGIN_EXAMPLE
+  [admin@node200 ~]$scp -r /usr/local/hadoop/hadoop-1.2.1 root@node197:/usr/local/hadoop
+  [admin@node200 ~]$scp -r /usr/local/hadoop/jdk1.7.0_17 root@node197:/usr/local/hadoop
+  [admin@node200 ~]$scp -r /usr/local/hadoop/mahout-distribution-0.9 root@node197:/usr/local/hadoop
+  #+END_EXAMPLE
+  之后登陆node197并切换到root用户，修改/usr/local/hadoop的权限：
+  #+BEGIN_EXAMPLE
+  [root@node197 ~]$chmod -R 777 /usr/local/hadoop
+  #+END_EXAMPLE
+* 修改profile
+  将master中的/etc/profile覆盖node197中的/etc/profile
+  #+BEGIN_EXAMPLE
+  [admin@node200 ~]$scp /etc/profile root@node197:/usr/local/hadoop
+  #+END_EXAMPLE
+  之后登陆node197使使其生效:
+  #+BEGIN_EXAMPLE
+  [admin@node197 ~]$source /etc/profile
+  #+END_EXAMPLE
+* 配置SSH使无密码访问
+  基本思想是将彼此间将本机生成的公钥加入到对方机器中的授权文件中，下面以两台机器node200(master)和node197为例介绍如何配置使它们之间ssh无密码登陆。
+  master上公私钥已经生成，在~/.ssh目录下。
+  将node200的公钥拷贝到node197上：
+  #+BEGIN_EXAMPLE
+  [admin@node200 ~]$scp ~/.ssh/id_rsa.pub admin@node197:~/
+  #+END_EXAMPLE
+  登陆到node197中并生成node197的公钥和私钥并自身的公钥加入到自身的授权文件中:
+  #+BEGIN_EXAMPLE
+  [admin@node200 ~]$ssh node197
+  [admin@node197 ~]$ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+  [admin@node197 ~]$cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+  [admin@node197 ~]$chmod 600 ~/.ssh/authorized_key
+  #+END_EXAMPLE
+  将node200的公钥加入到node197的授权文件中：
+  #+BEGIN_EXAMPLE
+  [admin@node197 ~]$cat ~/id_rsa.pub >> ~/.ssh/authorized_key
+  [admin@node197 ~]$rm ~/id_rsa.pub
+  #+END_EXAMPLE
+  修改ssh配置文件
+  #+BEGIN_EXAMPLE
+  [admin@node197 ~]vi /etc/ssh/sshd_config
+  #+END_EXAMPLE
+  取消掉以下三行的注释：
+  #+BEGIN_EXAMPLE
+  RSAAuthentication yes
+  PubkeyAuthentication yes
+  AuthorizedKeysFile	.ssh/authorized_keys
+  #+END_EXAMPLE
+  将node197的公钥文件拷贝到node200上:
+  #+BEGIN_EXAMPLE
+  [admin@node197 ~]$scp ~/.ssh/id_rsa.pub admin@node200:~/
+  #+END_EXAMPLE
+  重启ssh服务：
+  #+BEGIN_EXAMPLE
+  [admin@node197 ~]$su -
+  [root@node197 ~]$service sshd restart
+  [root@node197 ~]$exit
+  #+END_EXAMPLE
+  回退到node200上并将node197的公钥加入到node200的授权文件中：
+  #+BEGIN_EXAMPLE
+  [admin@node197 ~]$exit
+  [admin@node200 ~]$cat ~/id_rsa.pub >> ~/.ssh/authorized_key
+  [admin@node200 ~]$rm ~/id_rsa.pub
+  #+END_EXAMPLE
+  重启ssh服务：
+  #+BEGIN_EXAMPLE
+  [admin@node200 ~]$su -
+  [root@node200 ~]$service sshd restart
+  #+END_EXAMPLE
+* 关闭防火墙
+  #+BEGIN_EXAMPLE
+  [root@node197 ~]$service iptables stop
+  [root@node197 ~]$chkconfig iptables off
+  #+END_EXAMPLE
+* 格式化
+  #+BEGIN_EXAMPLE
+  hadoop namenode -format
+  #+END_EXAMPLE
+* 测试Hadoop
+** 查看集群状态
+   在master上重新启动hadoop，查看node197是否加入到集群中：
+   #+BEGIN_EXAMPLE
+   [admin@node200 ~]$hadoop dfsadmin -report
+   #+END_EXAMPLE
+** 测试wordcount
+  在master的home目录下新建wordcount目录，其中包含一个纯文本文件，将其上传到HDFS中并作为wordcount的输入目录：
+    #+BEGIN_EXAMPLE
+[admin@node200 ~]$ hadoop fs -put ~/wordcount in
+[admin@node200 ~]$ hadoop jar /usr/local/hadoop/hadoop-1.2.1/hadoop-examples-1.2.1.jar wordcount in out
+14/09/07 13:35:24 INFO input.FileInputFormat: Total input paths to process : 1
+14/09/07 13:35:24 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+14/09/07 13:35:24 WARN snappy.LoadSnappy: Snappy native library not loaded
+14/09/07 13:35:25 INFO mapred.JobClient: Running job: job_201409071333_0001
+14/09/07 13:35:26 INFO mapred.JobClient:  map 0% reduce 0%
+14/09/07 13:35:29 INFO mapred.JobClient:  map 100% reduce 0%
+14/09/07 13:35:37 INFO mapred.JobClient:  map 100% reduce 100%
+14/09/07 13:35:37 INFO mapred.JobClient: Job complete: job_201409071333_0001
+14/09/07 13:35:37 INFO mapred.JobClient: Counters: 29
+14/09/07 13:35:37 INFO mapred.JobClient:   Job Counters 
+14/09/07 13:35:37 INFO mapred.JobClient:     Launched reduce tasks=1
+14/09/07 13:35:37 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2640
+14/09/07 13:35:37 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/09/07 13:35:37 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/09/07 13:35:37 INFO mapred.JobClient:     Launched map tasks=1
+14/09/07 13:35:37 INFO mapred.JobClient:     Data-local map tasks=1
+14/09/07 13:35:37 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=7965
+14/09/07 13:35:37 INFO mapred.JobClient:   File Output Format Counters 
+14/09/07 13:35:37 INFO mapred.JobClient:     Bytes Written=271
+14/09/07 13:35:37 INFO mapred.JobClient:   FileSystemCounters
+14/09/07 13:35:37 INFO mapred.JobClient:     FILE_BYTES_READ=364
+14/09/07 13:35:37 INFO mapred.JobClient:     HDFS_BYTES_READ=552
+14/09/07 13:35:37 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=114525
+14/09/07 13:35:37 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=271
+14/09/07 13:35:37 INFO mapred.JobClient:   File Input Format Counters 
+14/09/07 13:35:37 INFO mapred.JobClient:     Bytes Read=439
+14/09/07 13:35:37 INFO mapred.JobClient:   Map-Reduce Framework
+14/09/07 13:35:37 INFO mapred.JobClient:     Map output materialized bytes=364
+14/09/07 13:35:37 INFO mapred.JobClient:     Map input records=13
+14/09/07 13:35:37 INFO mapred.JobClient:     Reduce shuffle bytes=364
+14/09/07 13:35:37 INFO mapred.JobClient:     Spilled Records=44
+14/09/07 13:35:37 INFO mapred.JobClient:     Map output bytes=626
+14/09/07 13:35:37 INFO mapred.JobClient:     Total committed heap usage (bytes)=248512512
+14/09/07 13:35:37 INFO mapred.JobClient:     CPU time spent (ms)=940
+14/09/07 13:35:37 INFO mapred.JobClient:     Combine input records=47
+14/09/07 13:35:37 INFO mapred.JobClient:     SPLIT_RAW_BYTES=113
+14/09/07 13:35:37 INFO mapred.JobClient:     Reduce input records=22
+14/09/07 13:35:37 INFO mapred.JobClient:     Reduce input groups=22
+14/09/07 13:35:37 INFO mapred.JobClient:     Combine output records=22
+14/09/07 13:35:37 INFO mapred.JobClient:     Physical memory (bytes) snapshot=303640576
+14/09/07 13:35:37 INFO mapred.JobClient:     Reduce output records=22
+14/09/07 13:35:37 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=2353487872
+14/09/07 13:35:37 INFO mapred.JobClient:     Map output records=47
+#+END_EXAMPLE
