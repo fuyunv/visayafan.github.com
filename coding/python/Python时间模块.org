@@ -1,6 +1,8 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+include "../../layout/template.org"
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
 #+title:Python时间模块
+
 * 时间戳 timestamp 浮点数
   1. time.time()                #返回自1970年1月1日时起的秒数
   2. time.clock()               #返回第一次调用clock()时CPU时间
@@ -27,13 +29,3 @@
 | %b | 月份（缩写）         |
 | %B | 月份（全称）         |
 | %c | 日期和时间=%a %b %d %H:%M:%S %Y 例如：Tue Oct 23 16:56:12 2012 即ctime()返回的类型 |
-#+begin_html
-<link rel="stylesheet" href="../../layout/css/jquery.lightbox-0.5.css" type="text/css" media="screen" />
-<script type="text/javascript" src="../../layout/js/jquery.lightbox-0.5.js"></script>
-<center> <a class="lightbox" href="./image/time.jpg"> <img class="lightbox " title="jQuery.lightbox" src="./image/time.jpg" width="300"> </a> </center>
-<script type="text/javascript"> $(function() {$('a.lightbox').lightBox();}); </script>
-#+end_html  
-
-
-
-
