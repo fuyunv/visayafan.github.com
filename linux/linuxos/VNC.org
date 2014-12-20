@@ -3,9 +3,9 @@
 #+SETUPFILE: "../../layout/extension.org"
 #+title:VNC
 
-CentOS
+CentOS 6.5
 #+BEGIN_EXAMPLE
-yum install vnc-server
+yum install tigervnc-server tigervnc
 #+END_EXAMPLE
 之后vncserver启动，输入2次密码，启动一个display，标号为hostname:后的数字
 #+BEGIN_EXAMPLE

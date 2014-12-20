@@ -1,0 +1,62 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:网络性能测试工具iperf
+
+http://centoshowtos.org/network-and-security/iperf/
+http://www.gaojinbo.com/%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7iperf%E8%AF%A6%E8%A7%A3.html
+
+centos6.5
+
+* 安装
+#+BEGIN_EXAMPLE
+rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+yum -y install iperf
+#+END_EXAMPLE
+* 测试
+  A端启动iperf
+  #+BEGIN_EXAMPLE
+  iperf -s
+  #+END_EXAMPLE
+  B端测试
+  #+BEGIN_EXAMPLE
+  iperf -c A的IP地址
+  #+END_EXAMPLE
+  结果类似
+  #+BEGIN_EXAMPLE
+    [root@master ~]# iperf -c slave3
+    ------------------------------------------------------------
+    Client connecting to slave3, TCP port 5001
+    TCP window size: 19.3 KByte (default)
+    ------------------------------------------------------------
+    [  3] local 10.0.0.2 port 54253 connected with 10.0.0.6 port 5001
+    [ ID] Interval       Transfer     Bandwidth
+    [  3]  0.0-10.0 sec  10.0 GBytes  8.60 Gbits/sec  
+  #+END_EXAMPLE
+* 参数
+  通用参数 
+  -f [kmKM] 分别表示以Kbits, Mbits, KBytes, MBytes显示报告，默认以Mbits为单位,eg：iperf -c 222.35.11.23 -f K 
+  -i sec 以秒为单位显示报告间隔，eg：iperf -c 222.35.11.23 -i 2 
+  -l 缓冲区大小，默认是8KB,eg：iperf -c 222.35.11.23 -l 16 
+  -m 显示tcp最大mtu值 
+  -o 将报告和错误信息输出到文件eg：iperf -c 222.35.11.23 -o ciperflog.txt 
+  -p 指定服务器端使用的端口或客户端所连接的端口eg：iperf -s -p 9999;iperf -c 222.35.11.23 -p 9999 
+  -u 使用udp协议 
+  -w 指定TCP窗口大小，默认是8KB 
+  -B 绑定一个主机地址或接口（当主机有多个地址或接口时使用该参数） 
+  -C 兼容旧版本（当server端和client端版本不一样时使用） 
+  -M 设定TCP数据包的最大mtu值 
+  -N 设定TCP不延时 
+  -V 传输ipv6数据包
+  
+  server专用参数 
+  -D 以服务方式运行ipserf，eg：iperf -s -D 
+  -R 停止iperf服务，针对-D，eg：iperf -s -R
+  
+  client端专用参数 
+  -d 同时进行双向传输测试 
+  -n 指定传输的字节数，eg：iperf -c 222.35.11.23 -n 100000 
+  -r 单独进行双向传输测试 
+  -t 测试时间，默认10秒,eg：iperf -c 222.35.11.23 -t 5 
+  -F 指定需要传输的文件 
+  -T 指定ttl值  

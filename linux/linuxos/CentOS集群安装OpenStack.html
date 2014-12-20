@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title>CentOS集群安装OpenStack</title>
-<!-- 2014-11-24 周一 18:53 -->
+<!-- 2014-12-21 Sun 01:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
 <meta name="author" content="visayafan"/>
@@ -25,27 +25,45 @@
 <li><a href="#sec-1-4-1">1.4.1. nova image-list</a></li>
 </ul>
 </li>
-<li><a href="#sec-1-5">1.5. 安全组</a>
+<li><a href="#sec-1-5">1.5. tenant/user/role</a>
 <ul>
-<li><a href="#sec-1-5-1">1.5.1. nova secgroup-list</a></li>
-<li><a href="#sec-1-5-2">1.5.2. nova secgroup-list-rules GROUPNAME</a></li>
-<li><a href="#sec-1-5-3">1.5.3. nova secgroup-add-rule default tcp 22 22 0.0.0.0/0</a></li>
-<li><a href="#sec-1-5-4">1.5.4. nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0</a></li>
+<li><a href="#sec-1-5-1">1.5.1. 创建用户/租户/角色</a></li>
+<li><a href="#sec-1-5-2">1.5.2. 列出用户/租户/角色</a></li>
+<li><a href="#sec-1-5-3">1.5.3. 添加用户到指定租户和角色中</a></li>
+<li><a href="#sec-1-5-4">1.5.4. 服务向Keystone注册服务的Endpoint</a></li>
+<li><a href="#sec-1-5-5">1.5.5. 查看指定tenant的指定user的role</a></li>
 </ul>
 </li>
-<li><a href="#sec-1-6">1.6. VM操作</a>
+<li><a href="#sec-1-6">1.6. 安全组</a>
 <ul>
-<li><a href="#sec-1-6-1">1.6.1. nova boot &#x2013;flavor FLAVORTYPE &#x2013;key_name KEYPAIRNAME &#x2013;image IMAGEID NEWINSTANCENAME</a></li>
-<li><a href="#sec-1-6-2">1.6.2. nova delete VMName</a></li>
+<li><a href="#sec-1-6-1">1.6.1. nova secgroup-list</a></li>
+<li><a href="#sec-1-6-2">1.6.2. nova secgroup-create GroupName Description</a></li>
+<li><a href="#sec-1-6-3">1.6.3. nova secgroup-delete GroupName</a></li>
+<li><a href="#sec-1-6-4">1.6.4. nova secgroup-list-rules GROUPNAME</a></li>
+<li><a href="#sec-1-6-5">1.6.5. nova secgroup-add-rule default tcp 22 22 0.0.0.0/0</a></li>
+<li><a href="#sec-1-6-6">1.6.6. nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0</a></li>
 </ul>
 </li>
-<li><a href="#sec-1-7">1.7. flavor操作</a>
+<li><a href="#sec-1-7">1.7. floating ip</a>
 <ul>
-<li><a href="#sec-1-7-1">1.7.1. nova flavor-list</a></li>
-<li><a href="#sec-1-7-2">1.7.2. nova flavor-create FLAVOR_NAME FLAVOR_ID RAM_IN_MB ROOT_DISK_IN_GB NUMBER_OF_VCPUS</a></li>
-<li><a href="#sec-1-7-3">1.7.3. nova flavor-access-add FLAVOR TENANT_ID</a></li>
+<li><a href="#sec-1-7-1">1.7.1. nova floating-ip-create</a></li>
+<li><a href="#sec-1-7-2">1.7.2. nova floating-ip-associate InstanceNameOrID  Floating-Ip-Address</a></li>
 </ul>
 </li>
+<li><a href="#sec-1-8">1.8. VM操作</a>
+<ul>
+<li><a href="#sec-1-8-1">1.8.1. nova boot &#x2013;flavor FLAVORTYPE &#x2013;key_name KEYPAIRNAME &#x2013;image IMAGEID NEWINSTANCENAME</a></li>
+<li><a href="#sec-1-8-2">1.8.2. nova delete VMName</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-9">1.9. flavor操作</a>
+<ul>
+<li><a href="#sec-1-9-1">1.9.1. nova flavor-list</a></li>
+<li><a href="#sec-1-9-2">1.9.2. nova flavor-create FLAVOR_NAME FLAVOR_ID RAM_IN_MB ROOT_DISK_IN_GB NUMBER_OF_VCPUS</a></li>
+<li><a href="#sec-1-9-3">1.9.3. nova flavor-access-add FLAVOR TENANT_ID</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-10">1.10. hypervisor</a></li>
 </ul>
 </li>
 <li><a href="#sec-2">2. 经验</a>
@@ -54,17 +72,36 @@
 <li><a href="#sec-2-2">2.2. 删除顺序</a></li>
 <li><a href="#sec-2-3">2.3. 端口映射访问VNC</a></li>
 <li><a href="#sec-2-4">2.4. 自己创建镜像</a></li>
-<li><a href="#sec-2-5">2.5. 对象存储</a></li>
+<li><a href="#sec-2-5">2.5. 虚拟机启动时执行语句</a></li>
+<li><a href="#sec-2-6">2.6. 修改镜像用户名和密码</a></li>
+<li><a href="#sec-2-7">2.7. 对象存储</a></li>
+<li><a href="#sec-2-8">2.8. 查看指定VM在哪台物理机上运行</a></li>
+<li><a href="#sec-2-9">2.9. 制作镜像</a>
+<ul>
+<li><a href="#sec-2-9-1">2.9.1. 安装底层支持包</a></li>
+<li><a href="#sec-2-9-2">2.9.2. 下载centos6.5 iso镜像</a></li>
+<li><a href="#sec-2-9-3">2.9.3. 启动服务</a></li>
+<li><a href="#sec-2-9-4">2.9.4. 创建镜像文件</a></li>
+<li><a href="#sec-2-9-5">2.9.5. 创建虚拟机</a></li>
+<li><a href="#sec-2-9-6">2.9.6. 利用VNC软件登陆</a></li>
+<li><a href="#sec-2-9-7">2.9.7. 安装系统</a></li>
+<li><a href="#sec-2-9-8">2.9.8. 配置系统</a></li>
+<li><a href="#sec-2-9-9">2.9.9. 安装EPEL源，升级系统</a></li>
+<li><a href="#sec-2-9-10">2.9.10. cloud-init等</a></li>
+<li><a href="#sec-2-9-11">2.9.11. 压缩镜像</a></li>
+<li><a href="#sec-2-9-12">2.9.12. 添加镜像</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
 <link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
-<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/too_many_toc.css" />
 <script src="../../layout/js/jquery_1.7.1.js"></script>
 <script src="../../layout/js/bootstrap_old.js"></script>
+
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> OpenStack命令</h2>
 <div class="outline-text-2" id="text-1">
@@ -100,26 +137,93 @@ nova help flavor-list
 </div>
 
 <div id="outline-container-sec-1-5" class="outline-3">
-<h3 id="sec-1-5"><span class="section-number-3">1.5</span> 安全组</h3>
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> tenant/user/role</h3>
 <div class="outline-text-3" id="text-1-5">
 </div><div id="outline-container-sec-1-5-1" class="outline-4">
-<h4 id="sec-1-5-1"><span class="section-number-4">1.5.1</span> nova secgroup-list</h4>
+<h4 id="sec-1-5-1"><span class="section-number-4">1.5.1</span> 创建用户/租户/角色</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<pre class="example">
+keystone user-create --name=hui --pass=password --mail=hui@example.com
+keystone tenant-create --name=acm
+keystone role-create --name=compute-user
+</pre>
 </div>
+</div>
+
 <div id="outline-container-sec-1-5-2" class="outline-4">
-<h4 id="sec-1-5-2"><span class="section-number-4">1.5.2</span> nova secgroup-list-rules GROUPNAME</h4>
+<h4 id="sec-1-5-2"><span class="section-number-4">1.5.2</span> 列出用户/租户/角色</h4>
+<div class="outline-text-4" id="text-1-5-2">
+<pre class="example">
+keystone user-list   
+keystone role-list   
+keystone tenant-list
+</pre>
 </div>
+</div>
+
 <div id="outline-container-sec-1-5-3" class="outline-4">
-<h4 id="sec-1-5-3"><span class="section-number-4">1.5.3</span> nova secgroup-add-rule default tcp 22 22 0.0.0.0/0</h4>
+<h4 id="sec-1-5-3"><span class="section-number-4">1.5.3</span> 添加用户到指定租户和角色中</h4>
 <div class="outline-text-4" id="text-1-5-3">
+<pre class="example">
+keystone user-role-add --user=admin --tenant=admin --role=admin
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5-4" class="outline-4">
+<h4 id="sec-1-5-4"><span class="section-number-4">1.5.4</span> 服务向Keystone注册服务的Endpoint</h4>
+<div class="outline-text-4" id="text-1-5-4">
+<pre class="example">
+keystone service-create --name=keystone --type=identity --description="Keystone Identity Service"
+会生成标识此服务的唯一ID
+keystone endpoint-create  --service-id=上面生成的ID  --publicurl=http://controller:5000/v2.0  --internalurl=http://controller:5000/v2.0 --adminurl=http://controller:35357/v2.0
+其中需要指定public/internal/admin的URL
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-5-5" class="outline-4">
+<h4 id="sec-1-5-5"><span class="section-number-4">1.5.5</span> 查看指定tenant的指定user的role</h4>
+<div class="outline-text-4" id="text-1-5-5">
+<pre class="example">
+keystone user-role-list --user USERID --tenant TENANTID
+</pre>
+<p>
+删除指定tenant的指定user的role<br/>
+</p>
+<pre class="example">
+keystone user-role-remove --user USERID --tenant TENANTID --role ROLEID
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6"><span class="section-number-3">1.6</span> 安全组</h3>
+<div class="outline-text-3" id="text-1-6">
+</div><div id="outline-container-sec-1-6-1" class="outline-4">
+<h4 id="sec-1-6-1"><span class="section-number-4">1.6.1</span> nova secgroup-list</h4>
+</div>
+<div id="outline-container-sec-1-6-2" class="outline-4">
+<h4 id="sec-1-6-2"><span class="section-number-4">1.6.2</span> nova secgroup-create GroupName Description</h4>
+</div>
+<div id="outline-container-sec-1-6-3" class="outline-4">
+<h4 id="sec-1-6-3"><span class="section-number-4">1.6.3</span> nova secgroup-delete GroupName</h4>
+</div>
+<div id="outline-container-sec-1-6-4" class="outline-4">
+<h4 id="sec-1-6-4"><span class="section-number-4">1.6.4</span> nova secgroup-list-rules GROUPNAME</h4>
+</div>
+<div id="outline-container-sec-1-6-5" class="outline-4">
+<h4 id="sec-1-6-5"><span class="section-number-4">1.6.5</span> nova secgroup-add-rule default tcp 22 22 0.0.0.0/0</h4>
+<div class="outline-text-4" id="text-1-6-5">
 <p>
 允许SSH登陆<br/>
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-1-5-4" class="outline-4">
-<h4 id="sec-1-5-4"><span class="section-number-4">1.5.4</span> nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0</h4>
-<div class="outline-text-4" id="text-1-5-4">
+<div id="outline-container-sec-1-6-6" class="outline-4">
+<h4 id="sec-1-6-6"><span class="section-number-4">1.6.6</span> nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0</h4>
+<div class="outline-text-4" id="text-1-6-6">
 <p>
 允许ping<br/>
 </p>
@@ -127,46 +231,71 @@ nova help flavor-list
 </div>
 </div>
 
-<div id="outline-container-sec-1-6" class="outline-3">
-<h3 id="sec-1-6"><span class="section-number-3">1.6</span> VM操作</h3>
-<div class="outline-text-3" id="text-1-6">
-</div><div id="outline-container-sec-1-6-1" class="outline-4">
-<h4 id="sec-1-6-1"><span class="section-number-4">1.6.1</span> nova boot &#x2013;flavor FLAVORTYPE &#x2013;key_name KEYPAIRNAME &#x2013;image IMAGEID NEWINSTANCENAME</h4>
-<div class="outline-text-4" id="text-1-6-1">
+<div id="outline-container-sec-1-7" class="outline-3">
+<h3 id="sec-1-7"><span class="section-number-3">1.7</span> floating ip</h3>
+<div class="outline-text-3" id="text-1-7">
+</div><div id="outline-container-sec-1-7-1" class="outline-4">
+<h4 id="sec-1-7-1"><span class="section-number-4">1.7.1</span> nova floating-ip-create</h4>
+</div>
+<div id="outline-container-sec-1-7-2" class="outline-4">
+<h4 id="sec-1-7-2"><span class="section-number-4">1.7.2</span> nova floating-ip-associate InstanceNameOrID  Floating-Ip-Address</h4>
+</div>
+</div>
+
+<div id="outline-container-sec-1-8" class="outline-3">
+<h3 id="sec-1-8"><span class="section-number-3">1.8</span> VM操作</h3>
+<div class="outline-text-3" id="text-1-8">
+</div><div id="outline-container-sec-1-8-1" class="outline-4">
+<h4 id="sec-1-8-1"><span class="section-number-4">1.8.1</span> nova boot &#x2013;flavor FLAVORTYPE &#x2013;key_name KEYPAIRNAME &#x2013;image IMAGEID NEWINSTANCENAME</h4>
+<div class="outline-text-4" id="text-1-8-1">
 <p>
 启动一个实例<br/>
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-1-6-2" class="outline-4">
-<h4 id="sec-1-6-2"><span class="section-number-4">1.6.2</span> nova delete VMName</h4>
+<div id="outline-container-sec-1-8-2" class="outline-4">
+<h4 id="sec-1-8-2"><span class="section-number-4">1.8.2</span> nova delete VMName</h4>
 </div>
 </div>
 
-<div id="outline-container-sec-1-7" class="outline-3">
-<h3 id="sec-1-7"><span class="section-number-3">1.7</span> flavor操作</h3>
-<div class="outline-text-3" id="text-1-7">
-</div><div id="outline-container-sec-1-7-1" class="outline-4">
-<h4 id="sec-1-7-1"><span class="section-number-4">1.7.1</span> nova flavor-list</h4>
+<div id="outline-container-sec-1-9" class="outline-3">
+<h3 id="sec-1-9"><span class="section-number-3">1.9</span> flavor操作</h3>
+<div class="outline-text-3" id="text-1-9">
+</div><div id="outline-container-sec-1-9-1" class="outline-4">
+<h4 id="sec-1-9-1"><span class="section-number-4">1.9.1</span> nova flavor-list</h4>
 </div>
 
-<div id="outline-container-sec-1-7-2" class="outline-4">
-<h4 id="sec-1-7-2"><span class="section-number-4">1.7.2</span> nova flavor-create FLAVOR_NAME FLAVOR_ID RAM_IN_MB ROOT_DISK_IN_GB NUMBER_OF_VCPUS</h4>
-<div class="outline-text-4" id="text-1-7-2">
+<div id="outline-container-sec-1-9-2" class="outline-4">
+<h4 id="sec-1-9-2"><span class="section-number-4">1.9.2</span> nova flavor-create FLAVOR_NAME FLAVOR_ID RAM_IN_MB ROOT_DISK_IN_GB NUMBER_OF_VCPUS</h4>
+<div class="outline-text-4" id="text-1-9-2">
 <p>
 <a href="http://docs.openstack.org/user-guide-admin/content/cli_manage_flavors.html">http://docs.openstack.org/user-guide-admin/content/cli_manage_flavors.html</a><br/>
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-1-7-3" class="outline-4">
-<h4 id="sec-1-7-3"><span class="section-number-4">1.7.3</span> nova flavor-access-add FLAVOR TENANT_ID</h4>
-<div class="outline-text-4" id="text-1-7-3">
+<div id="outline-container-sec-1-9-3" class="outline-4">
+<h4 id="sec-1-9-3"><span class="section-number-4">1.9.3</span> nova flavor-access-add FLAVOR TENANT_ID</h4>
+<div class="outline-text-4" id="text-1-9-3">
 <p>
 将其添加到指定tenant中<br/>
 </p>
 </div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-10" class="outline-3">
+<h3 id="sec-1-10"><span class="section-number-3">1.10</span> hypervisor</h3>
+<div class="outline-text-3" id="text-1-10">
+<ol class="org-ol">
+<li>nova hypervisor-list<br/>
+</li>
+<li>nova hypervisor-show HOSTNAME<br/>
+</li>
+<li>nova hypervisor-stats<br/>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -228,8 +357,26 @@ nova get-vnc-console INSTANCE_NAME  novnc
 </div>
 
 <div id="outline-container-sec-2-5" class="outline-3">
-<h3 id="sec-2-5"><span class="section-number-3">2.5</span> 对象存储</h3>
+<h3 id="sec-2-5"><span class="section-number-3">2.5</span> 虚拟机启动时执行语句</h3>
 <div class="outline-text-3" id="text-2-5">
+<p>
+<a href="http://blog.csdn.net/juvxiao/article/details/22664457">http://blog.csdn.net/juvxiao/article/details/22664457</a><br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6"><span class="section-number-3">2.6</span> 修改镜像用户名和密码</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+<a href="https://ask.openstack.org/en/question/4805/what-is-the-password-for-ubuntu-1204-cloud-image/">https://ask.openstack.org/en/question/4805/what-is-the-password-for-ubuntu-1204-cloud-image/</a><br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7"><span class="section-number-3">2.7</span> 对象存储</h3>
+<div class="outline-text-3" id="text-2-7">
 <p>
 无论是放在DB中记录或OS中的文件或声音或图像，保存对象存储服务器中。<br/>
 Amazon AW3<br/>
@@ -240,6 +387,214 @@ Amazon AW3<br/>
 硬件完成 块操作<br/>
 OS面对的是字节流<br/>
 </p>
+</div>
+</div>
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8"><span class="section-number-3">2.8</span> 查看指定VM在哪台物理机上运行</h3>
+<div class="outline-text-3" id="text-2-8">
+<p>
+必须以admin用户查看<br/>
+</p>
+<pre class="example">
+nova list --all-tenants  # 如果所要查看VM为其它tenant所有，需要--all-tenants
+nova show VM-ID
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9" class="outline-3">
+<h3 id="sec-2-9"><span class="section-number-3">2.9</span> 制作镜像</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+以制作centos6.5镜像为例，参考<br/>
+<a href="http://www.tuicool.com/articles/BNJZny">http://www.tuicool.com/articles/BNJZny</a> (这篇文章不全，没有安装cloud-init等不能解决虚拟机自动扩展分区问题，参考以下官方文档)<br/>
+<a href="https://openstack.redhat.com/Creating_CentOS_and_Fedora_images_ready_for_Openstack">https://openstack.redhat.com/Creating_CentOS_and_Fedora_images_ready_for_Openstack</a><br/>
+<a href="http://www.chenshake.com/about-openstack-centos-mirror/">http://www.chenshake.com/about-openstack-centos-mirror/</a><br/>
+以下操作在node1（装有centos 6.5）上进行<br/>
+</p>
+</div>
+<div id="outline-container-sec-2-9-1" class="outline-4">
+<h4 id="sec-2-9-1"><span class="section-number-4">2.9.1</span> 安装底层支持包</h4>
+<div class="outline-text-4" id="text-2-9-1">
+<pre class="example">
+yum groupinstall Virtualization "Virtualization Client"  
+yum install libvirt
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9-2" class="outline-4">
+<h4 id="sec-2-9-2"><span class="section-number-4">2.9.2</span> 下载centos6.5 iso镜像</h4>
+<div class="outline-text-4" id="text-2-9-2">
+<pre class="example">
+mkdir /openstack-image
+cd /openstack-image
+wget ftp://ftp.sjtu.edu.cn/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-bin-DVD1.iso
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9-3" class="outline-4">
+<h4 id="sec-2-9-3"><span class="section-number-4">2.9.3</span> 启动服务</h4>
+<div class="outline-text-4" id="text-2-9-3">
+<pre class="example">
+service libvirtd restart
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9-4" class="outline-4">
+<h4 id="sec-2-9-4"><span class="section-number-4">2.9.4</span> 创建镜像文件</h4>
+<div class="outline-text-4" id="text-2-9-4">
+<pre class="example">
+cd /openstack-image
+qemu-img create -f qcow2 CentOS6.5-openstack.img 10G
+chown qemu:qemu /openstack-image -R
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9-5" class="outline-4">
+<h4 id="sec-2-9-5"><span class="section-number-4">2.9.5</span> 创建虚拟机</h4>
+<div class="outline-text-4" id="text-2-9-5">
+<pre class="example">
+virt-install -n CentOSimg -r 4096 --cpu host -c /openstack-image/CentOS-6.5-x86_64-bin-DVD1.iso --disk path=/openstack-image/CentOS6.5-openstack.img,device=disk,bus=virtio,size=30,format=qcow2 --vnc --vncport=5911 --vnclisten=0.0.0.0 -v
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9-6" class="outline-4">
+<h4 id="sec-2-9-6"><span class="section-number-4">2.9.6</span> 利用VNC软件登陆</h4>
+<div class="outline-text-4" id="text-2-9-6">
+<p>
+mac下可以使用chicken of the vnc来登陆，win下可以用vnc viewer.<br/>
+端口为上面指定的vncport=5911<br/>
+chicken of the vnc需要在port中填写11，会默认+5900得到5911<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9-7" class="outline-4">
+<h4 id="sec-2-9-7"><span class="section-number-4">2.9.7</span> 安装系统</h4>
+</div>
+<div id="outline-container-sec-2-9-8" class="outline-4">
+<h4 id="sec-2-9-8"><span class="section-number-4">2.9.8</span> 配置系统</h4>
+<div class="outline-text-4" id="text-2-9-8">
+<p>
+可以用virsh list来看当前已启动的虚拟机。<br/>
+</p>
+<pre class="example">
+virsh start CentOSimg  
+virsh list
+</pre>
+<p>
+查看确定是我们刚才制作的虚拟机"CentOSimg"重新开启了.<br/>
+之后再次用VNC连入到这个虚拟机中，端口不变，我们需要做下面的一些操作<br/>
+</p>
+</div>
+<ol class="org-ol"><li>删除网络配置<br/><div class="outline-text-5" id="text-2-9-8-1">
+<p>
+删除ifcfg-eth0的HWADDR一行，最后你的ifcfg-eth0的配置文件应该是这样的：<br/>
+</p>
+<pre class="example">
+[root@localhost ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 
+DEVICE="eth0" 
+BOOTPROTO="dhcp" 
+NM_CONTROLLED="yes" 
+ONBOOT="yes" 
+TYPE="Ethernet"
+</pre>
+</div>
+</li>
+
+<li>删除已生成的网络设备规则<br/><div class="outline-text-5" id="text-2-9-8-2">
+<pre class="example">
+rm -rf /etc/udev/rules.d/70-persistent-net.rules
+</pre>
+</div>
+</li>
+
+<li>关闭防火墙和selinux<br/><div class="outline-text-5" id="text-2-9-8-3">
+<pre class="example">
+sed -i s/^SELINUX=.*/SELINUX=disabled/g /etc/selinux/config 
+service iptables stop &amp;&amp; chkconfig iptables off 
+service ip6tables stop &amp;&amp; chkconfig ip6tables off
+</pre>
+</div>
+</li></ol>
+</div>
+
+<div id="outline-container-sec-2-9-9" class="outline-4">
+<h4 id="sec-2-9-9"><span class="section-number-4">2.9.9</span> 安装EPEL源，升级系统</h4>
+<div class="outline-text-4" id="text-2-9-9">
+<pre class="example">
+yum install -y http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+yum -y distro-sync
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9-10" class="outline-4">
+<h4 id="sec-2-9-10"><span class="section-number-4">2.9.10</span> cloud-init等</h4>
+<div class="outline-text-4" id="text-2-9-10">
+<pre class="example">
+yum install -y cloud-utils cloud-init parted git
+cd /tmp
+git clone https://github.com/flegmatik/linux-rootfs-resize.git
+cd linux-rootfs-resize
+./install
+</pre>
+<p>
+修改/etc/cloud/cloud.cfg<br/>
+</p>
+<pre class="example">
+disable_root: 0
+ssh_pwauth:   1
+</pre>
+<p>
+否则不能root登陆。<br/>
+在cloud_init_modules下面添加<br/>
+</p>
+<pre class="example">
+- resolv-conf
+</pre>
+<p>
+/etc/sysconfig/network中添加<br/>
+</p>
+<pre class="example">
+NOZERCONF=yes
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9-11" class="outline-4">
+<h4 id="sec-2-9-11"><span class="section-number-4">2.9.11</span> 压缩镜像</h4>
+<div class="outline-text-4" id="text-2-9-11">
+<p>
+关闭虚拟机<br/>
+</p>
+<pre class="example">
+init0 或者 poweroff
+</pre>
+<p>
+压缩镜像<br/>
+</p>
+<pre class="example">
+# Reset and clean the image so it can be reused without issues
+virt-sysprep -d centos-6.5
+# Reduce image size by zero-in unused blocks in the virtual disk
+virt-sparsify --compress CentOS6.5-openstack.img centos-6.5-desktop.img
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9-12" class="outline-4">
+<h4 id="sec-2-9-12"><span class="section-number-4">2.9.12</span> 添加镜像</h4>
+<div class="outline-text-4" id="text-2-9-12">
+<pre class="example">
+glance image-create --name "CentOS-6.5-Desktop-byFan" --disk-format qcow2 --container-format bare --is-public True --progress &lt; /openstack-image/CentOS6.5-openstack.img
+</pre>
+</div>
 </div>
 </div>
 </div>

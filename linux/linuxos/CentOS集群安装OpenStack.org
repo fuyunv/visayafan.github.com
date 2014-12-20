@@ -1,51 +1,53 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+INCLUDE: "../../layout/template.org"
 #+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
 #+title:CentOS集群安装OpenStack
-* COMMENT 安装指导
-  https://openstack.redhat.com/Quickstart
-  http://blog.sina.com.cn/s/blog_7f0154140101cplh.html
-  http://blog.csdn.net/eric_sunah/article/details/39475815
-* COMMENT 配置第2块网卡
-  #+BEGIN_EXAMPLE
-  ifcfg em2 add 192.168.2.103/24
-  #+END_EXAMPLE
-  hostname为node3
-  #+BEGIN_EXAMPLE
-  vhostname=`hostname`;vipaddr="192.168.2.10"${vhostname:4}"/24";ifcfg em2 $vipaddr;unset vhostname; unset vipaddr;
-  #+END_EXAMPLE
-* COMMENT EPEL
-  http://www.tecmint.com/how-to-enable-epel-repository-for-rhel-centos-6-5/
-  http://freeloda.blog.51cto.com/2033581/1260824
-  #+BEGIN_EXAMPLE
-  rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-  rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
-  #+END_EXAMPLE
-  修改/etc/yum.repos.d/epel.repo中的enabled=0全部改为1
-  #+BEGIN_EXAMPLE
-  yum clean all
-  yum repolist | grep epel
-  #+END_EXAMPLE
-  如果显示结果不为空，类似
-  #+BEGIN_EXAMPLE
-  epel                Extra Packages for Enterprise Linux 6 - x86_64     11,102+37
-  #+END_EXAMPLE
-  表示EPEL配置完成。
-* COMMENT 安装过程中自动禁止epel repo
-  EPEL被禁导致许多依赖安装不上。
-  https://ask.openstack.org/en/question/51013/rdo-deploy-openstack-error-execution-of-usrbinyum-d-0-e-0-y-list-erlang-returned-1-error-no-matching-packages-to-list/
-  默认的CONFIG_USE_EPEL=n，将其改成y即可。
-  或 if packstack --allinone,the default value of epel option now is "CONFIG_USE_EPEL=n",you can execute "#yum-config-manager --enable epel" after "Preparing servers [ DONE ]" to enable epel repo
-* COMMENT 安装erlang出错
-  http://blog.csdn.net/duyuanhai/article/details/17403213
-* COMMENT 安装rabbitmq出错
-  http://blog.csdn.net/leekwen/article/details/23333659
-* COMMENT 卸载RDO
-  https://openstack.redhat.com/Uninstalling_RDO
-* COMMENT 彻底删除MySQL
-  http://blog.csdn.net/hi_1234567/article/details/9176715
-  http://blog.phpdr.net/linux-delete-mysql-complete.html
-* COMMENT MySQL出错
+
+* COMMENT COMMENTS
+** COMMENT 安装指导
+   https://openstack.redhat.com/Quickstart
+   http://blog.sina.com.cn/s/blog_7f0154140101cplh.html
+   http://blog.csdn.net/eric_sunah/article/details/39475815
+** COMMENT 配置第2块网卡
+   #+BEGIN_EXAMPLE
+   ifcfg em2 add 192.168.2.103/24
+   #+END_EXAMPLE
+   hostname为node3
+   #+BEGIN_EXAMPLE
+   vhostname=`hostname`;vipaddr="192.168.2.10"${vhostname:4}"/24";ifcfg em2 $vipaddr;unset vhostname; unset vipaddr;
+   #+END_EXAMPLE
+** COMMENT EPEL
+   http://www.tecmint.com/how-to-enable-epel-repository-for-rhel-centos-6-5/
+   http://freeloda.blog.51cto.com/2033581/1260824
+   #+BEGIN_EXAMPLE
+   rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+   rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+   #+END_EXAMPLE
+   修改/etc/yum.repos.d/epel.repo中的enabled=0全部改为1
+   #+BEGIN_EXAMPLE
+   yum clean all
+   yum repolist | grep epel
+   #+END_EXAMPLE
+   如果显示结果不为空，类似
+   #+BEGIN_EXAMPLE
+   epel                Extra Packages for Enterprise Linux 6 - x86_64     11,102+37
+   #+END_EXAMPLE
+   表示EPEL配置完成。
+** COMMENT 安装过程中自动禁止epel repo
+   EPEL被禁导致许多依赖安装不上。
+   https://ask.openstack.org/en/question/51013/rdo-deploy-openstack-error-execution-of-usrbinyum-d-0-e-0-y-list-erlang-returned-1-error-no-matching-packages-to-list/
+   默认的CONFIG_USE_EPEL=n，将其改成y即可。
+   或 if packstack --allinone,the default value of epel option now is "CONFIG_USE_EPEL=n",you can execute "#yum-config-manager --enable epel" after "Preparing servers [ DONE ]" to enable epel repo
+** COMMENT 安装erlang出错
+   http://blog.csdn.net/duyuanhai/article/details/17403213
+** COMMENT 安装rabbitmq出错
+   http://blog.csdn.net/leekwen/article/details/23333659
+** COMMENT 卸载RDO
+   https://openstack.redhat.com/Uninstalling_RDO
+** COMMENT 彻底删除MySQL
+   http://blog.csdn.net/hi_1234567/article/details/9176715
+   http://blog.phpdr.net/linux-delete-mysql-complete.html
+** COMMENT MySQL出错
   彻底删除MySQL
   https://ask.openstack.org/en/question/51441/mysqladmin-u-root-password-023b6b3e53494c39-returned-1-instead-of-one-of-0/
   #+BEGIN_EXAMPLE
@@ -56,9 +58,9 @@ rm -rf /etc/mysql*
   修改密码
   http://blog.csdn.net/pumaadamsjack/article/details/2044565  
   mysqladmin -u root -p password 123456
-* COMMENT cron出错
-  yum install yum-cron
-* COMMENT 网上配置
+** COMMENT cron出错
+   yum install yum-cron
+** COMMENT 网上配置
   http://www.centoscn.com/CentOS/config/2013/0730/796.html
 http://my.oschina.net/captaintheron/blog/3046
 
@@ -73,14 +75,14 @@ sed -i 's/ONBOOT=no/ONBOOT=yes/g' /etc/sysconfig/network-scripts/ifcfg-em2
 sed -i /GATEWAY=192.168.2.1/d /etc/sysconfig/network-scripts/ifcfg-em2
 service network restart
 
-* COMMENT 杂
-  http://www.litrin.net/2014/03/05/%E6%90%AD%E5%BB%BAopenstack%E9%9B%86%E7%BE%A4/
-  http://blog.csdn.net/huangmeng1214/article/details/12707953
-* COMMENT 如何添加一个计算结点
-  https://openstack.redhat.com/Adding_a_compute_node
-* COMMENT dokuwiki
-  启动httpd后外网无法访问 http://slj.me/2010/12/centos-apache-firewall-settings/
-* COMMENT 修改后的answer-file
+** COMMENT 杂
+   http://www.litrin.net/2014/03/05/%E6%90%AD%E5%BB%BAopenstack%E9%9B%86%E7%BE%A4/
+   http://blog.csdn.net/huangmeng1214/article/details/12707953
+** COMMENT 如何添加一个计算结点
+   https://openstack.redhat.com/Adding_a_compute_node
+** COMMENT dokuwiki
+   启动httpd后外网无法访问 http://slj.me/2010/12/centos-apache-firewall-settings/
+** COMMENT 修改后的answer-file
   #+BEGIN_EXAMPLE
 [general]
 
@@ -623,7 +625,7 @@ The password of the nagiosadmin user on the Nagios server
 CONFIG_NAGIOS_PW=55cd69bbebd14a11
   
   #+END_EXAMPLE
-* COMMENT tmp
+** COMMENT tmp
   config_ceilometer_install=n
   CONFIG_HEAT_INSTALL=n
   config_nova_compute_hosts=compute1, comupte2, compute3
@@ -655,47 +657,47 @@ ssh-copy-id 192.168.1.108
 ssh-copy-id 192.168.1.109
 
 sjtuseiee
-* COMMENT 安装（不全）
-** 安装ntp
-   #+BEGIN_EXAMPLE
-   yum install ntp
-   service ntpd start
-   chkconfig ntpd on
-   #+END_EXAMPLE
-** 安装mysql
-   控制节点上：
-   #+BEGIN_EXAMPLE
-   yum install mysql mysql-server MySQL-python
-   #+END_EXAMPLE
-   修改/etc/my.cnf
-   #+BEGIN_EXAMPLE
-   bind-address = 10.0.0.11
+** COMMENT 安装（不全）
+*** 安装ntp
+    #+BEGIN_EXAMPLE
+    yum install ntp
+    service ntpd start
+    chkconfig ntpd on
+    #+END_EXAMPLE
+*** 安装mysql
+    控制节点上：
+    #+BEGIN_EXAMPLE
+    yum install mysql mysql-server MySQL-python
+    #+END_EXAMPLE
+    修改/etc/my.cnf
+    #+BEGIN_EXAMPLE
+    bind-address = 10.0.0.11
 
-   default-storage-engine = innodb
-   innodb_file_per_table
-   collation-server = utf8_general_ci
-   init-connect = 'SET NAMES utf8'
-   character-set-server = utf8
-   #+END_EXAMPLE
-   启动
-   #+BEGIN_EXAMPLE
-   service mysqld start
-   chkconfig mysqld on
-   #+END_EXAMPLE
-   设置密码，其它选yes
-   #+BEGIN_EXAMPLE
-   mysql_secure_installation
-   #+END_EXAMPLE
-** 安装qpid
-   #+BEGIN_EXAMPLE
-   yum install qpid-cpp-server
-   #+END_EXAMPLE
-   修改/etc/qpidd.conf，auth=no
-   #+BEGIN_EXAMPLE
-   service qpidd start
-   chkconfig qpidd on
-   #+END_EXAMPLE
-** 安装keystone
+    default-storage-engine = innodb
+    innodb_file_per_table
+    collation-server = utf8_general_ci
+    init-connect = 'SET NAMES utf8'
+    character-set-server = utf8
+    #+END_EXAMPLE
+    启动
+    #+BEGIN_EXAMPLE
+    service mysqld start
+    chkconfig mysqld on
+    #+END_EXAMPLE
+    设置密码，其它选yes
+    #+BEGIN_EXAMPLE
+    mysql_secure_installation
+    #+END_EXAMPLE
+*** 安装qpid
+    #+BEGIN_EXAMPLE
+    yum install qpid-cpp-server
+    #+END_EXAMPLE
+    修改/etc/qpidd.conf，auth=no
+    #+BEGIN_EXAMPLE
+    service qpidd start
+    chkconfig qpidd on
+    #+END_EXAMPLE
+*** 安装keystone
   #+BEGIN_EXAMPLE
   yum install openstack-keystone python-keystoneclient
   openstack-config --set /etc/keystone/keystone.conf  database connection mysql://keystone:sjtuseiee@controller/keystone
@@ -723,7 +725,7 @@ export OS_SERVICE_ENDPOINT=http://controller:35357/v2.0
 
   keystone user-create --name=admin --pass=sjtuseiee --email=visayafan@163.com
   #+END_EXAMPLE
-** glance
+*** glance
   #+BEGIN_EXAMPLE
 yum install openstack-glance python-glanceclient
 openstack-config --set /etc/glance/glance-api.conf database connection mysql://glance:sjtuseiee@controller/glance
@@ -775,8 +777,8 @@ chkconfig openstack-glance-registry on
 source admin-openrc.sh
 glance image-create --name "cirros-0.3.2-x86_64" --disk-format qcow2 --container-format bare --is-public True --progress < cirros-0.3.2- x86_64-disk.img
   #+END_EXAMPLE
-** nova
-*** controller
+*** nova
+**** controller
   #+BEGIN_EXAMPLE
   yum install openstack-nova-api openstack-nova-cert openstack-novaconductor  openstack-nova-console openstack-nova-novncproxy openstack-novascheduler  python-novaclient
   openstack-config --set /etc/nova/nova.conf database connection mysql://nova:sjtuseiee@controller/nova
@@ -830,7 +832,7 @@ chkconfig openstack-nova-novncproxy on
 
 nova image-list
   #+END_EXAMPLE
-*** compute
+**** compute
    #+BEGIN_EXAMPLE
    yum install openstack-nova-compute
 
@@ -855,8 +857,8 @@ openstack-config --set /etc/nova/nova.conf DEFAULT novncproxy_base_url http://co
 
 openstack-config --set /etc/nova/nova.conf DEFAULT glance_host controller
    #+END_EXAMPLE
-* COMMENT tmp
-** 华为路由器端口映射
+** COMMENT tmp
+*** 华为路由器端口映射
    #+BEGIN_EXAMPLE
 nat server 1 protocol tcp global interface GigabitEthernet0/0/0 3306 inside 192.168.1.104 3306 no-reverse
 nat server 2 protocol tcp global interface GigabitEthernet0/0/0 6161 inside 192.168.1.104 6161 no-reverse
@@ -893,7 +895,7 @@ nat server 101 protocol tcp global interface GigabitEthernet0/0/0 50001 inside 1
 nat server 100 protocol tcp global interface GigabitEthernet0/0/0 50005 inside 192.168.1.105 80 no-reverse
 nat server 102 protocol tcp global interface GigabitEthernet0/0/0 50006 inside 192.168.1.105 20 no-reverse
    #+END_EXAMPLE
-** 华为路由器VPN配置
+*** 华为路由器VPN配置
    #+BEGIN_EXAMPLE
 interface virtual-template 1
 ip address 192.168.0.1 255.255.255.0
@@ -1064,3 +1066,111 @@ service openstack-nova-compute restart
    nova list --all-tenants  # 如果所要查看VM为其它tenant所有，需要--all-tenants
    nova show VM-ID
    #+END_EXAMPLE
+** 制作镜像
+   以制作centos6.5镜像为例，参考
+   http://www.tuicool.com/articles/BNJZny (这篇文章不全，没有安装cloud-init等不能解决虚拟机自动扩展分区问题，参考以下官方文档)
+   https://openstack.redhat.com/Creating_CentOS_and_Fedora_images_ready_for_Openstack
+   http://www.chenshake.com/about-openstack-centos-mirror/
+   http://docs.openstack.org/image-guide/content/centos-image.html
+   以下操作在node1（装有centos 6.5）上进行
+*** 安装底层支持包
+    #+BEGIN_EXAMPLE
+    yum groupinstall Virtualization "Virtualization Client"  
+    yum install libvirt
+    #+END_EXAMPLE
+*** 下载centos6.5 iso镜像
+    #+BEGIN_EXAMPLE
+    mkdir /openstack-image
+    cd /openstack-image
+    wget ftp://ftp.sjtu.edu.cn/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-bin-DVD1.iso
+    #+END_EXAMPLE
+*** 启动服务
+    #+BEGIN_EXAMPLE
+    service libvirtd restart
+    #+END_EXAMPLE
+*** 创建镜像文件
+    #+BEGIN_EXAMPLE
+    cd /openstack-image
+    qemu-img create -f qcow2 CentOS6.5-openstack.img 10G
+    chown qemu:qemu /openstack-image -R
+    #+END_EXAMPLE
+*** 创建虚拟机
+    #+BEGIN_EXAMPLE
+    virt-install -n CentOSimg -r 4096 --cpu host -c /openstack-image/CentOS-6.5-x86_64-bin-DVD1.iso --disk path=/openstack-image/CentOS6.5-openstack.img,device=disk,bus=virtio,size=30,format=qcow2 --vnc --vncport=5911 --vnclisten=0.0.0.0 -v
+    #+END_EXAMPLE
+*** 利用VNC软件登陆
+    mac下可以使用chicken of the vnc来登陆，win下可以用vnc viewer.
+    端口为上面指定的vncport=5911
+    chicken of the vnc需要在port中填写11，会默认+5900得到5911
+*** 安装系统
+*** 配置系统
+    可以用virsh list来看当前已启动的虚拟机。
+    #+BEGIN_EXAMPLE
+    virsh start CentOSimg  
+    virsh list
+    #+END_EXAMPLE
+    查看确定是我们刚才制作的虚拟机"CentOSimg"重新开启了.
+    之后再次用VNC连入到这个虚拟机中，端口不变，我们需要做下面的一些操作
+**** 删除网络配置
+     删除ifcfg-eth0的HWADDR一行，最后你的ifcfg-eth0的配置文件应该是这样的：
+#+BEGIN_EXAMPLE
+[root@localhost ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 
+DEVICE="eth0" 
+BOOTPROTO="dhcp" 
+NM_CONTROLLED="yes" 
+ONBOOT="yes" 
+TYPE="Ethernet"
+#+END_EXAMPLE
+**** 删除已生成的网络设备规则
+#+BEGIN_EXAMPLE
+rm -rf /etc/udev/rules.d/70-persistent-net.rules
+#+END_EXAMPLE
+**** 关闭防火墙和selinux
+#+BEGIN_EXAMPLE
+sed -i s/^SELINUX=.*/SELINUX=disabled/g /etc/selinux/config 
+service iptables stop && chkconfig iptables off 
+service ip6tables stop && chkconfig ip6tables off
+#+END_EXAMPLE
+*** 安装EPEL源，升级系统
+    #+BEGIN_EXAMPLE
+    yum install -y http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+    yum -y distro-sync
+    #+END_EXAMPLE
+*** cloud-init等
+    #+BEGIN_EXAMPLE
+      yum install -y cloud-utils cloud-init parted git
+      cd /tmp
+      git clone https://github.com/flegmatik/linux-rootfs-resize.git
+      cd linux-rootfs-resize
+      ./install
+    #+END_EXAMPLE
+    修改/etc/cloud/cloud.cfg
+    #+BEGIN_EXAMPLE
+    disable_root: 0
+    ssh_pwauth:   1 
+    #+END_EXAMPLE
+    否则不能root登陆。
+    在cloud_init_modules下面添加
+    #+BEGIN_EXAMPLE
+    - resolv-conf
+    #+END_EXAMPLE
+    /etc/sysconfig/network中添加
+    #+BEGIN_EXAMPLE
+    NOZERCONF=yes
+    #+END_EXAMPLE
+*** 压缩镜像
+    关闭虚拟机
+    #+BEGIN_EXAMPLE
+    init0 或者 poweroff
+    #+END_EXAMPLE
+    压缩镜像
+    #+BEGIN_EXAMPLE
+    # Reset and clean the image so it can be reused without issues
+    virt-sysprep -d centos-6.5
+    # Reduce image size by zero-in unused blocks in the virtual disk
+    virt-sparsify --compress CentOS6.5-openstack.img centos-6.5-desktop.img
+    #+END_EXAMPLE
+*** 添加镜像
+    #+BEGIN_EXAMPLE
+    glance image-create --name "CentOS-6.5-Desktop-byFan" --disk-format qcow2 --container-format bare --is-public True --progress < /openstack-image/CentOS6.5-openstack.img
+    #+END_EXAMPLE

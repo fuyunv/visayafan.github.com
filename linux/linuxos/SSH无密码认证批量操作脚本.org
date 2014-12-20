@@ -2,8 +2,9 @@
 #+INCLUDE: "../../layout/template.org"
 #+SETUPFILE: "../../layout/extension.org"
 #+title:SSH无密码认证批量操作脚本
-http://myhoop.blog.51cto.com/5556534/1173937
 
+* 批量无密码认证脚本
+http://myhoop.blog.51cto.com/5556534/1173937
 #+BEGIN_SRC sh
   #!/bin/bash  
   #批量ssh认证建立  
@@ -28,3 +29,20 @@ ip.txt文件里面ip和密码写法
 192.168.0.2:admin2  
 192.168.0.3:admin3
 #+END_EXAMPLE
+
+* telnet无密码登陆
+#+BEGIN_SRC sh
+  #!/usr/bin/expect
+  
+  spawn "telnet" "192.168.1.1"
+  
+  expect "Username:"
+  send "admin\r"
+  expect "Password:"
+  send "Admin@123\r"
+  interact
+#+END_SRC 
+* 端口映射无密码登陆
+  #+BEGIN_EXAMPLE
+  ssh -p 50010 root@202.120.38.42 'cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_rsa.pub
+  #+END_EXAMPLE

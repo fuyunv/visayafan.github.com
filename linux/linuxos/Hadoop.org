@@ -1,0 +1,146 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:Hadoop
+
+* 源码安装hadoop-2.6.0
+  centos下源码编译安装
+** 依赖
+   #+BEGIN_EXAMPLE
+   yum install lzo-devel  zlib-devel  gcc autoconf automake libtool   ncurses-devel openssl-devel
+   #+END_EXAMPLE
+*** maven
+    #+BEGIN_EXAMPLE
+      wget http://mirror.nus.edu.sg/apache/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.tar.gz
+      tar zxvf apache-maven-3.2.5-bin.tar.gz -C /usr/local
+      vi /etc/profile
+      添加
+      export M2_HOME=/usr/local/apache-maven-3.2.5
+      export M2=$M2_HOME/bin
+      export PATH=$PATH:$M2
+    #+END_EXAMPLE
+*** findbugs
+    #+BEGIN_EXAMPLE
+      wget http://prdownloads.sourceforge.net/findbugs/findbugs-3.0.0.tar.gz?download
+      tar zxf findbugs-3.0.0.tar.gz -C /usr/local
+      ls /usr/local/findbugs-3.0.0/
+      vi /etc/profile
+      添加
+      export FINDBUGS_HOME=/usr/local/findbugs-3.0.0
+      export PATH=$PATH:$FINDBUGS_HOME/bin
+    #+END_EXAMPLE
+*** protoc
+    #+BEGIN_EXAMPLE
+      tar jxvf protobuf-2.5.0.tar.bz2 
+      cd protobuf-2.5.0
+      ./configure --prefix=/usr
+      make
+      make install
+      protoc --version   
+    #+END_EXAMPLE
+** 安装
+   #+BEGIN_EXAMPLE
+   mvn package -Pdist,native,docs -DskipTests -Dtar
+   #+END_EXAMPLE
+   hadoop-dist/target/hadoop-2.6.0为编译后可用的hadoop.
+   hadoop-dist/target/hadoop-2.6.0/hadoop-dist/target/hadoop-2.6.0/api为文档
+** 配置
+*** core-site.xml
+#+BEGIN_SRC xml
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://master:9000</value>
+  </property>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/usr/hadoop-2.6.0-root-data</value>
+  </property>
+</configuration>
+#+END_SRC
+*** mapred-site.xml
+#+BEGIN_SRC xml
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>mapreduce.framework.name</name>
+    <value>yarn</value>
+  </property>
+</configuration>
+#+END_SRC
+*** hdfs-site.xml 
+#+BEGIN_SRC xml
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>dfs.namenode.secondary.http-address</name>
+    <value>master:9001</value>
+  </property>
+</configuration>
+#+END_SRC
+*** yarn-site.xml 
+#+BEGIN_SRC xml
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>yarn.resourcemanager.hostname</name>
+    <value>master</value>
+  </property>
+  <property>  
+    <name>yarn.nodemanager.aux-services</name>  
+    <value>mapreduce_shuffle</value>  
+  </property>  
+</configuration>
+#+END_SRC
+*** slaves 
+#+BEGIN_SRC xml
+slave1
+slave2
+slave3
+slave4
+slave5
+slave6
+slave7
+slave8
+slave9
+slave10   
+#+END_SRC
+*** hadoop-env.sh
+    修改JAVA_HOME变量；
+    修改
+#+BEGIN_EXAMPLE
+   export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true"
+   #+END_EXAMPLE
+   为
+   #+BEGIN_EXAMPLE
+   export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Djava.library.path=/usr/hadoop/hadoop-2.6.0/lib/native"
+   #+END_EXAMPLE
+   来解决Unable to load native-hadoop library警告问题。
+* HBase安装
+** 配置
+*** hbase-site.xml
+    #+BEGIN_SRC xml
+      <configuration>
+        <property>  
+          <name>hbase.rootdir</name>  
+          <value>hdfs://master:9000/hbase</value>  
+        </property>  
+        <property>  
+          <name>hbase.cluster.distributed</name>  
+          <value>true</value>  
+        </property>
+        <property>  
+          <name>hbase.zookeeper.quorum</name>  
+          <value>master,slave1,slave2,slave3,slave4,slave5,slave6,slave7,slave8,slave9,slave10</value>  
+        </property>
+      #+END_SRC
+</configuration>
+    #+END_SRC
+*** hbase-env.sh
+    修改JAVA_HOME和HBASE_MANAGES_ZK（使用hbase自带的zookeeper则设为true）
+** 注意：版本兼容问题
