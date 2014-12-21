@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title></title>
-<!-- 2014-09-26 周五 21:32 -->
+<!-- 2014-12-22 Mon 00:38 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
 <meta name="author" content="visayafan"/>
@@ -18,6 +18,7 @@
 <li><a href="#sec-1">1. 安装</a></li>
 <li><a href="#sec-2">2. 参数</a></li>
 <li><a href="#sec-3">3. pscp</a></li>
+<li><a href="#sec-4">4. pslurp</a></li>
 </ul>
 </div>
 </div>
@@ -121,8 +122,32 @@ python setup.py install
 拷贝多个文件到其它机器上<br/>
 </p>
 <pre class="example">
-pscp -i -h hostslist filename /remote/machine/filename
+pscp  -h hostslist filename /remote/machine/filename
 </pre>
+<p>
+当为目录时需-r选项，此时<br/>
+</p>
+<pre class="example">
+pscp -r -h hosts.txt dir /some/
+</pre>
+<p>
+pscp会自动在远程机器的/some目录下新建dir目录。而scp则不会，会将dir目录下的所有文件拷贝到/some目录下。<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> pslurp</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+从其它机器上拷贝文件到本机器上，动作与pscp相反。splurp会将拷贝文件放在以对应主机IP为名的文件夹中。<br/>
+</p>
+<pre class="example">
+pslurp --recursive -h hostnames /etc/passwd .
+</pre>
+<p>
+当拷贝内容为目录时需要使用&#x2013;recursive选项。<br/>
+</p>
 </div>
 </div>
 </div>

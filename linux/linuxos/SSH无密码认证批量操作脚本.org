@@ -1,7 +1,7 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
 #+INCLUDE: "../../layout/template.org"
 #+SETUPFILE: "../../layout/extension.org"
-#+title:SSH无密码认证批量操作脚本
+#+title:
 
 * 批量无密码认证脚本
 http://myhoop.blog.51cto.com/5556534/1173937

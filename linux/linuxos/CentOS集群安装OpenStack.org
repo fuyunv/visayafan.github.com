@@ -1,8 +1,7 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
 #+SETUPFILE: "../../layout/extension.org"
-#+INCLUDE: "../../layout/template-toc.org"
-#+title:CentOS集群安装OpenStack
-
+#+title:
 * COMMENT COMMENTS
 ** COMMENT 安装指导
    https://openstack.redhat.com/Quickstart

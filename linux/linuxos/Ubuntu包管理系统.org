@@ -1,6 +1,6 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+INCLUDE: "../../layo../layout/template-toc.org"
 #+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
 #+title:Ubuntu包管理系统
 
 * 简介

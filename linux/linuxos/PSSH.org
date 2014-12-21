@@ -28,8 +28,13 @@ python setup.py install
 * pscp
   拷贝多个文件到其它机器上
   #+BEGIN_EXAMPLE
-  pscp -i -h hostslist filename /remote/machine/filename
+  pscp  -h hostslist filename /remote/machine/filename
   #+END_EXAMPLE
+  当为目录时需-r选项，此时
+  #+BEGIN_EXAMPLE
+  pscp -r -h hosts.txt dir /some/
+  #+END_EXAMPLE
+  pscp会自动在远程机器的/some目录下新建dir目录。而scp则不会，会将dir目录下的所有文件拷贝到/some目录下。
 * pslurp
   从其它机器上拷贝文件到本机器上，动作与pscp相反。splurp会将拷贝文件放在以对应主机IP为名的文件夹中。
   #+BEGIN_EXAMPLE

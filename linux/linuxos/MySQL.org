@@ -1,0 +1,63 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:MySQL
+
+* centos7安装
+  #+BEGIN_EXAMPLE
+  sudo yum -y install mariadb-server mariadb  
+  sudo systemctl start mariadb.service
+  sudo systemctl enable mariadb.service
+  #+END_EXAMPLE
+  设置root密码
+  #+BEGIN_EXAMPLE
+  mysql_secure_installation
+  #+END_EXAMPLE
+  登陆
+  #+BEGIN_EXAMPLE
+  mysql -u root -p
+  #+END_EXAMPLE
+  
+* 经验
+  播布客 老顽童数据库视频教程
+** 创建/使用DB
+   #+BEGIN_EXAMPLE
+   create database firstone;
+   use firstone;
+   #+END_EXAMPLE
+** 建表
+   #+BEGIN_EXAMPLE
+     MariaDB [firstone]> create table t1(
+         -> col1 char(6) not null default '',
+         -> col2 varchar(6));   
+   #+END_EXAMPLE
+** 查表
+   #+BEGIN_EXAMPLE
+   desc t1;
+   explain t1;
+   show columns from t1;
+   show create table t1;
+   #+END_EXAMPLE
+** 改表
+   #+BEGIN_EXAMPLE
+   删除col1列
+   alter table t1 drop col1;
+   #+END_EXAMPLE
+** 插表
+   #+BEGIN_EXAMPLE
+   insert into t1 values('abc  ','abc  ');
+   #+END_EXAMPLE
+** sql_mode
+   #+BEGIN_EXAMPLE
+   show variables like 'sql_%';
+   show variables like 'sql_mode';
+   set sql_mode='strict_all_tables';
+   set sql_mode='strict_all_tables, error_for_division_by_zero';    可以赋予多值
+   #+END_EXAMPLE
+   默认为空。
+   当值为PAD_TO_FILL_FULL_LENGTH时，定长字符串的长度为定义时指定的长度，不会像为空时截断尾部的空白字符；变长字符串长度为实际字符串长度.
+   当值为STRICT_ALL_TABLES，当插入超过定义长度的字符串时会出错。
+** show warnings
+   查看警告
+** enum/set
+   enum只允许插入指定值中的一个，而set可以插入多个。 
