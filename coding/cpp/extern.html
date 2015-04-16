@@ -1,49 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
-<title>关键字 extern</title>
+<title></title>
+<!-- 2015-01-23 Fri 17:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<meta name="title" content="关键字 extern"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-12-14 09:03:17 CST"/>
 <meta name="author" content="visayafan"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/>
-<div id="org-div-comments"><a href="../../index.html#cpp">主页</a></div>
-
-
 </head>
 <body>
-
-
 <div id="content">
-<h1 class="title">关键字 extern</h1>
-
-
+<h1 class="title"></h1>
+<div id="table-of-contents">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 三种使用方法</a></li>
+<li><a href="#sec-2">2. 注意事项</a></li>
+</ul>
+</div>
+</div>
 <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
 <link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
 <link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
 <script src="../../layout/js/jquery_1.7.1.js"></script>
 <script src="../../layout/js/bootstrap_old.js"></script>
 
-
-<div id="table-of-contents">
-<h2>目录</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 3种使用方法</a></li>
-<li><a href="#sec-2">2 注意事项</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 3种使用方法</h2>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 三种使用方法</h2>
 <div class="outline-text-2" id="text-1">
-
-<ol>
+<ol class="org-ol">
 <li>与变量一起用表示该变量不在该模块中定义，告诉编译器去它所包含的头文件里找，此时 <code>extern int a;</code> 只是一个声明，并不是定义，没有分配内存空间。<br/>
 </li>
 <li>同理与函数名一直使用的时候表示这个函数在别的文件里。<br/>
@@ -51,29 +37,26 @@
 <li>与 "C" 一起使用表示告诉编译器按照C语言的编译规则来转化函数名，而非C++，因为C++支持函数重载，编译器会把函数名变成比较复杂的形式，而C编译器则不会，例如： <code>extern "C" float f(int a)</code> 。多数编译器会在他们的头文件中处理转换连接指定，不必自己动手指定。<br/>
 </li>
 </ol>
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-2" class="outline-2">
+<div id="outline-container-sec-2" class="outline-2">
 <h2 id="sec-2"><span class="section-number-2">2</span> 注意事项</h2>
 <div class="outline-text-2" id="text-2">
-
-<ul>
+<ul class="org-ul">
 <li>对于数组，形如：char pch[]="abc"; 使用外部引用时需要 <code>extern char pch[4]</code> ，类型必须严格一致，前面为大小为4的字符数组，所以外部引用时必须指明大小为4，不能简单的 <code>extern char *pch</code> 或 <code>extern char pch[]</code> 。<br/>
 </li>
 <li>一般使用是将定义放在cpp文件中， <code>extern</code> 声明放在h文件中，然后在main文件中include头文件，例如<br/>
 </li>
 </ul>
-
-
-
+<div class="org-src-container">
 
 <pre class="src src-c++"><span style="color: #b22222;">//</span><span style="color: #b22222;">vf.h</span>
-<span style="color: #a020f0;">extern</span> <span style="color: #228b22;">char</span> *<span style="color: #a0522d;">pch</span>;       (ref:<span style="color: #a020f0;">extern</span>)
+<span style="color: #a020f0;">extern</span> <span style="color: #228b22;">char</span> *<span style="color: #a0522d;">pch</span>;               <span style="color: #b22222;">// </span><span style="color: #b22222;">&#21482;&#26159;&#22768;&#26126;&#65288;&#34920;&#26126;&#23384;&#22312;&#21517;&#20026;pch&#30340;&#21464;&#37327;&#65292;&#20294;&#27809;&#26377;&#20998;&#37197;&#20869;&#23384;&#65289;</span>
+
 <span style="color: #b22222;">//</span><span style="color: #b22222;">vf.cpp</span>
-<span style="color: #228b22;">char</span> *<span style="color: #a0522d;">pch</span> = <span style="color: #8b2252;">"abc"</span>;
+<span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"vf.h"</span>
+<span style="color: #228b22;">char</span> *<span style="color: #a0522d;">pch</span> = <span style="color: #8b2252;">"abc"</span>;              <span style="color: #b22222;">// </span><span style="color: #b22222;">&#23450;&#20041;&#65288;&#27492;&#22788;&#26377;&#20998;&#37197;&#20869;&#23384;&#65289;</span>
 
 <span style="color: #b22222;">//</span><span style="color: #b22222;">main.cpp</span>
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;iostream&gt;</span>
@@ -84,18 +67,20 @@
     cout&lt;&lt;pch&lt;&lt;endl;
     <span style="color: #a020f0;">return</span> 0;
 }
+<span style="color: #b22222;">// </span><span style="color: #b22222;">&#25191;&#34892;</span>
+$g++ main.cpp vf.cpp
+$./a.out
 </pre>
-
-<ul>
-<li>有的人喜欢声明的时候就定义，例如 extern char* pch="abc"，此时有没有extern没有区别。下面例子编译出错，因为test1.cpp中include了vf.h，test2.cpp中也include了vf.h，展开后两个cpp文件中都有pch声明和定义，所以编译出错： <code>multiple definition of pch</code><br/>
+</div>
+<ul class="org-ul">
+<li>有的人喜欢声明的时候就定义，例如 extern char* pch="abc"，此时有没有extern没有区别。<br/>
+下面例子编译出错，因为test1.cpp中include了vf.h，test2.cpp中也include了vf.h，展开后两个cpp文件中都有pch声明和定义，所以编译出错： <code>multiple definition of pch</code><br/>
 </li>
 </ul>
-
-
-
+<div class="org-src-container">
 
 <pre class="src src-c++"><span style="color: #b22222;">//</span><span style="color: #b22222;">vf.h</span>
-<span style="color: #a020f0;">extern</span> <span style="color: #228b22;">char</span> *<span style="color: #a0522d;">pch</span>=<span style="color: #8b2252;">"abd"</span>;
+<span style="color: #a020f0;">extern</span> <span style="color: #228b22;">char</span> *<span style="color: #a0522d;">pch</span>=<span style="color: #8b2252;">"abc"</span>;
 <span style="color: #b22222;">//</span><span style="color: #b22222;">test1.cpp</span>
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;iostream&gt;</span>
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"vf.h"</span>
@@ -117,41 +102,61 @@
     cout&lt;&lt;pch&lt;&lt;endl;
     <span style="color: #a020f0;">return</span> 0;
 }
+<span style="color: #b22222;">// </span><span style="color: #b22222;">&#25191;&#34892;</span>
+$g++ main.cpp test1.cpp test2.cpp
 </pre>
-
-<ul>
+</div>
+<ul class="org-ul">
 <li>extern与static的区别： <code>static</code> 声明同时定义，而 <code>extern</code> 可以声明同时定义也可以只声明不定义。<br/>
 </li>
 </ul>
-
-
-
+<div class="org-src-container">
 
 <pre class="src src-c++"><span style="color: #b22222;">//</span><span style="color: #b22222;">vf.h</span>
-<span style="color: #a020f0;">static</span> <span style="color: #228b22;">char</span> <span style="color: #a0522d;">pch</span>[]={<span style="color: #8b2252;">'a'</span>,<span style="color: #8b2252;">'b'</span>,<span style="color: #8b2252;">'c'</span>};
+<span style="color: #a020f0;">static</span> <span style="color: #228b22;">int</span> <span style="color: #a0522d;">a</span>=3;
 <span style="color: #228b22;">void</span> <span style="color: #0000ff;">f</span>();
 <span style="color: #228b22;">void</span> <span style="color: #0000ff;">g</span>();
 <span style="color: #b22222;">//</span><span style="color: #b22222;">test1.cpp</span>
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"vf.h"</span>
-<span style="color: #228b22;">void</span> <span style="color: #0000ff;">f</span>(){pch[0]=<span style="color: #8b2252;">'0'</span>;}
+<span style="color: #228b22;">void</span> <span style="color: #0000ff;">f</span>(){
+     a=1;
+}
+<span style="color: #b22222;">//</span><span style="color: #b22222;">test2.cpp</span>
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"vf.h"</span>
-<span style="color: #228b22;">void</span> <span style="color: #0000ff;">g</span>(){pch[0]=<span style="color: #8b2252;">'1'</span>;}
-</pre>
+<span style="color: #228b22;">void</span> <span style="color: #0000ff;">g</span>(){
+     a=2;
+}
+<span style="color: #b22222;">// </span><span style="color: #b22222;">main.cpp</span>
+<span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;iostream&gt;</span>
+<span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"vf.h"</span>
 
+<span style="color: #a020f0;">using</span> <span style="color: #a020f0;">namespace</span> <span style="color: #008b8b;">std</span>;
+
+<span style="color: #228b22;">int</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">int</span> <span style="color: #a0522d;">argc</span>, <span style="color: #228b22;">char</span> *<span style="color: #a0522d;">argv</span>[]) {
+     f();
+     cout&lt;&lt;a&lt;&lt;endl;
+     g();
+     cout&lt;&lt;a&lt;&lt;endl;
+     <span style="color: #a020f0;">return</span> 0;
+}
+<span style="color: #b22222;">// </span><span style="color: #b22222;">&#25191;&#34892;</span>
+$g++ main.cpp test1.cpp test2.cpp
+$./a.out
+&#32467;&#26524;&#20026;
+3
+3
+</pre>
+</div>
 <p>
-   上面的代码可以编译成功，虽然test1中的pch和test2中的pch名称相同但地址不同，彼此互不影响（编译器优化时可能将它们当成地址空间相同来处理，但这只是编译器优化的结果，并不是真正的结果），即pch在test1中声明定义了一次，在test2中声明定义了一次。但如果将static换成extern并将定义写在vf.cpp中，则test1和test2的pch共享同一个地址。<br/>
-</p><ul>
-<li>头文件中 <code>static int a</code> 和 <code>int a</code> 的区别：后者如果有两个cpp文件t1,t2同时include该头文件，则编译出错，因为a被重复定义，因为a是全局的，对t1和t2都是可见的，所以会冲突。而前者则不会static表明a是一个内部连接，t1中的a只对t1有效，即t1和t2中的a互不关联，名字一样但地址空间不同，所以不会冲突。<br/>
+上面的代码可以编译成功，虽然test1中的a和test2中的a名称相同但地址不同，彼此互不影响（编译器优化时可能将它们当成地址空间相同来处理，但这只是编译器优化的结果，并不是真正的结果），即a在test1中声明定义了一次，在test2中声明定义了一次。此时共有3个a，main中输出的两次a均为vf.h中的a=3.<br/>
+但如果将static换成extern并将定义写在vf.h中，则test1和test2的a共享同一个地址。此时只有1个a。<br/>
+</p>
+<ul class="org-ul">
+<li>头文件中 <code>static int a</code> 和 <code>int a</code> 的区别：后者如果有两个cpp文件t1,t2同时include该头文件，则编译出错，因为a被重复定义，因为a是全局的，对t1和t2都是可见的，所以会冲突。而前者则不会，static表明a是一个内部连接，t1中的a只对t1有效，即t1和t2中的a互不关联，名字一样但地址空间不同，所以不会冲突。<br/>
 </li>
 </ul>
-
-
-<script src="../../layout/js/disqus-comment.js"></script>
-<div id="disqus_thread">
 </div>
 </div>
 </div>
-</div>
-
 </body>
 </html>

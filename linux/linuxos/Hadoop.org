@@ -121,6 +121,18 @@ slave10
    export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Djava.library.path=/usr/hadoop/hadoop-2.6.0/lib/native"
    #+END_EXAMPLE
    来解决Unable to load native-hadoop library警告问题。
+* Eclipse的Hadoop2.x插件
+  https://github.com/winghc/hadoop2x-eclipse-plugin
+  http://blog.itpub.net/26041994/viewspace-1119285/
+* Intellij运行Hadoop代码
+  http://vichargrave.com/intellij-project-for-building-hadoop-the-definitive-guide-examples/
+  添加Hadoop库依赖即可：
+  file>project structure Global Libraries -> + -> 输入name，+添加库，添加hadoop-2.6.0/share/hadoop下所有目录及hadoop-2.6.0/share/hadoop/common目录。
+  之后 modules下dependencies中添加之前命名的global libraries.
+* Intellij中打包Hadoop代码
+  http://vichargrave.com/intellij-project-for-building-hadoop-the-definitive-guide-examples/
+* 从SecondaryNameNode中恢复元数据
+  http://www.educity.cn/net/1617107.html
 * HBase安装
 ** 配置
 *** hbase-site.xml
@@ -144,3 +156,8 @@ slave10
 *** hbase-env.sh
     修改JAVA_HOME和HBASE_MANAGES_ZK（使用hbase自带的zookeeper则设为true）
 ** 注意：版本兼容问题
+* 每个节点任务槽数
+  http://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml
+  mapreduce.tasktracker.map.tasks.maximum
+  mapreduce.tasktracker.reduce.tasks.maximum
+  即每个节点最多可以并行运行几个map, reduce

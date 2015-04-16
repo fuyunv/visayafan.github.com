@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title>ExtJS</title>
+<!-- 2015-03-27 Fri 21:54 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="author" content="visayafan"/>
+</head>
+<body>
+<div id="content">
+<h1 class="title">ExtJS</h1>
+<div id="table-of-contents">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Mac下搭建环境</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 配置apache服务器</a></li>
+<li><a href="#sec-1-2">1.2. 下载doc</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2. 模态窗口</a></li>
+</ul>
+</div>
+</div>
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/too_many_toc.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Mac下搭建环境</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 配置apache服务器</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<a href="http://www.cnblogs.com/yjmyzz/p/3920361.html">http://www.cnblogs.com/yjmyzz/p/3920361.html</a><br/>
+启动apache, <code>sudo apachectl start</code> ，打开 <a href="http://localhost">http://localhost</a> ，看到 <code>it works!</code> 表明启动成功，此时显示的index.html位于 <code>/Library/WebServer/Documents/index.html.en</code> ，由 <code>/etc/apache2/httpd.conf</code> 文件中<br/>
+</p>
+<pre class="example">
+&lt;Directory "/Library/WebServer/Documents"&gt;
+&lt;/Directory&gt;
+</pre>
+<p>
+指定。<br/>
+</p>
+
+<p>
+<code>sudo apachectl stop/restart</code> <br/>
+</p>
+
+<p>
+在 <code>/etc/apache2/users</code> 目录下创建 <code>visayafan.conf</code> ，内容为：<br/>
+</p>
+<pre class="example">
+&lt;Directory "/Users/visayafan//Sites/"&gt;
+    Options FollowSymLinks Indexes MultiViews
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+&lt;/Directory&gt;
+</pre>
+<p>
+HOME目录下创建Sites目录，之后 <code>http://localhost/~visayafan</code> 即可访问Sites目录下的index.html.<br/>
+之所以是HOME下的Sites目录，是由 <code>/etc/apache2/extra/httpd-userdir.conf</code> 中 <code>UserDir Sites</code> 决定。<br/>
+</p>
+
+<p>
+启动虚拟主机：修改 <code>/etc/apache2/httpd.conf</code> ，去掉 <code>Include /private/etc/apache2/extra/httpd-vhosts.conf</code> 前注释。<br/>
+修改 <code>/etc/apache2/extra/httpd-vhosts.conf</code> 为:<br/>
+</p>
+<pre class="example">
+NameVirtualHost *:80
+
+#
+# VirtualHost example:
+# Almost any Apache directive may go into a VirtualHost container.
+# The first VirtualHost section is used for all requests that do not
+# match a ServerName or ServerAlias in any &lt;VirtualHost&gt; block.
+#
+&lt;VirtualHost *:80&gt;
+    DocumentRoot "/Users/visayafan/Sites"
+    ServerName shorturl 
+    ErrorLog "/Users/visayafan/Sites/log/error.log"
+    CustomLog "/Users/visayafan/Sites/log/access.log" common
+    &lt;Directory /&gt;
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride None
+                Order deny,allow
+                Allow from all
+      &lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+</pre>
+<p>
+其中ServerName可起个自己喜欢的名字。<br/>
+在 <code>/etc/hosts</code> 中添加 <code>127.0.0.1 shorturl</code> 。<br/>
+</p>
+
+<p>
+修改 <code>/etc/apache2/httpd.conf</code> ，去掉 <code>LoadModule php5_module libexec/apache2/libphp5.so</code> 前面的注释，因为 extjs api文档需要PHP。<br/>
+</p>
+
+<p>
+重启apache，之后访问 <a href="http://shorturl">http://shorturl</a> 等价访问 <a href="http://localhost/~visayafan">http://localhost/~visayafan</a><br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 下载doc</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+<a href="http://docs-origin.sencha.com/extjs/5.1/">http://docs-origin.sencha.com/extjs/5.1/</a> 左上角 <code>Ext JS Guides</code> 点击 <code>(offline docs)</code> 下载离线API文档。解压后放到HOME下的Sites目录中，之后访问 <a href="http://shorturl/ext-docs-5.1/">http://shorturl/ext-docs-5.1/</a> 即可。<br/>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 模态窗口</h2>
+<div class="outline-text-2" id="text-2">
+<pre class="example">
+modal:true
+</pre>
+<p>
+表明当前窗口不关闭不能做其它事，会显示到最上层,不会被遮盖。<br/>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

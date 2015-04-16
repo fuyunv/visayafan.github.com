@@ -1,46 +1,30 @@
-<?xml version="1.0" encoding="gb18030"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title></title>
-<meta http-equiv="Content-Type" content="text/html;charset=gb18030"/>
-<meta name="title" content=""/>
+<!-- 2015-04-10 Fri 15:51 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-12-14 09:04:46 CST"/>
 <meta name="author" content="visayafan"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/>
-<div id="org-div-comments"><a href="../../index.html#python">��ҳ</a></div>
-
-
 </head>
 <body>
-
-
 <div id="content">
 <h1 class="title"></h1>
-
-
-
-<p> 
-�鿴���еĹؼ��֣�help("keywords")
-</p>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
 <p>
-�鿴���е�modules��help("modules")
+查看所有的关键字：help("keywords")<br/>
+查看所有的modules：help("modules")<br/>
+查看中常见的topics：help("topics")<br/>
 </p>
-<p>
-�������е�modules�а���ָ���ַ�����modules�� help("modules yourstr")
-</p>
-<p>
-�鿴�г�����topics�� help("topics")
-</p>
-
-
-<pre class="example">&gt;&gt;&gt; help("topics")
-
+<div class="accordion-group"> <div class="accordion-heading"> <a href="#CollapseID所有topic" data-toggle="collapse" class="accordion-toggle">所有topic</a> </div> <div class="accordion-body collapse" style="height: 0px" id="CollapseID所有topic"> <div class="accordion-inner">
+<pre class="example">
+&gt;&gt;&gt; help("topics")
 Here is a list of available topics.  Enter any topic name to get more help.
-
 ASSERTION           DEBUGGING           LITERALS            SEQUENCEMETHODS2
 ASSIGNMENT          DELETION            LOOPING             SEQUENCES
 ATTRIBUTEMETHODS    DICTIONARIES        MAPPINGMETHODS      SHIFTING
@@ -60,24 +44,22 @@ COMPARISON          IDENTIFIERS         PRINTING            TYPES
 COMPLEX             IMPORTING           PRIVATENAMES        UNARY
 CONDITIONAL         INTEGER             RETURNING           UNICODE
 CONTEXTMANAGERS     LISTLITERALS        SCOPING             
-CONVERSIONS         LISTS               SEQUENCEMETHODS1    
+CONVERSIONS         LISTS               SEQUENCEMETHODS1
 </pre>
-
+</div> </div> </div>
 <p>
-������Ҫ�鿴CALLS����İ�������help("CALLS")
+例如想要查看CALLS主题的帮助，则：help("CALLS")<br/>
+查看标准库中的module：<br/>
 </p>
+<pre class="example">
+import os.path 
+help("os.path")
+</pre>
 <p>
-�鿴��׼���е�module��import os.path + help("os.path")
-�鿴���õ����ͣ�help("list")
-�鿴���͵ĳ�Ա������help("str.find") 
-�鿴���ú�����help("open")
+查看内置的类型：help(list)<br/>
+查看类型的成员方法：help(str.find)<br/>
+查看内置函数：help(open)<br/>
 </p>
- 
-
-<script src="../../layout/js/disqus-comment.js"></script>
-<div id="disqus_thread">
 </div>
-</div>
-
 </body>
 </html>

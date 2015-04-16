@@ -1,6 +1,8 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+include "../../layout/template.org"
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
 #+title:最近更新博文自动生成的Python脚本
+
 每完一篇博文我都要在index.html相应的分类里面加上类似:
 #+begin_quote
 <li><a href="Coding/Python/最近更新博文自动生成的Python脚本.html">最近更新博文自动生成的Python脚本</a></li>

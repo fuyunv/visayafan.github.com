@@ -1,0 +1,16 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* create db,user并赋权限
+  http://www.lanexa.net/2011/08/create-a-mysql-database-username-password-and-permissions-from-the-command-line/
+  #+BEGIN_EXAMPLE
+    create database dbname;
+    show dbname;
+    create user username;
+    // grants all privileges
+    grant all on dbname.* to 'username'@'localhost' identified by 'username_password';
+    // grants 某些权限
+    grant select, insert, delete to 'username'@'localhost' identified by 'username_password';
+  #+END_EXAMPLE

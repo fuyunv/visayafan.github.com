@@ -1,80 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title>最近更新博文自动生成的Python脚本</title>
+<!-- 2015-04-10 Fri 15:28 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<meta name="title" content="最近更新博文自动生成的Python脚本"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-12-14 09:04:39 CST"/>
 <meta name="author" content="visayafan"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/>
-<div id="org-div-comments"><a href="../../index.html#python">主页</a></div>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
 
-
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
 </head>
 <body>
-
-
 <div id="content">
 <h1 class="title">最近更新博文自动生成的Python脚本</h1>
-
-
 <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
 <link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
 <link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
 <script src="../../layout/js/jquery_1.7.1.js"></script>
 <script src="../../layout/js/bootstrap_old.js"></script>
-
 <p>
 每完一篇博文我都要在index.html相应的分类里面加上类似:<br/>
-</p><blockquote>
-
-<p>&lt;li&gt;&lt;a href="Coding/Python/最近更新博文自动生成的Python脚本.html"&gt;最近更新博文自动生成的Python脚本&lt;/a&gt;&lt;/li&gt;<br/>
+</p>
+<blockquote>
+<p>
+&lt;li&gt;&lt;a href="Coding/Python/最近更新博文自动生成的Python脚本.html"&gt;最近更新博文自动生成的Python脚本&lt;/a&gt;&lt;/li&gt;<br/>
 </p>
 </blockquote>
-
-
 <p>
 这样的一句话，此时通过 <b>git blame index.html</b> 命令可以看到:<br/>
-</p><blockquote>
-
-<p>00000000 (Not Committed Yet 2012-10-23 04:13:10 +0800  96)                 &lt;li&gt;&lt;a href="Coding/Python/最近更新博文自动生成的Python脚本.html"&gt;最近更新博文自动生成的Python脚本&lt;/a&gt;&lt;/li&gt;<br/>
+</p>
+<blockquote>
+<p>
+00000000 (Not Committed Yet 2012-10-23 04:13:10 +0800  96)                 &lt;li&gt;&lt;a href="Coding/Python/最近更新博文自动生成的Python脚本.html"&gt;最近更新博文自动生成的Python脚本&lt;/a&gt;&lt;/li&gt;<br/>
 </p>
 </blockquote>
-
-
 <p>
 第一列表示提交标识，由于还没有提交，所以为0；第二列表示作者，由于还没有提示，显示的是(Not Committed；第三列显示日期；第四列显示行号；之后是此行内容。<br/>
 可以写个Python脚本来自动生成最近更新的博文，用到的模块主要有：subprocess和re，前者用于执行shell命令，后者用于正则匹配。<br/>
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-python"><span style="color: #b22222;">#</span><span style="color: #b22222;">!/usr/bin/python</span>
 <span style="color: #a020f0;">from</span> subprocess <span style="color: #a020f0;">import</span> call
 <span style="color: #a020f0;">import</span> re
 
-call(<span style="color: #8b2252;">'cd ~/visayafan.github.com'</span>, shell=<span style="color: #a020f0;">True</span>)
-call(<span style="color: #8b2252;">'git blame index.html &gt; shan.html'</span>, shell=<span style="color: #a020f0;">True</span>)
+call(<span style="color: #8b2252;">'cd ~/visayafan.github.com'</span>, shell=<span style="color: #008b8b;">True</span>)
+call(<span style="color: #8b2252;">'git blame index.html &gt; shan.html'</span>, shell=<span style="color: #008b8b;">True</span>)
 <span style="color: #a0522d;">content</span> = <span style="color: #483d8b;">open</span>(<span style="color: #8b2252;">'shan.html'</span>, <span style="color: #8b2252;">'r'</span>).read()
-call(<span style="color: #8b2252;">'rm -rf shan.html'</span>, shell=<span style="color: #a020f0;">True</span>)
-<span style="color: #a0522d;">dateAndLink</span> = re.compile(<span style="color: #8b2252;">'(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}).*\&lt;li\&gt;\&lt;a(\shref="(?=Linux|Coding|Algorithm|Compiler|Others|English).*\&gt;)(.+)(\&lt;/a\&gt;\&lt;/li\&gt;)'</span>)
+call(<span style="color: #8b2252;">'rm -rf shan.html'</span>, shell=<span style="color: #008b8b;">True</span>)
+<span style="color: #a0522d;">dateAndLink</span> = re.<span style="color: #483d8b;">compile</span>(<span style="color: #8b2252;">'(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}).*\&lt;li\&gt;\&lt;a(\shref="(?=Linux|Coding|Algorithm|Compiler|Others|English).*\&gt;)(.+)(\&lt;/a\&gt;\&lt;/li\&gt;)'</span>)
 <span style="color: #a0522d;">allCont</span> = dateAndLink.findall(content)
 allCont.sort()
 <span style="color: #b22222;"># </span><span style="color: #b22222;">for vdate, vlinkpre, vname, vlinkafter in allCont:</span>
 <span style="color: #b22222;">#     </span><span style="color: #b22222;">print vdate, vlinkpre, vname, vlinkafter</span>
 <span style="color: #a0522d;">htmlcont</span> = <span style="color: #483d8b;">open</span>(<span style="color: #8b2252;">'updates.html'</span>).read()
-<span style="color: #a0522d;">ul</span> = re.compile(r<span style="color: #8b2252;">'&lt;ul&gt;'</span>)
+<span style="color: #a0522d;">ul</span> = re.<span style="color: #483d8b;">compile</span>(r<span style="color: #8b2252;">'&lt;ul&gt;'</span>)
 <span style="color: #a020f0;">for</span> vdate, vlinkpre, vname, vlinkafter <span style="color: #a020f0;">in</span> allCont:
     <span style="color: #a020f0;">if</span> <span style="color: #a020f0;">not</span> re.findall(vlinkpre, htmlcont):
-        htmlcont = ul.sub(<span style="color: #8b2252;">'&lt;ul&gt;\n      &lt;li&gt;'</span>+vdate+<span style="color: #8b2252;">'&amp;nbsp&lt;a target="_top" '</span>+vlinkpre+vname+vlinkafter, htmlcont)
+        <span style="color: #a0522d;">htmlcont</span> = ul.sub(<span style="color: #8b2252;">'&lt;ul&gt;\n      &lt;li&gt;'</span>+vdate+<span style="color: #8b2252;">'&amp;nbsp&lt;a target="_top" '</span>+vlinkpre+vname+vlinkafter, htmlcont)
 <span style="color: #483d8b;">open</span>(<span style="color: #8b2252;">'updates.html'</span>, <span style="color: #8b2252;">'w'</span>).write(htmlcont)
 </pre>
+</div>
 
-
-<ol>
+<ol class="org-ol">
 <li>(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}) 用于匹配日期<br/>
 </li>
 <li>由于index.html是通过iframe来显示updates.html的，所以链接要加上target="_top"，不然点击链接的时候只能在iframe里打开而不是在整个页面打开。<br/>
@@ -86,22 +113,14 @@ allCont.sort()
 <li>(\&lt;/a\&gt;\&lt;/li\&gt;)匹配&lt;/a&gt;&lt;/li&gt;<br/>
 </li>
 </ol>
-
-<p>所有匹配结果保存在allCont中，通过list内置的sort函数排序（由于列表第一个是日期，所以默认是对日期排序，这也正是我们所需要的）。<br/>
+<p>
+所有匹配结果保存在allCont中，通过list内置的sort函数排序（由于列表第一个是日期，所以默认是对日期排序，这也正是我们所需要的）。<br/>
 之后查找每个匹配在updates.html中是否出现过，如果没有就插入，此处为实现插入效果用的是正则表达式的替换函数sub，即替换&lt;ul&gt;为&lt;ul&gt;\n&lt;li&gt;日期&lt;a href="链接"&gt;博文名&lt;/a&gt;&lt;/li&gt;.(由于updates.html只有一个&lt;ul&gt;标签，所以这么做没有问题)<br/>
 </p>
+
 <p>
 效果正如主页中的Home标签下"最近更新"所示。<br/>
 </p>
-
-
-<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=&amp;style=10&amp;bgcolor=Blue"></script>
-<br/>
-<script src="../../layout/js/disqus-comment.js"></script>
-<div id="disqus_thread">
 </div>
-
-</div>
-
 </body>
 </html>

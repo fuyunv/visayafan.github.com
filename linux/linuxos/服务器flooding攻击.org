@@ -1,0 +1,8 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:服务器flooding攻击
+
+http://baheyeldin.com/technology/linux/detecting-and-preventing-syn-flood-attacks-web-servers-running-linux.html
+* 诊断
+  netstat -tuna | grep :80 | grep SYN_RECV

@@ -1,0 +1,773 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+	
+
+  
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Java 8 中的 Streams API 详解</title>
+<link rel="schema.DC" href="http://purl.org/DC/elements/1.0/"/>
+<link rel="SHORTCUT ICON" href="http://www.ibm.com/favicon.ico"/>
+<meta name="DC.Rights" content="© Copyright IBM Corporation 2014"/>
+<meta name="Keywords" content="Java 8, Streams, tttjca"/>
+<meta name="DC.Date" scheme="iso8601" content="2014-09-11"/>
+<meta name="Source"  content="v17 delivery:developerWorks"/>
+<meta name="Security" content="Public"/>
+<meta name="Abstract" content="Java 8 是迄今为止在语义上改动上最大的一个平台。除了最显著的 Lambda 表达式之外，还有很多初次见面的特性，例如本文主题的 Streams API。这里介绍了它出现的背景和具体用法。"/>
+<meta name="Description" content="Java 8 是迄今为止在语义上改动上最大的一个平台。除了最显著的 Lambda 表达式之外，还有很多初次见面的特性，例如本文主题的 Streams API。这里介绍了它出现的背景和具体用法。"/>
+<meta name="IBM.Effective" scheme="W3CDTF" content="2014-09-11"/>
+<meta name="Owner" content="developerWorks/China/IBM"/>
+<meta name="DC.Language" scheme="rfc1766" content="zh-CN"/>
+<meta name="IBM.SpecialPurpose" content="SP001"/>
+<meta name="IBM.Country" content="CN"/>
+<meta name="Robots" content="index,follow"/>
+<meta name="DC.Type" scheme="IBM_ContentClassTaxonomy" content="CT316" />
+<meta name="DC.Subject" scheme="IBM_SubjectTaxonomy" content="TT300" />
+<meta name="dW.ContentArea" content="1" />
+<meta name="dW.Topic" content="263,487" />
+
+<meta scheme="IBM_WTMCategory" name="IBM.WTMCategory" content="SOFDCJVACN" />
+
+<link rel="canonical" href="http://www.ibm.com/developerworks/cn/java/j-lo-java8streamapi/index.html"/>
+<!-- HEADER_SCRIPTS_AND_CSS_INCLUDE -->
+<link href="http://1.www.s81c.com/common/v17/css/www.css" rel="stylesheet" title="www"  type="text/css"/>
+<link href="http://1.www.s81c.com/common/v17/css/country/cnzh.css" rel="stylesheet" title="www" type="text/css">
+<!-- Masthead/footer -->
+<link href="http://dw1.s81c.com/developerworks/css/dw-mf/v17/dw-mfN2015-01.css" media="screen,projection" rel="stylesheet" title="www" type="text/css"/>
+<link href="http://dw1.s81c.com/developerworks/css/v17/dw-article-6.css" rel="stylesheet" title="www" type="text/css"/>
+<link href="http://dw1.s81c.com/developerworks/css/v17/dw-common-features.css" rel="stylesheet" title="www" type="text/css"/>
+<link href="http://dw1.s81c.com/developerworks/css/v17/dw-local-site-v17-N2014-05.css" media="screen,projection" rel="stylesheet" title="www" type="text/css"/>
+<script type="text/javascript" src="http://1.www.s81c.com/common/js/dojo/www.js">//</script>
+<script type="text/javascript" src="http://dw1.s81c.com/developerworks/js/v17/dw-www-v2.js">//</script> 
+<script type="text/javascript">
+//  ibmweb.config.set({ sbs: { enabled: false }});
+</script>
+<!-- Exp -->
+  <script type="text/javascript">dojo.addOnLoad(function(){var dw_source="dwchina";var dw_register="注册免费的 Bluemix 试用版";var dw_connect="连接 Bluemix 开发者";var dw_vp="在 IBM Bluemix 云平台上开发并部署您的下一个应用。";var dw_cta="现在就开始免费试用";var dw_tile_alt="在 IBM Bluemix 云平台上开发并部署您的下一个应用。现在就开始免费试用";var dw_campaign="bluemix";var dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-2];if(dw_content=="library"){dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-1];dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-3]+"-"+dw_content.substring(0,dw_content.indexOf(".html"))}var bluDevComURL="https://developer.ibm.com/bluemix/";var bluLink="https://www.bluemix.net/";var lnkID;var lnkIDd;var lnkIDt;var bLinkEnd;var bLinkTemp;var idTrkr=[];var idCnt;var artTop=dojo.query("div.ibm-col-1-1")[0];var artChildren=dojo.query(artTop).children();var edgy=false;if(dojo.hasClass(artChildren[0],"ibm-inset"))edgy=true;if((artChildren[0].nodeName=="H2")&&(dojo.hasClass(artChildren[1],"ibm-inset")))edgy=true;if(dojo.hasClass(artChildren[0],"codesection"))edgy=true;if((artChildren[0].nodeName=="H5")&&(dojo.hasClass(artChildren[1],"codesection")))edgy=true;if((artChildren[0].nodeName=="H5")&&(artChildren[1].width>=701))edgy=true;if(artChildren[1].width>=701)edgy=true;if(dojo.hasClass(artChildren[0],"ibm-data-table"))edgy=true;if((artChildren[0].nodeName=="H5")&&(dojo.hasClass(artChildren[1],"ibm-data-table")))edgy=true;if(!(edgy)){var sBarAB='<div class="dw-article-sidebar dw-bluemix" id="dwc-exp-a">'+'<img src="http://dw1.s81c.com/developerworks/i/bluemix-graphic.png" height="64" width="64" alt=""/>'+'<p>'+dw_vp+'</p>'+'<p class="ibm-button-link-alternate dw-button-green">'+'<a id="tutc-sbar-bmix-home-btn-ABa" href="http://www.ibm.com/developerworks/cn/java/j-lo-java8streamapi/'+bluLink+'" class="dw-button-large">'+dw_cta+'</a></p></div>';dojo.place(sBarAB,artTop,"first")}dojo.forEach(dojo.query("#ibm-content-main a"),function(item,index){var dw_medium="article";var bLink=dojo.attr(item,"href");var linkClass=dojo.attr(item,"class");if((dojo.attr(item,"id")!=null)&&(dojo.attr(item,"id").indexOf("-sbar-")>-1))dw_medium="sidebar";if((dojo.attr(item,"id")!=null)&&(dojo.attr(item,"id").indexOf("-vpromo-")>-1))dw_medium="video-promotion";if(bLink&&(bLink.indexOf("//bluemix.net")>-1))bLink=bLink.replace("//bluemix.net","//www.bluemix.net");if(bLink&&(bLink.indexOf("//ace.ng.bluemix.net")>-1))bLink=bLink.replace("//ace.ng.bluemix.net","//www.bluemix.net");if(bLink&&(bLink.indexOf("//console.ng.bluemix.net")>-1))bLink=bLink.replace("//console.ng.bluemix.net","//www.bluemix.net");if(bLink&&((bLink.indexOf("//www.bluemix.net")>-1)||(bLink.indexOf("//www.ng.bluemix.net")>-1)||(bLink.indexOf("//hub.jazz.net")>-1))){bLinkEnd="";bLink=bLink.split("?");if((bLink[1])&&(bLink[1].indexOf("/")!=-1))bLinkEnd=bLink[1].substring(bLink[1].indexOf("/"));bLink=bLink[0];if(bLink.indexOf("//hub.jazz.net")>-1){if((bLink.indexOf("//hub.jazz.net/git")>-1)||(bLink.indexOf("//hub.jazz.net/project")>-1)){bLink="https://login.jazz.net/psso/proxy/jazzregister?utm_source="+dw_source+"&utm_medium="+dw_medium+"&utm_content="+dw_content+"&utm_campaign="+dw_campaign+"&redirect_uri="+bLink}else{bLink=bLink+"?utm_source="+dw_source+"&utm_campaign="+dw_campaign+"&utm_content="+dw_content+"&utm_medium="+dw_medium}}else{if(bLink.indexOf("/#/")==-1){if(bLink.substring(bLink.length-7)=="/docs/#"){bLink=bLink.replace("/docs/#","/docs/"+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium+"#")}else{bLink=bLink+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium}}else{bLink=bLink.substring(0,bLink.indexOf("#"))+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium+bLink.substring(bLink.indexOf("#")-1)}}if(bLinkEnd)bLink=bLink+bLinkEnd;if(linkClass.indexOf("bluemix-home")==-1){if((bLink.indexOf("#")==-1)&&(bLink.indexOf("//www.bluemix.net/")!=-1))bLink=bLink.replace("//www.bluemix.net/","//apps.admin.ibmcloud.com/manage/trial/bluemix.html");if((bLink.indexOf("#")==-1)&&(bLink.indexOf("//www.bluemix.net?")!=-1))bLink=bLink.replace("//www.bluemix.net","//apps.admin.ibmcloud.com/manage/trial/bluemix.html")}dojo.attr(item,"href",bLink);}});});</script><!-- LEADSPACE_STYLES -->
+
+</head>
+<body id="ibm-com">
+	<div id="ibm-top" class="ibm-landing-page">
+
+<!-- MASTHEAD_BEGIN -->		
+<div id="ibm-masthead">
+
+    <!-- TOP ROW -->    
+	<div id="dw-masthead-top-row">
+		<ul id="ibm-mast-options-dw" role="toolbar" aria-label="Masthead navigation">
+			<li id="dw-mast-top-4" role="presentation">
+				<a href="http://www.ibm.com/developerworks/cn/" tabindex="0"><img src="http://dw1.s81c.com/developerworks/i/mf/dwn-dw-badge.png" width="43" height="22" alt="dW" aria-label="dW" /></a>
+			</li>
+			<li id="dw-mast-top-0" role="presentation">
+				<div id="dw-mast-signin">
+					<a id="dw-mf-signin-link" class="dw-mf-noscript" href="index.html.1#" title="登录需要启用 JavaScript" tabindex="2">登录</a>
+					<span class="dw-mf-signin-spacer">|</span>
+					<a id="dw-mf-reg-link" class="dw-mf-noscript" href="index.html.1#" title="注册需要启用 JavaScript" tabindex="3">注册</a>
+				</div>
+				<div id="dw-mast-auth-link" class="dw-mf-hide">
+					<a class="authenticated ibm-active" href="index.html.1#" role="button" tabindex="2"></a>
+					<ul id="dw-mast-auth-menu" class="dw-mf-hide">
+						<li class="dw-mast-auth-menu-title" aria-hidden="true">developerWorks 社区</li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a href="http://www.ibm.com/developerworks/community/profiles/html/myProfileView.do?lang=zh" tabindex="3">我的概要信息</a>
+						</li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a href="http://www.ibm.com/developerworks/community/groups/service/html/mycommunities?lang=zh" tabindex="4">我的社区</a>
+						</li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a href="http://www.ibm.com/developerworks/community/news/?lang=zh" tabindex="5">设置</a>
+						</li>
+						<li class="dw-mast-auth-menu-divider"><hr/></li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a id="dw-mast-signout-link" href="index.html.1#" tabindex="6">退出</a>
+						</li>
+					</ul>				
+				</div>
+			</li>
+			<li id="dw-mast-top-1">
+				<div></div>
+			</li>
+			<li id="dw-mast-top-3" role="presentation">
+				<a href="http://www.ibm.com/cn/zh/" tabindex="1">IBM</a>
+			</li>
+		</ul>
+	</div>
+
+    <!-- BOTTOM ROW -->
+	<div id="ibm-universal-nav-dw" aria-label="Site map">
+		<ul id="ibm-unav-links-dw">
+			<li id="ibm-unav-home-dwlogo">
+				<a href="http://www.ibm.com/developerworks/cn/"><img src="http://dw1.s81c.com/developerworks/i/mf/dwn-dw-wordmark.png" width="225" height="28" alt="developerWorks®" /></a>
+			</li>
+		</ul>
+		<ul id="ibm-menu-links-dw" class="ibm-menu-links-dw-cn" role="toolbar" aria-label="Site map">
+			<li id="dw-mast-nav-0" role="presentation"><a href="http://www.ibm.com/developerworks/cn/topics/" tabindex="0">技术主题</a></li>
+			<li id="dw-mast-nav-1" role="presentation"><a href="http://www.ibm.com/developerworks/cn/downloads/" tabindex="0">软件下载</a></li>
+			<li id="dw-mast-nav-2" role="presentation"><a href="http://www.ibm.com/developerworks/community/?lang=zh" tabindex="0">社区</a></li>
+			<li id="dw-mast-nav-3" role="presentation"><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=6d7f9e5d-5f89-4767-a006-a81b8d186370&amp;lang=zh" tabindex="0">技术讲座</a></li>
+		</ul>
+		<form id="ibm-search-form" action="http://www.ibm.com/search/csass/search/" method="get" name="form1" aria-label="搜索 developerWorks" role="search">
+			<p>
+				<label for="q"><span class="ibm-access">搜索 developerWorks</span></label>
+				<input id="q" type="text" name="q" value="搜索 developerWorks" maxlength="100"/>
+				<input type="hidden" name="sn" value="dw" />
+				<input type="hidden" name="lang" value="zh" />
+				<input type="hidden" name="cc" value="CN" />
+				<input type="hidden" name="en" value="utf" />
+				<input type="hidden" name="hpp" value="20" />
+				<input type="hidden" name="dws" value="cndw" />
+				<input type="hidden" name="lo" value="zh" />
+				<input id="ibm-search" class="ibm-btn-search" type="submit" value="提交" />
+			</p>
+		</form>
+	</div>    
+	
+</div>
+<div id="fdiv" class="ibm-access"></div><!-- MASTHEAD_END -->
+	    
+<!-- LAYOUT -->
+<!-- LEADSPACE_BEGIN --> 
+<div id="ibm-leadspace-head">
+	<!-- LEADSPACE_BODY_BEGIN --> 
+	<div id="ibm-leadspace-body">
+		<!-- Navigation_Trail_BEGIN -->
+      <ul id="ibm-navigation-trail"><li><a href="http://www.ibm.com/developerworks/cn/">developerWorks 中国</a></li><li><a href="http://www.ibm.com/developerworks/cn/topics/">技术主题</a></li><li><a href="http://www.ibm.com/developerworks/cn/java/">Java technology</a></li><li><a href="http://www.ibm.com/developerworks/cn/views/java/libraryview.jsp">文档库</a></li></ul>
+		<!-- END_Navigation_Trail -->
+			<!-- Title_Subtitle -->
+			<h1>Java 8 中的 Streams API 详解</h1><p><em><span>Streams 的背景，以及 Java 8 中的使用详解</span></em></p>
+	</div>
+	<!-- LEADSPACE_BODY_END --> 
+	<!-- SUMMARY_BEGIN -->
+	<div id="dw-summary-area" class="dw-summary-columns">
+		<div class="ibm-col-6-4">
+		<p>Java 8 是迄今为止在语义上改动上最大的一个平台。除了最显著的 Lambda 表达式之外，还有很多初次见面的特性，例如本文主题的 Streams
+   API。这里介绍了它出现的背景和具体用法。</p>
+		<p class="ibm-no-print ibm-ind-link">
+
+			
+			<span id="nCmts"></span>
+		</p>
+		</div>
+		<div class="ibm-col-6-2 dw-toc-margin">
+			<p class="dw-summary-author"><a href="index.html.1#authorN10018" class="ibm-popup-link" onclick="ibmweb.overlay.show('authorN10018',this);return false;">陈 争云</a>, 软件工程师,  IBM</p>
+<div id="authorN10018" class="ibm-common-overlay"><div class="ibm-head"><p><a href="index.html.1#close" class="ibm-common-overlay-close">关闭 [x]</a></p></div><div class="ibm-body"><div class="ibm-main"><div class="ibm-title"><!--this is where the h2 usually
+                                    goes--></div><div class="ibm-container ibm-alternate"><div class="ibm-container-body">
+<p><!--.-->
+陈争云，长期专注于 J2EE 开发与设计，有多年企业级产品和大型电商平台的架构与开发经验，现就职于 IBM CSTL 部门。与人合作译有 Mike Cohn 大作《 Scrum 敏捷软件开发》。</p><br /><br /></div></div></div></div><div class="ibm-footer"><!----></div></div>
+<p class="dw-summary-author"><a href="index.html.1#authorN10028" class="ibm-popup-link" onclick="ibmweb.overlay.show('authorN10028',this);return false;">占 宇剑</a>, 顾问工程师, IBM</p>
+<div id="authorN10028" class="ibm-common-overlay"><div class="ibm-head"><p><a href="index.html.1#close" class="ibm-common-overlay-close">关闭 [x]</a></p></div><div class="ibm-body"><div class="ibm-main"><div class="ibm-title"><!--this is where the h2 usually
+                                    goes--></div><div class="ibm-container ibm-alternate"><div class="ibm-container-body">
+<p><!--.-->
+占宇剑，计算机应用硕士，IBM 中国软件开发实验室软件工程师，具有五年以上 web 项目开发经验。对 web 快速开发有浓厚兴趣。</p><br /><br /></div></div></div></div><div class="ibm-footer"><!----></div></div>
+<p class="dw-summary-author"><a href="index.html.1#authorN10038" class="ibm-popup-link" onclick="ibmweb.overlay.show('authorN10038',this);return false;">司 磊</a>, 资深软件工程师,  IBM</p>
+<div id="authorN10038" class="ibm-common-overlay"><div class="ibm-head"><p><a href="index.html.1#close" class="ibm-common-overlay-close">关闭 [x]</a></p></div><div class="ibm-body"><div class="ibm-main"><div class="ibm-title"><!--this is where the h2 usually
+                                    goes--></div><div class="ibm-container ibm-alternate"><div class="ibm-container-body">
+<p><!--.-->
+司磊，IBM CSTL 资深软件工程师主要从事系统管理软件 Systems Director 的开发工作。</p><br /><br /></div></div></div></div><div class="ibm-footer"><!----></div></div>
+			<p class="dw-summary-date">2014 年 9 月 11 日</p>
+			
+
+
+			<div aria-hidden="true" class="ibm-container" id="dw-toc"><div class="ibm-container-body"><ul class="ibm-twisty"><li><a href="index.html.1#toggle" class="ibm-twisty-trigger"><img src="http://www.ibm.com/i/c.gif" alt="-"/></a><span class="ibm-twisty-head">内容</span><div class="ibm-twisty-body"><ul style="font-size:0.8em" class="ibm-link-list">
+<li><a class="ibm-anchor-down-em-link" href="index.html.1#major1">为什么需要 Stream</a></li>
+<li><a class="ibm-anchor-down-em-link" href="index.html.1#major3">Stream 总览</a></li>
+<li><a class="ibm-anchor-down-em-link" href="index.html.1#major6">流的使用详解</a></li>
+<li><a class="ibm-anchor-down-em-link" href="index.html.1#major11">结束语</a></li>
+<li><a class="ibm-anchor-down-em-link" href="index.html.1#resources">参考资料 </a></li>
+<li><a class="ibm-anchor-down-em-link" href="index.html.1#icomments">评论</a></li></ul></div></li></ul></div></div>
+		</div>
+	</div>
+	<!-- SUMMARY_END -->
+</div>
+<!-- LEADSPACE_END -->
+
+<div id="ibm-pcon">
+
+<!-- BEGIN_IBM-CONTENT -->
+<div id="ibm-content">
+
+<!-- BEGIN_IBM-CONTENT-BODY -->
+<div id="ibm-content-body">
+
+<!-- BEGIN_IBM-CONTENT-MAIN -->
+<div id="ibm-content-main">
+
+<!-- 1_1_COLUMN_BEGIN -->
+<div class="ibm-columns">
+<div class="ibm-col-1-1">
+
+<h2 id="major1">为什么需要 Stream</h2><p>Stream 作为 Java 8 的一大亮点，它与 java.io 包里的 InputStream 和 OutputStream 是完全不同的概念。它也不同于 StAX 对 XML 解析的
+    Stream，也不是 Amazon Kinesis 对大数据实时处理的 Stream。Java 8 中的 Stream
+    是对集合（Collection）对象功能的增强，它专注于对集合对象进行各种非常便利、高效的聚合操作（aggregate operation），或者大批量数据操作 (bulk data
+    operation)。Stream API 借助于同样新出现的 Lambda
+    表达式，极大的提高编程效率和程序可读性。同时它提供串行和并行两种模式进行汇聚操作，并发模式能够充分利用多核处理器的优势，使用 fork/join
+    并行方式来拆分任务和加速处理过程。通常编写并行代码很难而且容易出错, 但使用 Stream API 无需编写一行多线程的代码，就可以很方便地写出高性能的并发程序。所以说，Java 8
+    中首次出现的 java.util.stream 是一个函数式语言+多核时代综合影响的产物。</p><h3 id="major2">什么是聚合操作</h3><p>在传统的 J2EE 应用中，Java 代码经常不得不依赖于关系型数据库的聚合操作来完成诸如：</p><ul class="ibm-bullet-list"><li> 客户每月平均消费金额</li><li> 最昂贵的在售商品</li><li> 本周完成的有效订单（排除了无效的）</li><li> 取十个数据样本作为首页推荐</li></ul><p>这类的操作。</p><p>但在当今这个数据大爆炸的时代，在数据来源多样化、数据海量化的今天，很多时候不得不脱离 RDBMS，或者以底层返回的数据为基础进行更上层的数据统计。而 Java 的集合 API
+    中，仅仅有极少量的辅助型方法，更多的时候是程序员需要用 Iterator 来遍历集合，完成相关的聚合应用逻辑。这是一种远不够高效、笨拙的方法。在 Java 7 中，如果要发现 type 为
+    grocery 的所有交易，然后返回以交易值降序排序好的交易 ID 集合，我们需要这样写：</p><h5 id="listing1">清单 1. Java 7 的排序、取值实现</h5><div class="codesection"><pre class="displaycode">List&lt;Transaction&gt; groceryTransactions = new Arraylist&lt;&gt;();
+for(Transaction t: transactions){
+ if(t.getType() == Transaction.GROCERY){
+ groceryTransactions.add(t);
+ }
+}
+Collections.sort(groceryTransactions, new Comparator(){
+ public int compare(Transaction t1, Transaction t2){
+ return t2.getValue().compareTo(t1.getValue());
+ }
+});
+List&lt;Integer&gt; transactionIds = new ArrayList&lt;&gt;();
+for(Transaction t: groceryTransactions){
+ transactionsIds.add(t.getId());
+}</pre></div><p>而在 Java 8 使用 Stream，代码更加简洁易读；而且使用并发模式，程序执行速度更快。</p><h5 id="listing2">清单 2. Java 8 的排序、取值实现</h5><div class="codesection"><pre class="displaycode">List&lt;Integer&gt; transactionsIds = transactions.parallelStream().
+ filter(t -&gt; t.getType() == Transaction.GROCERY).
+ sorted(comparing(Transaction::getValue).reversed()).
+ map(Transaction::getId).
+ collect(toList());</pre></div><div class="ibm-alternate-rule"><hr/></div><p class="ibm-ind-link ibm-back-to-top"><a href="index.html.1#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="major3">Stream 总览</h2><h3 id="major4">什么是流</h3><p>Stream 不是集合元素，它不是数据结构并不保存数据，它是有关算法和计算的，它更像一个高级版本的 Iterator。原始版本的
+    Iterator，用户只能显式地一个一个遍历元素并对其执行某些操作；高级版本的 Stream，用户只要给出需要对其包含的元素执行什么操作，比如 “过滤掉长度大于 10
+    的字符串”、“获取每个字符串的首字母”等，Stream 会隐式地在内部进行遍历，做出相应的数据转换。</p><p>Stream 就如同一个迭代器（Iterator），单向，不可往复，数据只能遍历一次，遍历过一次后即用尽了，就好比流水从面前流过，一去不复返。</p><p>而和迭代器又不同的是，Stream 可以并行化操作，迭代器只能命令式地、串行化操作。顾名思义，当使用串行方式去遍历时，每个 item 读完后再读下一个
+    item。而使用并行去遍历时，数据会被分成多个段，其中每一个都在不同的线程中处理，然后将结果一起输出。Stream 的并行操作依赖于 Java7 中引入的 Fork/Join
+    框架（JSR166y）来拆分任务和加速处理过程。Java 的并行 API 演变历程基本如下：</p><ol type="1"><li> 1.0-1.4 中的 java.lang.Thread</li><li> 5.0 中的 java.util.concurrent</li><li> 6.0 中的 Phasers 等</li><li> 7.0 中的 Fork/Join 框架</li><li> 8.0 中的 Lambda</li></ol><p>Stream 的另外一大特点是，数据源本身可以是无限的。</p><h3 id="major5">流的构成</h3><p>当我们使用一个流的时候，通常包括三个基本步骤：</p><p>获取一个数据源（source）→ 数据转换→执行操作获取想要的结果，每次转换原有 Stream 对象不改变，返回一个新的 Stream
+    对象（可以有多次转换），这就允许对其操作可以像链条一样排列，变成一个管道，如下图所示。</p><h5 id="img001">图 1. 流管道 (Stream Pipeline) 的构成</h5><img alt="图 1. 流管道 (Stream Pipeline) 的构成" src="http://www.ibm.com/developerworks/cn/java/j-lo-java8streamapi/img001.png" width="331" /><p>有多种方式生成 Stream Source：</p><ul class="ibm-bullet-list"><li> 从 Collection 和数组</li></ul><ul class="ibm-bullet-list"><li><ul class="ibm-bullet-list"><li> Collection.stream()</li><li> Collection.parallelStream()</li><li> Arrays.stream(T array) or Stream.of()</li></ul> 从 BufferedReader<ul class="ibm-bullet-list"><li> java.io.BufferedReader.lines()</li></ul></li></ul><ul class="ibm-bullet-list"><li> 静态工厂</li></ul><ul class="ibm-bullet-list"><li> java.util.stream.IntStream.range()</li><li> java.nio.file.Files.walk()</li></ul><ul class="ibm-bullet-list"><li> 自己构建</li></ul><ul class="ibm-bullet-list"><li><ul class="ibm-bullet-list"><li> java.util.Spliterator</li></ul> 其它<ul class="ibm-bullet-list"><li> Random.ints()</li><li> BitSet.stream()</li><li> Pattern.splitAsStream(java.lang.CharSequence)</li><li> JarFile.stream()</li></ul></li></ul><p>流的操作类型分为两种：</p><ul class="ibm-bullet-list"><li><strong>Intermediate</strong>：一个流可以后面跟随零个或多个 intermediate
+     操作。其目的主要是打开流，做出某种程度的数据映射/过滤，然后返回一个新的流，交给下一个操作使用。这类操作都是惰性化的（lazy），就是说，仅仅调用到这类方法，并没有真正开始流的遍历。</li><li><strong>Terminal</strong>：一个流只能有一个 terminal
+     操作，当这个操作执行后，流就被使用“光”了，无法再被操作。所以这必定是流的最后一个操作。Terminal 操作的执行，才会真正开始流的遍历，并且会生成一个结果，或者一个 side
+     effect。</li></ul><p>在对于一个 Stream 进行多次转换操作 (Intermediate 操作)，每次都对 Stream 的每个元素进行转换，而且是执行多次，这样时间复杂度就是 N（转换次数）个 for
+    循环里把所有操作都做掉的总和吗？其实不是这样的，转换操作都是 lazy 的，多个转换操作只会在 Terminal 操作的时候融合起来，一次循环完成。我们可以这样简单的理解，Stream
+    里有个操作函数的集合，每次转换操作就是把转换函数放入这个集合中，在 Terminal 操作的时候循环 Stream 对应的集合，然后对每个元素执行所有的函数。</p><p>还有一种操作被称为 <strong>short-circuiting</strong>。用以指：</p><ul class="ibm-bullet-list"><li> 对于一个 intermediate 操作，如果它接受的是一个无限大（infinite/unbounded）的 Stream，但返回一个有限的新 Stream。</li><li> 对于一个 terminal 操作，如果它接受的是一个无限大的 Stream，但能在有限的时间计算出结果。</li></ul><p>当操作一个无限大的 Stream，而又希望在有限时间内完成操作，则在管道内拥有一个 short-circuiting 操作是必要非充分条件。</p><h5 id="listing3">清单 3. 一个流操作的示例</h5><div class="codesection"><pre class="displaycode">int sum = widgets.stream()
+.filter(w -&gt; w.getColor() == RED)
+ .mapToInt(w -&gt; w.getWeight())
+ .sum();</pre></div><p>stream() 获取当前小物件的 source，filter 和 mapToInt 为 intermediate 操作，进行数据筛选和转换，最后一个 sum() 为 terminal
+    操作，对符合条件的全部小物件作重量求和。</p><div class="ibm-alternate-rule"><hr/></div><p class="ibm-ind-link ibm-back-to-top"><a href="index.html.1#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="major6">流的使用详解</h2><p>简单说，对 Stream 的使用就是实现一个 filter-map-reduce 过程，产生一个最终结果，或者导致一个副作用（side effect）。</p><h3 id="major7">流的构造与转换</h3><p>下面提供最常见的几种构造 Stream 的样例。</p><h5 id="listing4">清单 4. 构造流的几种常见方法</h5><div class="codesection"><pre class="displaycode">// 1. Individual values
+Stream stream = Stream.of("a", "b", "c");
+// 2. Arrays
+String [] strArray = new String[] {"a", "b", "c"};
+stream = Stream.of(strArray);
+stream = Arrays.stream(strArray);
+// 3. Collections
+List&lt;String&gt; list = Arrays.asList(strArray);
+stream = list.stream();</pre></div><p>需要注意的是，对于基本数值型，目前有三种对应的包装类型 Stream：</p><p>IntStream、LongStream、DoubleStream。当然我们也可以用 Stream&lt;Integer&gt;、Stream&lt;Long&gt;
+    &gt;、Stream&lt;Double&gt;，但是 boxing 和 unboxing 会很耗时，所以特别为这三种基本数值型提供了对应的 Stream。</p><p>Java 8 中还没有提供其它数值型 Stream，因为这将导致扩增的内容较多。而常规的数值型聚合运算可以通过上面三种 Stream 进行。</p><h5 id="listing5">清单 5. 数值流的构造</h5><div class="codesection"><pre class="displaycode">IntStream.of(new int[]{1, 2, 3}).forEach(System.out::println);
+IntStream.range(1, 3).forEach(System.out::println);
+IntStream.rangeClosed(1, 3).forEach(System.out::println);</pre></div><h5 id="listing6">清单 6. 流转换为其它数据结构</h5><div class="codesection"><pre class="displaycode">// 1. Array
+String[] strArray1 = stream.toArray(String[]::new);
+// 2. Collection
+List&lt;String&gt; list1 = stream.collect(Collectors.toList());
+List&lt;String&gt; list2 = stream.collect(Collectors.toCollection(ArrayList::new));
+Set set1 = stream.collect(Collectors.toSet());
+Stack stack1 = stream.collect(Collectors.toCollection(Stack::new));
+// 3. String
+String str = stream.collect(Collectors.joining()).toString();</pre></div><p>一个 Stream 只可以使用一次，上面的代码为了简洁而重复使用了数次。</p><h3 id="major8">流的操作</h3><p>接下来，当把一个数据结构包装成 Stream 后，就要开始对里面的元素进行各类操作了。常见的操作可以归类如下。</p><ul class="ibm-bullet-list"><li> Intermediate：</li></ul><p>map (mapToInt, flatMap 等)、 filter、 distinct、 sorted、 peek、 limit、 skip、 parallel、
+    sequential、 unordered</p><ul class="ibm-bullet-list"><li> Terminal：</li></ul><p>forEach、 forEachOrdered、 toArray、 reduce、 collect、 min、 max、 count、 anyMatch、
+    allMatch、 noneMatch、 findFirst、 findAny、 iterator</p><ul class="ibm-bullet-list"><li> Short-circuiting：</li></ul><p>anyMatch、 allMatch、 noneMatch、 findFirst、 findAny、 limit</p><p>我们下面看一下 Stream 的比较典型用法。</p><p><strong>map/flatMap</strong></p><p>我们先来看 map。如果你熟悉 scala 这类函数式语言，对这个方法应该很了解，它的作用就是把 input Stream 的每一个元素，映射成 output Stream
+    的另外一个元素。</p><h5 id="listing7">清单 7. 转换大写</h5><div class="codesection"><pre class="displaycode">List&lt;String&gt; output = wordList.stream().
+map(String::toUpperCase).
+collect(Collectors.toList());</pre></div><p>这段代码把所有的单词转换为大写。</p><h5 id="listing8">清单 8. 平方数</h5><div class="codesection"><pre class="displaycode">List&lt;Integer&gt; nums = Arrays.asList(1, 2, 3, 4);
+List&lt;Integer&gt; squareNums = nums.stream().
+map(n -&gt; n * n).
+collect(Collectors.toList());</pre></div><p>这段代码生成一个整数 list 的平方数 {1, 4, 9, 16}。</p><p>从上面例子可以看出，map 生成的是个 1:1 映射，每个输入元素，都按照规则转换成为另外一个元素。还有一些场景，是一对多映射关系的，这时需要 flatMap。</p><h5 id="listing9">清单 9. 一对多</h5><div class="codesection"><pre class="displaycode">Stream&lt;List&lt;Integer&gt;&gt; inputStream = Stream.of(
+ Arrays.asList(1),
+ Arrays.asList(2, 3),
+ Arrays.asList(4, 5, 6)
+ );
+Stream&lt;Integer&gt; outputStream = inputStream.
+flatMap((childList) -&gt; childList.stream());</pre></div><p>flatMap 把 input Stream 中的层级结构扁平化，就是将最底层元素抽出来放到一起，最终 output 的新 Stream 里面已经没有 List
+    了，都是直接的数字。</p><p><strong>filter</strong></p><p>filter 对原始 Stream 进行某项测试，通过测试的元素被留下来生成一个新 Stream。</p><h5 id="listing10">清单 10. 留下偶数</h5><div class="codesection"><pre class="displaycode">Integer[] sixNums = {1, 2, 3, 4, 5, 6};
+Integer[] evens =
+Stream.of(sixNums).filter(n -&gt; n%2 == 0).toArray(Integer[]::new);</pre></div><p>经过条件“被 2 整除”的 filter，剩下的数字为 {2, 4, 6}。</p><h5 id="listing11">清单 11. 把单词挑出来</h5><div class="codesection"><pre class="displaycode">List&lt;String&gt; output = reader.lines().
+ flatMap(line -&gt; Stream.of(line.split(REGEXP))).
+ filter(word -&gt; word.length() &gt; 0).
+ collect(Collectors.toList());</pre></div><p>这段代码首先把每行的单词用 flatMap 整理到新的 Stream，然后保留长度不为 0 的，就是整篇文章中的全部单词了。</p><p><strong>forEach</strong></p><p>forEach 方法接收一个 Lambda 表达式，然后在 Stream 的每一个元素上执行该表达式。</p><h5 id="listing12">清单 12. 打印姓名（forEach 和 pre-java8 的对比）</h5><div class="codesection"><pre class="displaycode">// Java 8
+roster.stream()
+ .filter(p -&gt; p.getGender() == Person.Sex.MALE)
+ .forEach(p -&gt; System.out.println(p.getName()));
+// Pre-Java 8
+for (Person p : roster) {
+ if (p.getGender() == Person.Sex.MALE) {
+ System.out.println(p.getName());
+ }
+}</pre></div><p>对一个人员集合遍历，找出男性并打印姓名。可以看出来，forEach 是为 Lambda 而设计的，保持了最紧凑的风格。而且 Lambda
+    表达式本身是可以重用的，非常方便。当需要为多核系统优化时，可以 parallelStream().forEach()，只是此时原有元素的次序没法保证，并行的情况下将改变串行时操作的行为，此时
+    forEach 本身的实现不需要调整，而 Java8 以前的 for 循环 code 可能需要加入额外的多线程逻辑。</p><p>但一般认为，forEach 和常规 for 循环的差异不涉及到性能，它们仅仅是函数式风格与传统 Java 风格的差别。</p><p>另外一点需要注意，forEach 是 terminal 操作，因此它执行后，Stream 的元素就被“消费”掉了，你无法对一个 Stream 进行两次 terminal
+    运算。下面的代码是错误的：</p><div class="codesection"><pre class="displaycode">     stream.forEach(element -&gt; doOneThing(element));
+     stream.forEach(element -&gt; doAnotherThing(element));</pre></div><p>相反，具有相似功能的 intermediate 操作 peek 可以达到上述目的。如下是出现在该 api javadoc 上的一个示例。</p><h5 id="listing13">清单 13. peek 对每个元素执行操作并返回一个新的 Stream</h5><div class="codesection"><pre class="displaycode">Stream.of("one", "two", "three", "four")
+ .filter(e -&gt; e.length() &gt; 3)
+ .peek(e -&gt; System.out.println("Filtered value: " + e))
+ .map(String::toUpperCase)
+ .peek(e -&gt; System.out.println("Mapped value: " + e))
+ .collect(Collectors.toList());</pre></div><p>forEach 不能修改自己包含的本地变量值，也不能用 break/return 之类的关键字提前结束循环。</p><p><strong>findFirst</strong></p><p>这是一个 termimal 兼 short-circuiting 操作，它总是返回 Stream 的第一个元素，或者空。</p><p>这里比较重点的是它的返回值类型：Optional。这也是一个模仿 Scala 语言中的概念，作为一个容器，它可能含有某值，或者不包含。使用它的目的是尽可能避免
+    NullPointerException。</p><h5 id="listing14">清单 14. Optional 的两个用例</h5><div class="codesection"><pre class="displaycode">String strA = " abcd ", strB = null;
+print(strA);
+print("");
+print(strB);
+getLength(strA);
+getLength("");
+getLength(strB);
+public static void print(String text) {
+ // Java 8
+ Optional.ofNullable(text).ifPresent(System.out::println);
+ // Pre-Java 8
+ if (text != null) {
+ System.out.println(text);
+ }
+ }
+public static int getLength(String text) {
+ // Java 8
+return Optional.ofNullable(text).map(String::length).orElse(-1);
+ // Pre-Java 8
+// return if (text != null) ? text.length() : -1;
+ };</pre></div><p>在更复杂的 if (xx != null) 的情况中，使用 Optional 代码的可读性更好，而且它提供的是编译时检查，能极大的降低 NPE 这种 Runtime Exception
+    对程序的影响，或者迫使程序员更早的在编码阶段处理空值问题，而不是留到运行时再发现和调试。</p><p>Stream 中的 findAny、max/min、reduce 等方法等返回 Optional 值。还有例如 IntStream.average() 返回
+    OptionalDouble 等等。</p><p><strong>reduce</strong></p><p>这个方法的主要作用是把 Stream 元素组合起来。它提供一个起始值（种子），然后依照运算规则（BinaryOperator），和前面 Stream 的第一个、第二个、第 n
+    个元素组合。从这个意义上说，字符串拼接、数值的 sum、min、max、average 都是特殊的 reduce。例如 Stream 的 sum 就相当于</p><p>Integer sum = integers.reduce(0, (a, b) -&gt; a+b); 或</p><p>Integer sum = integers.reduce(0, Integer::sum);</p><p>也有没有起始值的情况，这时会把 Stream 的前面两个元素组合起来，返回的是 Optional。</p><h5 id="listing15">清单 15. reduce 的用例</h5><div class="codesection"><pre class="displaycode">// 字符串连接，concat = "ABCD"
+String concat = Stream.of("A", "B", "C", "D").reduce("", String::concat); 
+// 求最小值，minValue = -3.0
+double minValue = Stream.of(-1.5, 1.0, -3.0, -2.0).reduce(Double.MAX_VALUE, Double::min); 
+// 求和，sumValue = 10, 有起始值
+int sumValue = Stream.of(1, 2, 3, 4).reduce(0, Integer::sum);
+// 求和，sumValue = 10, 无起始值
+sumValue = Stream.of(1, 2, 3, 4).reduce(Integer::sum).get();
+// 过滤，字符串连接，concat = "ace"
+concat = Stream.of("a", "B", "c", "D", "e", "F").
+ filter(x -&gt; x.compareTo("Z") &gt; 0).
+ reduce("", String::concat);</pre></div><p>上面代码例如第一个示例的 reduce()，第一个参数（空白字符）即为起始值，第二个参数（String::concat）为 BinaryOperator。这类有起始值的 reduce()
+    都返回具体的对象。而对于第四个示例没有起始值的 reduce()，由于可能没有足够的元素，返回的是 Optional，请留意这个区别。</p><p><strong>limit/skip</strong></p><p>limit 返回 Stream 的前面 n 个元素；skip 则是扔掉前 n 个元素（它是由一个叫 subStream 的方法改名而来）。</p><h5 id="listing16">清单 16. limit 和 skip 对运行次数的影响</h5><div class="codesection"><pre class="displaycode">public void testLimitAndSkip() {
+ List&lt;Person&gt; persons = new ArrayList();
+ for (int i = 1; i &lt;= 10000; i++) {
+ Person person = new Person(i, "name" + i);
+ persons.add(person);
+ }
+List&lt;String&gt; personList2 = persons.stream().
+map(Person::getName).limit(10).skip(3).collect(Collectors.toList());
+ System.out.println(personList2);
+}
+private class Person {
+ public int no;
+ private String name;
+ public Person (int no, String name) {
+ this.no = no;
+ this.name = name;
+ }
+ public String getName() {
+ System.out.println(name);
+ return name;
+ }
+}</pre></div><p>输出结果为：</p><div class="codesection"><pre class="displaycode">name1
+name2
+name3
+name4
+name5
+name6
+name7
+name8
+name9
+name10
+[name4, name5, name6, name7, name8, name9, name10]</pre></div><p>这是一个有 10，000 个元素的 Stream，但在 short-circuiting 操作 limit 和 skip 的作用下，管道中 map 操作指定的 getName()
+    方法的执行次数为 limit 所限定的 10 次，而最终返回结果在跳过前 3 个元素后只有后面 7 个返回。</p><p>有一种情况是 limit/skip 无法达到 short-circuiting 目的的，就是把它们放在 Stream 的排序操作后，原因跟 sorted 这个 intermediate
+    操作有关：此时系统并不知道 Stream 排序后的次序如何，所以 sorted 中的操作看上去就像完全没有被 limit 或者 skip 一样。</p><h5 id="listing17">清单 17. limit 和 skip 对 sorted 后的运行次数无影响</h5><div class="codesection"><pre class="displaycode">List&lt;Person&gt; persons = new ArrayList();
+ for (int i = 1; i &lt;= 5; i++) {
+ Person person = new Person(i, "name" + i);
+ persons.add(person);
+ }
+List&lt;Person&gt; personList2 = persons.stream().sorted((p1, p2) -&gt; 
+p1.getName().compareTo(p2.getName())).limit(2).collect(Collectors.toList());
+System.out.println(personList2);</pre></div><p>上面的示例对清单 13 做了微调，首先对 5 个元素的 Stream 排序，然后进行 limit 操作。输出结果为：</p><div class="codesection"><pre class="displaycode"> name2
+name1
+name3
+name2
+name4
+name3
+name5
+name4
+[stream.StreamDW$Person@816f27d, stream.StreamDW$Person@87aac27]</pre></div><p>即虽然最后的返回元素数量是 2，但整个管道中的 sorted 表达式执行次数没有像前面例子相应减少。</p><p>最后有一点需要注意的是，对一个 parallel 的 Steam 管道来说，如果其元素是有序的，那么 limit 操作的成本会比较大，因为它的返回对象必须是前 n
+    个也有一样次序的元素。取而代之的策略是取消元素间的次序，或者不要用 parallel Stream。</p><p><strong>sorted</strong></p><p>对 Stream 的排序通过 sorted 进行，它比数组的排序更强之处在于你可以首先对 Stream 进行各类 map、filter、limit、skip 甚至 distinct
+    来减少元素数量后，再排序，这能帮助程序明显缩短执行时间。我们对清单 14 进行优化：</p><h5 id="listing18">清单 18. 优化：排序前进行 limit 和 skip</h5><p><a href="index.html.1#N101E8" class="ibm-popup-link" onclick="ibmweb.overlay.show('N101E8',this);return false;">点击查看代码清单</a></p><div id="N101E8" class="dw-sidefile-overlay ibm-common-overlay ibm-overlay-alt-two"><div class="ibm-head"><p><a href="index.html.1#close" class="ibm-common-overlay-close">关闭 [x]</a></p></div><div class="ibm-body"><div class="ibm-main"><div class="ibm-title"><h2>清单 18. 优化：排序前进行 limit 和 skip</h2></div><div class="ibm-container ibm-alternate"><div class="ibm-container-body"><div class="codesection"><pre class="displaycode no-auto-overflow">List&lt;Person&gt; persons = new ArrayList();
+ for (int i = 1; i &lt;= 5; i++) {
+ Person person = new Person(i, "name" + i);
+ persons.add(person);
+ }
+List&lt;Person&gt; personList2 = persons.stream().limit(2).sorted((p1, p2) -&gt; p1.getName().compareTo(p2.getName())).collect(Collectors.toList());
+System.out.println(personList2);</pre></div></div></div></div></div><div class="ibm-footer"><!----></div></div><p>结果会简单很多：</p><div class="codesection"><pre class="displaycode">name2
+name1
+[stream.StreamDW$Person@6ce253f1, stream.StreamDW$Person@53d8d10a]</pre></div><p>当然，这种优化是有 business logic 上的局限性的：即不要求排序后再取值。</p><p><strong>min/max/distinct</strong></p><p>min 和 max 的功能也可以通过对 Stream 元素先排序，再 findFirst 来实现，但前者的性能会更好，为 O(n)，而 sorted 的成本是 O(n log
+    n)。同时它们作为特殊的 reduce 方法被独立出来也是因为求最大最小值是很常见的操作。</p><h5 id="listing19">清单 19. 找出最长一行的长度</h5><div class="codesection"><pre class="displaycode">BufferedReader br = new BufferedReader(new FileReader("c:\\SUService.log"));
+int longest = br.lines().
+ mapToInt(String::length).
+ max().
+ getAsInt();
+br.close();
+System.out.println(longest);</pre></div><p>下面的例子则使用 distinct 来找出不重复的单词。</p><h5 id="listing20">清单 20. 找出全文的单词，转小写，并排序</h5><div class="codesection"><pre class="displaycode">List&lt;String&gt; words = br.lines().
+ flatMap(line -&gt; Stream.of(line.split(" "))).
+ filter(word -&gt; word.length() &gt; 0).
+ map(String::toLowerCase).
+ distinct().
+ sorted().
+ collect(Collectors.toList());
+br.close();
+System.out.println(words);</pre></div><p><strong>Match</strong></p><p>Stream 有三个 match 方法，从语义上说： </p><ul class="ibm-bullet-list"><li> allMatch：Stream 中全部元素符合传入的 predicate，返回 true</li><li> anyMatch：Stream 中只要有一个元素符合传入的 predicate，返回 true</li><li> noneMatch：Stream 中没有一个元素符合传入的 predicate，返回 true</li></ul><p>它们都不是要遍历全部元素才能返回结果。例如 allMatch 只要一个元素不满足条件，就 skip 剩下的所有元素，返回 false。对清单 13 中的 Person 类稍做修改，加入一个
+    age 属性和 getAge 方法。</p><h5 id="listing21">清单 21. 使用 Match</h5><div class="codesection"><pre class="displaycode">List&lt;Person&gt; persons = new ArrayList();
+persons.add(new Person(1, "name" + 1, 10));
+persons.add(new Person(2, "name" + 2, 21));
+persons.add(new Person(3, "name" + 3, 34));
+persons.add(new Person(4, "name" + 4, 6));
+persons.add(new Person(5, "name" + 5, 55));
+boolean isAllAdult = persons.stream().
+ allMatch(p -&gt; p.getAge() &gt; 18);
+System.out.println("All are adult? " + isAllAdult);
+boolean isThereAnyChild = persons.stream().
+ anyMatch(p -&gt; p.getAge() &lt; 12);
+System.out.println("Any child? " + isThereAnyChild);</pre></div><p>输出结果：</p><div class="codesection"><pre class="displaycode"> All are adult? false
+ Any child? true</pre></div><h3 id="major9">进阶：自己生成流</h3><p><strong>Stream.generate</strong></p><p>通过实现 Supplier 接口，你可以自己来控制流的生成。这种情形通常用于随机数、常量的 Stream，或者需要前后元素间维持着某种状态信息的 Stream。把 Supplier
+    实例传递给 Stream.generate() 生成的 Stream，默认是串行（相对 parallel 而言）但无序的（相对 ordered 而言）。由于它是无限的，在管道中，必须利用
+    limit 之类的操作限制 Stream 大小。</p><h5 id="listing22">清单 22. 生成 10 个随机整数</h5><div class="codesection"><pre class="displaycode">Random seed = new Random();
+Supplier&lt;Integer&gt; random = seed::nextInt;
+Stream.generate(random).limit(10).forEach(System.out::println);
+//Another way
+IntStream.generate(() -&gt; (int) (System.nanoTime() % 100)).
+limit(10).forEach(System.out::println);</pre></div><p>Stream.generate() 还接受自己实现的 Supplier。例如在构造海量测试数据的时候，用某种自动的规则给每一个变量赋值；或者依据公式计算 Stream
+    的每个元素值。这些都是维持状态信息的情形。</p><h5 id="listing23">清单 23. 自实现 Supplier</h5><div class="codesection"><pre class="displaycode">Stream.generate(new PersonSupplier()).
+limit(10).
+forEach(p -&gt; System.out.println(p.getName() + ", " + p.getAge()));
+private class PersonSupplier implements Supplier&lt;Person&gt; {
+ private int index = 0;
+ private Random random = new Random();
+ @Override
+ public Person get() {
+ return new Person(index++, "StormTestUser" + index, random.nextInt(100));
+ }
+}</pre></div><p>输出结果：</p><div class="codesection"><pre class="displaycode"> StormTestUser1, 9
+StormTestUser2, 12
+StormTestUser3, 88
+StormTestUser4, 51
+StormTestUser5, 22
+StormTestUser6, 28
+StormTestUser7, 81
+StormTestUser8, 51
+StormTestUser9, 4
+StormTestUser10, 76</pre></div><p><strong>Stream.iterate</strong></p><p>iterate 跟 reduce 操作很像，接受一个种子值，和一个 UnaryOperator（例如 f）。然后种子值成为 Stream 的第一个元素，f(seed)
+    为第二个，f(f(seed)) 第三个，以此类推。</p><p><strong>清单 24. 生成一个等差数列</strong></p><div class="codesection"><pre class="displaycode">     Stream.iterate(0, n -&gt; n + 3).limit(10). forEach(x -&gt; System.out.print(x + " "));.</pre></div><p>输出结果：</p><div class="codesection"><pre class="displaycode">     0 3 6 9 12 15 18 21 24 27</pre></div><p>与 Stream.generate 相仿，在 iterate 时候管道必须有 limit 这样的操作来限制 Stream 大小。</p><h3 id="major10">进阶：用 Collectors 来进行 reduction 操作</h3><p>java.util.stream.Collectors 类的主要作用就是辅助进行各类有用的 reduction 操作，例如转变输出为 Collection，把 Stream
+    元素进行归组。</p><p><strong>groupingBy/partitioningBy</strong></p><h5 id="listing25">清单 25. 按照年龄归组</h5><div class="codesection"><pre class="displaycode">Map&lt;Integer, List&lt;Person&gt;&gt; personGroups = Stream.generate(new PersonSupplier()).
+ limit(100).
+ collect(Collectors.groupingBy(Person::getAge));
+Iterator it = personGroups.entrySet().iterator();
+while (it.hasNext()) {
+ Map.Entry&lt;Integer, List&lt;Person&gt;&gt; persons = (Map.Entry) it.next();
+ System.out.println("Age " + persons.getKey() + " = " + persons.getValue().size());
+}</pre></div><p>上面的 code，首先生成 100 人的信息，然后按照年龄归组，相同年龄的人放到同一个 list 中，可以看到如下的输出：</p><div class="codesection"><pre class="displaycode">Age 0 = 2
+Age 1 = 2
+Age 5 = 2
+Age 8 = 1
+Age 9 = 1
+Age 11 = 2
+……</pre></div><h5 id="listing26">清单 26. 按照未成年人和成年人归组</h5><div class="codesection"><pre class="displaycode">Map&lt;Boolean, List&lt;Person&gt;&gt; children = Stream.generate(new PersonSupplier()).
+ limit(100).
+ collect(Collectors.partitioningBy(p -&gt; p.getAge() &lt; 18));
+System.out.println("Children number: " + children.get(true).size());
+System.out.println("Adult number: " + children.get(false).size());</pre></div><p>输出结果：</p><div class="codesection"><pre class="displaycode">     Children number: 23 
+     Adult number: 77</pre></div><p>在使用条件“年龄小于 18”进行分组后可以看到，不到 18 岁的未成年人是一组，成年人是另外一组。partitioningBy 其实是一种特殊的
+    groupingBy，它依照条件测试的是否两种结果来构造返回的数据结构，get(true) 和 get(false) 能即为全部的元素对象。</p><div class="ibm-alternate-rule"><hr/></div><p class="ibm-ind-link ibm-back-to-top"><a href="index.html.1#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="major11">结束语</h2><p>总之，Stream 的特性可以归纳为：</p><ul class="ibm-bullet-list"><li> 不是数据结构</li></ul><ul class="ibm-bullet-list"><li> 它没有内部存储，它只是用操作管道从 source（数据结构、数组、generator function、IO channel）抓取数据。</li><li> 它也绝不修改自己所封装的底层数据结构的数据。例如 Stream 的 filter 操作会产生一个不包含被过滤元素的新 Stream，而不是从 source 删除那些元素。</li></ul><ul class="ibm-bullet-list"><li> 所有 Stream 的操作必须以 lambda 表达式为参数</li><li> 不支持索引访问</li></ul><ul class="ibm-bullet-list"><li> 你可以请求第一个元素，但无法请求第二个，第三个，或最后一个。不过请参阅下一项。</li></ul><ul class="ibm-bullet-list"><li> 很容易生成数组或者 List</li><li> 惰性化</li></ul><ul class="ibm-bullet-list"><li> 很多 Stream 操作是向后延迟的，一直到它弄清楚了最后需要多少数据才会开始。</li><li> Intermediate 操作永远是惰性化的。</li></ul><ul class="ibm-bullet-list"><li> 并行能力</li></ul><ul class="ibm-bullet-list"><li> 当一个 Stream 是并行化的，就不需要再写多线程代码，所有对它的操作会自动并行进行的。</li></ul><ul class="ibm-bullet-list"><li> 可以是无限的<ul class="ibm-bullet-list"><li> 集合有固定大小，Stream 则不必。limit(n) 和 findFirst() 这类的 short-circuiting 操作可以对无限的 Stream
+       进行运算并很快完成。</li></ul></li></ul><!--CMA ID: 983042--><!--Site ID: 10--><!--XSLT stylesheet used to transform this file: dw-document-html-7.0.xsl-->
+
+
+</div>
+</div>
+<!-- 1_1_COLUMN_END -->
+
+<!-- SPLIT_COLUMNS_BEGIN -->
+<div class="ibm-columns">
+
+<!-- 6_4_COLUMN_BEGIN -->
+<div class="ibm-col-6-4">
+
+<h2 id="resources" class="ibm-rule">参考资料 </h2><h3 class="dw-resources-category-heading">学习</h3><ul class="ibm-bullet-list"><li>Oracle Java 8 官方文档对 <a href="http://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html">java.util.stream package </a>的说明。</li><li>一篇教程：<a href="http://javarevisited.blogspot.sg/2013/11/java-8-tutorials-resources-and-examples-lambda-expression-stream-api-functional-interfaces.html">Java 8 Tutorials, Resources, Books and Examples to learn Lambdas, Stream API and Functional
+     Interfaces</a>。</li><li>关于这篇 <a href="http://www.drdobbs.com/jvm/lambdas-and-streams-in-java-8-libraries/240166818">Lambda 和
+     Stream</a> 更多介绍的教程。</li><li>访问 <a href="http://www.ibm.com/developerworks/cn/java">developerWorks Java 专区</a>，了解关于信息管理的更多信息，获取技术文档、how-to 文章、培训、下载、产品信息以及其他资源。</li></ul><h3 class="dw-resources-category-heading">讨论</h3><ul class="ibm-bullet-list"><li>加入 <a href="http://www.ibm.com/developerworks/cn/community/" onmouseover="linkQueryAppend(this)">developerWorks 中文社区</a>。查看开发人员推动的博客、论坛、组和维基，并与其他 developerWorks 用户交流。</li></ul>
+
+<!-- INLINE_COMMENTS_BEGIN -->
+<h2 id="icomments" class="ibm-alternate-rule ibm-no-print">条评论</h2>
+    
+<div class="ibm-no-print" id="dw-icomments-container">	
+	<div id="threadShow"></div>
+</div>
+<!-- Sign in OVERLAY STARTS HERE -->
+    
+<!-- Sign in OVERLAY STARTS HERE -->
+<div class="ibm-common-overlay" id="signin_overlay">
+<div class="ibm-head">
+<p><a class="ibm-common-overlay-close" href="index.html.1#" onclick="dwsi.siInst.clearForm();">关闭 [x]</a></p>
+</div>
+<div class="ibm-body">
+<div class="ibm-main">
+
+ <div class="ibm-title">
+<h2>developerWorks: 登录</h2>
+<div id="ibm-overlay-error-signin" class="no-display"></div>
+</div>
+<div class="ibm-container ibm-alternate ibm-buttons-last">
+<div class="ibm-container-body">
+<p class="ibm-overlay-intro">标有星（<span class="ibm-required">*</span>）号的字段是必填字段。</p> 
+<form class="ibm-column-form" id="sFormId" action="index.html.1" method="post" name="sForm" onsubmit="return false;">
+<p><label for="ibmid">IBM ID:<span class="ibm-required">*</span></label><span>
+    <input name="ibm-id" id="ibmid" size="25" value="" class="required" type="text" onkeypress="dwsi.siInst.handleEP(event,this.form);" />
+    <br /><a onclick="window.location='/developerworks/dwwi/DWAuthRouter?m=reg&amp;lang=zh_CN&amp;d='+encodeURIComponent(location.protocol + '//' + location.hostname + location.pathname + '#icomments'); return false;" href="index.html.1#" class="ibm-forward-link">需要一个 IBM ID？</a> <br />
+    <a class="ibm-forward-link" href="http://www.ibm.com/developerworks/dwwi/jsp/WSHelp.jsp?lang=zh_CN">忘记 IBM ID？</a> 
+</span>
+</p> 
+<p><label for="password">密码：<span class="ibm-required">*</span></label><span>
+    <input name="password" id="password" size="25" value="" class="required" type="password" onkeypress="dwsi.siInst.handleEP(event,this.form);" />
+    <br /><a class="ibm-forward-link" href="index.html.1#" onclick="(function ()
+        {window.location='https://www.ibm.com/account/profile?page=forgot&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d='+encodeURIComponent(dwsi.siInst.getAuthUrl())+'%3Fm%3Dloginpage%26lang%3Dzh_CN%26d%3D'+encodeURIComponent(location.href);})();">忘记密码？</a>
+    <br /><a class="ibm-forward-link" href="index.html.1#" onclick="(function () {window.location='https://www.ibm.com/account/profile?page=chpw&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d='+encodeURIComponent(location.href);})();">更改您的密码</a></span></p> 
+<p class="dw-perm-box">
+	<span><input id="perm" type="checkbox" name="perm_name"/><label for="perm"> 保持登录。</label></span>
+</p>
+<p>单击提交则表示您同意developerWorks 的条款和条件。 <a
+    href="http://www.ibm.com/developerworks/community/terms?lang=zh">查看条款和条件</a>。</p>
+<div class="ibm-buttons-row">
+   <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="dwsi.siInst.signin();return false;" type="submit" /><span class="ibm-sep">&nbsp;</span>
+<input value="取消" type="button" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="dwsi.siInst.clearForm();ibmweb.overlay.hide('signin_overlay');return false;"/></p>
+</div>
+</form>
+ <div class="ibm-overlay-rule"><hr /></div> 
+
+<p>在您首次登录 developerWorks 时，会为您创建一份个人概要。<strong>您的个人概要中的信息（您的姓名、国家/地区，以及公司名称）是公开显示的，而且会随着您发布的任何内容一起显示，除非您选择隐藏您的公司名称。</strong>您可以随时更新您的 IBM 帐户。</p>
+<div><p class="dw-c-overlay-secure">所有提交的信息确保安全。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="ibm-footer"></div>
+</div>
+<!-- Display name OVERLAY STARTS HERE -->
+<div class="ibm-common-overlay" id="displayname_overlay">
+<div class="ibm-head">
+<p><a class="ibm-common-overlay-close" href="index.html.1#" onclick="dwsi.siInst.clearForm();">关闭 [x]</a></p>
+</div>
+<div class="ibm-body">
+<div class="ibm-main">
+<div class="ibm-title">
+<h2>选择您的昵称</h2><br /><br />
+<div id="ibm-overlay-error-dname" class="no-display"></div>
+</div>
+<div class="ibm-container ibm-alternate ibm-buttons-last">
+<div class="ibm-container-body">
+<p class="ibm-overlay-intro">当您初次登录到 developerWorks 时，将会为您创建一份概要信息，您需要指定一个昵称。您的昵称将和您在 developerWorks 发布的内容显示在一起。</p><p><strong>昵称长度在 3 至 31 个字符之间</strong>。 
+    您的昵称在 developerWorks 社区中必须是唯一的，并且出于隐私保护的原因，不能是您的电子邮件地址。</p>
+<p class="ibm-overlay-intro">标有星（<span class="ibm-required">*</span>）号的字段是必填字段。</p> 
+<form id="dFormId" method="post" action="index.html.1" name="dForm" onsubmit="return false;" class="ibm-column-form">
+<p><label for="displayname">昵称：<span class="ibm-required">*</span></label><span>
+    <input name="displayname" id="displayname" size="25" value="" type="text" onkeypress="dwsi.siInst.handleEP(event,this.form);" /></span>
+    <span class="ibm-form-note">(昵称长度在 3 至 31 个字符之间)</span>
+</p>
+<p>单击<strong>提交</strong>则表示您同意developerWorks 的条款和条件。 <a href="http://www.ibm.com/developerworks/community/terms?lang=zh">查看条款和条件</a>.</p>
+<div class="ibm-buttons-row">
+   <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="dwsi.siInst.signin();return false;" type="submit" /><span class="ibm-sep">&nbsp;</span>
+<input value="取消" type="button" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="dwsi.siInst.clearForm();ibmweb.overlay.hide('displayname_overlay');return false;" /></p>
+</div>
+</form>
+<div class="ibm-overlay-rule"><hr /></div>
+<div><p class="dw-c-overlay-secure">所有提交的信息确保安全。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="ibm-footer"></div>
+</div>
+
+
+<!-- INLINE_COMMENTS_END -->
+
+</div>
+<!-- 6_4_COLUMN_END -->
+
+<!-- 6_2_COLUMN_BEGIN -->
+<div class="ibm-col-6-2">
+
+<!-- Next_Steps -->
+<!-- Dig_Deeper -->
+
+
+<!-- Promotion_Module -->
+    
+<!-- PROMOTION_MODULE_START -->
+<div class="ibm-alternate-rule"><hr /></div>
+<ul class="ibm-portrait-module-list">
+<li><img height="60" width="60" src="http://www.ibm.com/developerworks/i/sm-f-cl-puresystems70.jpg" alt=""/>
+<h3><a class="ibm-feature-link"
+    href="http://www.ibm.com/developerworks/cn/puresystems/">IBM PureSystems</a></h3>
+<p>IBM PureSystems™ 系列解决方案是一个专家集成系统</p></li>
+<li><img height="60" width="60" src="http://www.ibm.com/developerworks/i/sm-f-knowledgepath50.jpg" alt=""/>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/views/global/libraryview.jsp?type_by=Knowledge+paths">developerWorks 学习路线图</a></h3>
+<p>通过学习路线图系统掌握软件开发技能</p></li>
+<li><img height="60" width="60" src="http://www.ibm.com/developerworks/i/sm-f-evaluationsoftware60.png" alt=""/>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/downloads/">软件下载资源中心</a></h3>
+<p>软件下载、试用版及云计算</p></li>
+</ul>
+<!-- PROMOTION_MODULE_END -->
+
+</div>
+<!-- 6_2_COLUMN_END -->
+
+</div>
+<!-- SPLIT_COLUMNS_END -->
+
+<!-- BOTTOM_BACK_TO_TOP -->
+<div class="ibm-columns">
+<div class="ibm-col-1-1">
+	<div class="ibm-alternate-rule"><hr/></div><p class="ibm-ind-link ibm-back-to-top"><a href="index.html.1#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p>
+</div>
+</div>
+
+<!-- Rating_Meta_BEGIN -->
+<!--Rating_Meta_BEGIN--><div class="metavalue">static.content.url=http://www.ibm.com/developerworks/js/artrating/</div><div class="metavalue">SITE_ID=10</div><div class="metavalue">Zone=Java technology</div><div class="metavalue">ArticleID=983042</div><div class="metavalue">ArticleTitle=Java 8 中的 Streams API 详解</div><div class="metavalue">publish-date=09112014</div><script language="javascript" type="text/javascript">document.write('<div class="metavalue">url='+location.href.replace(/</g,  '%3C')+'</div>');</script><!--Rating_Meta_END-->
+<!-- Rating_Meta_END -->
+
+</div>
+<!-- END_IBM_CONTENT_MAIN -->
+
+</div>
+<!-- END_IBM_CONTENT_BODY -->
+
+</div>
+<!-- END_IBM_CONTENT -->
+
+</div>
+<!-- END_IBM_PCON -->
+<!-- FOOTER_BEGIN -->
+<div id="ibm-footer"><!-- IBM footer container; disabled --></div>
+
+<div id="ibm-footer-module-dwwrapper" role="contentinfo" aria-label="developerWorks Footer">
+
+<div id="ibm-footer-module-dw">
+	<div class="dw-footer-columns">
+		<div class="dw-footer-col-6-1 dw-footer-col-6-1-cn">
+			<ul>
+				<li><a href="https://www.ibm.com/developerworks/secure/feedback.jsp?domain=dwchina" tabindex="0">帮助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/author/" tabindex="0">联系编辑</a></li>
+				<li><a href="https://www.ibm.com/developerworks/secure/myideas2.jsp?domain=dwchina&start=true" tabindex="0">提交内容</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/rss/" tabindex="0">订阅源</a></li>
+			</ul>
+        </div>
+		<div class="dw-footer-col-6-2">
+			<ul>
+				<li><a href="http://www.ibm.com/vrm/newsletter/10104?S_TACT=105AGX52&S_CMP=dwcntop" tabindex="0">在线浏览每周时事通讯</a></li>
+				<li><a class="dwcn-sina-link" href="http://weibo.com/ibmdw/" target="_blank" tabindex="0">新浪微博</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/report?lang=zh" tabindex="0">报告滥用</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/terms?lang=zh" tabindex="0">使用条款</a></li>
+				<li><a href="https://www.ibm.com/developerworks/cn/community/terms/thirdparty/" tabindex="0">第三方提示</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-3">
+			<ul>
+				<li><a href="http://www.ibm.com/privacy/cn/zh/" tabindex="0">隐私条约</a></li>
+				<li><a href="http://www.ibm.com/ibm/accessibility/cn/" tabindex="0">浏览辅助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/academic/" tabindex="0">IBM 教育学院教育培养计划</a></li><li><a href="http://www.ibm.com/developerworks/cn/gep/">IBM 创业企业全球扶持计划</a></li><li><a href="http://www.ibm.com/partnerworld/isv/">ISV 资源 (英语)</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-4"> 
+			<ul>
+				<li><a href="http://www.ibm.com/developerworks/cn/newsletter/" tabindex="0">dW 中国每周时事通讯</a></li>
+			</ul>
+			</form>
+		</div>
+		<div class="dw-footer-col-6-5">
+			<ul>
+				<li class="dw-footer-lang-head">选择语言：</li>
+				<li><a href="http://www.ibm.com/developerworks/" tabindex="0">English</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/" lang="zh" tabindex="0">中文</a></li>
+				<li><a href="http://www.ibm.com/developerworks/jp/" lang="ja" tabindex="0">日本語</a></li>
+				<li><a href="http://www.ibm.com/developerworks/ru/" lang="ru" tabindex="0">Русский</a></li>
+				<li><a href="http://www.ibm.com/developerworks/br/" lang="pt" tabindex="0">Português (Brasil)</a></li>
+				<li><a href="http://www.ibm.com/developerworks/ssa/" lang="es" tabindex="0">Español</a></li>
+				<li><a href="http://www.ibm.com/developerworks/vn/" lang="vi" tabindex="0">Việt</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-6">
+			<img width="223" height="46" alt="IBM®" src="http://dw1.s81c.com/developerworks/i/mf/dwn-ibm-logo-v17.png">
+			<img class="dw-preload" src="http://1.www.s81c.com/i/v17/icons/ibm_sprite_social_blue_ON.png" alt="" width="1" height="1"/>
+		</div>
+	</div>
+</div>
+
+</div><!-- FOOTER_END -->
+
+<!-- END_IBM-TOP -->
+</div>
+
+<!-- SCRIPTS_INCLUDE_BEGIN -->
+<script type="text/javascript" src="http://www.ibm.com/developerworks/js/v17/dw-comments.js">//</script>
+<script type="text/javascript" language="JavaScript">
+	dojo.ready(function(){
+		rBHash = typeof rBHash == "undefined" ? {} : rBHash;
+		rBHash['viperLang'] = 'zh';
+		rBHash['urlLang'] = 'cn';
+		rBHash['dwwi2Lang'] = 'zh_CN';
+		rBHash['appCode'] = 'dwmav';
+		rBHash['signoutUrl'] = (location.host.toLowerCase() === "www.ibm.com" || location.host.toLowerCase() === "developer.ibm.com") ? 'http://www.ibm.com/developerworks/cn/' : ''; 
+		dwsi.siInst = new dwweb.dynnav.dwsi();
+		dwsi.siInst.initSI();		
+
+		// construct the comment widget
+dwc.cmts = '条评论';
+dwc.signInPreText = '请';
+dwc.signIn = '登录';
+dwc.or = '或';
+dwc.register = '注册';
+dwc.signInPostText = '';
+dwc.leaveCmt = '后发表评论。';
+dwc.view = '查看';
+dwc.totalCmts = '共有评论';
+dwc.postYourCmt = '添加您的评论';
+dwc.show = '显示：';
+dwc.recentCmts = '最新评论';
+dwc.allCmts = '所有评论';
+dwc.tooLongCmt = '您的评论超过了 1000 字符限制';
+dwc.numCharsLeft = '剩余 <span id="charCount">{1}</span> 字符';
+dwc.reportAbuse = '报告滥用';
+dwc.notifyMsg = '有新评论时提醒我';
+dwc.htmlWarning = '注意：评论中不支持 HTML 语法'; 
+dwc.cmt = '评论：';
+dwc.addCmts = '添加评论';
+dwc.addCmt = '添加评论';
+dwc.doNotErase = '--在下方添加评论--'; 
+dwc.viewOrAddCmts = '查看或添加评论';
+dwc.reportInapprCont = '举报不良信息';
+dwc.reportInapprContLink = 'http://www.ibm.com/developerworks/forums/forum.jspa?forumID=1834';
+dwc.postingCmt = '正在发布评论……';
+dwc.noCmt = '快来添加第一条评论';
+dwc.netwkErr = '在检索评论时出错，请稍后刷新。';
+dwc.addACmt = '添加评论';
+dwc.instructCmt = '标有星号（<span class="ibm-required">*</span>）的是必填项目。';
+dwc.btnPost = '发布';
+dwc.btnPostAnon = '匿名发布';
+dwc.btnClrCmt = '清除评论';
+dwc.btnCancel = '取消';
+dwc.showRecent = '显示最新的 {1} 条评论'; // {1} is the count to be substituted
+dwc.showNext = '显示后 {1} 条评论'; // {1} is the count to be substituted
+dwc.showAllCmts = '显示所有评论';
+dwc.enterCmt = '请输入评论内容。';
+dwc.loginErr = '暂时无法验证您的登录状态，请稍后再试。';
+dwc.postErr = '暂时无法发布您的评论，请稍后再试。';
+dwc.postBy = '由 <strong>{1}</strong>  于 {2} '; // {1} is the author to be substituted; {2} is the date
+dwc.siteId = 10;
+dwc.lang = 'zh_CN';
+dwc.viperLang = 'zh';
+//dwc.abuseHref =  null;
+dwc.maxChars = 1000;
+dwc.cmtTxt =  '评论：';
+dwc.cmtsTxt =  '评论：';  
+		dwc && new dwc.comments('threadShow','95%',5,'nCmts','icomments');
+		});
+</script>
+
+
+
+<!-- BEGIN: Use this section to set page specific variables for the Unica Page Tag -->
+<script language="JavaScript">var NTPT_PGEXTRA="ibmSkillLevel=-&ibmCmaId=983042&ibmContentAreas=java";</script>
+<!--END --><!-- SCRIPTS_INCLUDE_END -->
+
+<div id="ibm-metrics">
+<script src="http://dw1.s81c.com/common/stats/stats.js" type="text/javascript">//</script>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+<title></title>
+<!-- 2015-04-13 Mon 18:03 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="author" content="visayafan"/>
+</head>
+<body>
+<div id="content">
+<h1 class="title"></h1>
+<div id="table-of-contents">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. GRADLE_HOME</a></li>
+<li><a href="#sec-2">2. gradle tasks</a></li>
+<li><a href="#sec-3">3. gradle &#x2013;daemon</a></li>
+</ul>
+</div>
+</div>
+<link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/too_many_toc.css" />
+<script src="../../layout/js/jquery_1.7.1.js"></script>
+<script src="../../layout/js/bootstrap_old.js"></script>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> GRADLE_HOME</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="http://stackoverflow.com/questions/18495474/intellij-cannot-find-gradle-home-location">http://stackoverflow.com/questions/18495474/intellij-cannot-find-gradle-home-location</a><br/>
+</p>
+<pre class="example">
+task getHomeDir &lt;&lt; {
+    println gradle.gradleHomeDir
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> gradle tasks</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+查看available tasks（不显示依赖tasks）<br/>
+<code>gradle tasks - -all</code> 查看所有tasks<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> gradle &#x2013;daemon</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+启动一个gradle daemon， <code>gradle &#x2013;stop</code> 杀死gradle daemon<br/>
+使用daemon启动task <code>gradle taskName &#x2013;daemon</code> ，不使用daemon <code>gradle taskName &#x2013;no-daemon</code>.<br/>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

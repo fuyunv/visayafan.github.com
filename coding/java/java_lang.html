@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title></title>
-<!-- 2014-03-28 星期五 17:25 -->
+<!-- 2015-04-14 Tue 17:22 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
 <meta name="author" content="visayafan"/>
@@ -17,10 +17,16 @@
 <ul>
 <li><a href="#sec-1">1. import static</a></li>
 <li><a href="#sec-2">2. java初始化顺序</a></li>
+<li><a href="#sec-3">3. 抽象类与接口</a></li>
+<li><a href="#sec-4">4. Java不允许继承多个类</a></li>
+<li><a href="#sec-5">5. heap pollution</a></li>
+<li><a href="#sec-6">6. Java8 Repeatable注解</a></li>
+<li><a href="#sec-7">7. Java8 ::操作符（Method Reference）</a></li>
+<li><a href="#sec-8">8. Java8 Stream</a></li>
+<li><a href="#sec-9">9. == 与 equals</a></li>
 </ul>
 </div>
 </div>
-<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
 <link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
 <link rel="stylesheet" type="text/css" href="../../layout/css/too_many_toc.css" />
 <script src="../../layout/js/jquery_1.7.1.js"></script>
@@ -40,32 +46,31 @@ import static静态导入是jdk1.5中的新特性。一般我们导入一个类�
 <h2 id="sec-2"><span class="section-number-2">2</span> java初始化顺序</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-如果有父类则递归加载父类。<br/>
-之后从最早基类开始往下依次初始化static成员变量，但只初始化一次。<br/>
-之后从最早基类开始往下依次处理每个类中的成员变量和构造函数。<br/>
+如果有父类则递归加载父类,从最早基类开始往下依次初始化static成员变量，但只初始化一次(main函数为空此步仍会进行)。<br/>
+之后如果有创建子类对象，则从最早基类开始往下依次处理每个类中的成员变量和构造函数。<br/>
 </p>
 <div class="accordion-group"> <div class="accordion-heading"> <a href="#CollapseID源码例证" data-toggle="collapse" class="accordion-toggle">源码例证</a> </div> <div class="accordion-body collapse" style="height: 0px" id="CollapseID源码例证"> <div class="accordion-inner">
 <div class="row-fluid"> <div class="span5">
 <div class="org-src-container">
 
-<pre class="src src-java"><span style="color: #b4fa70;">class</span> <span style="color: #8cc4ff;">base</span>{
-    <span style="color: #b0c4de;">static</span> <span style="color: #8cc4ff;">int</span> <span style="color: #fcaf3e;">i</span>=b.printAndRet1();
-    base(){
-        System.out.println(<span style="color: #e9b96e;">"base ctor"</span>);
+<pre class="src src-java"><span style="color: #a020f0;">class</span> <span style="color: #228b22;">base</span>{
+    <span style="color: #da70d6;">static</span> <span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>=b.printAndRet1();
+    <span style="color: #0000ff;">base</span>(){
+        System.out.println(<span style="color: #8b2252;">"base ctor"</span>);
     }
-    <span style="color: #8cc4ff;">int</span> <span style="color: #fcaf3e;">k</span>=b.printAndRet3();
+    <span style="color: #228b22;">int</span> <span style="color: #a0522d;">k</span>=b.printAndRet3();
 }
 
-<span style="color: #b0c4de;">public</span> <span style="color: #b4fa70;">class</span> <span style="color: #8cc4ff;">a</span> <span style="color: #b4fa70;">extends</span> <span style="color: #8cc4ff;">base</span>{
-    a(){
-        System.out.println(<span style="color: #e9b96e;">"a ctor"</span>);
+<span style="color: #da70d6;">public</span> <span style="color: #a020f0;">class</span> <span style="color: #228b22;">a</span> <span style="color: #a020f0;">extends</span> <span style="color: #228b22;">base</span>{
+    <span style="color: #0000ff;">a</span>(){
+        System.out.println(<span style="color: #8b2252;">"a ctor"</span>);
     }
-    <span style="color: #b0c4de;">static</span> <span style="color: #8cc4ff;">int</span> <span style="color: #fcaf3e;">j</span>=b.printAndRet2();
-    <span style="color: #8cc4ff;">int</span> <span style="color: #fcaf3e;">n</span>=b.printAndRet1();
-    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #8cc4ff;">void</span> <span style="color: #fce94f;">main</span>(<span style="color: #8cc4ff;">String</span>[] <span style="color: #fcaf3e;">args</span>){
-        System.out.println(<span style="color: #e9b96e;">"main"</span>);
-        <span style="color: #8cc4ff;">a</span> <span style="color: #fcaf3e;">aa</span>=<span style="color: #b4fa70;">new</span> <span style="color: #8cc4ff;">a</span>();
-        <span style="color: #8cc4ff;">a</span> <span style="color: #fcaf3e;">aaa</span>=<span style="color: #b4fa70;">new</span> <span style="color: #8cc4ff;">a</span>();
+    <span style="color: #da70d6;">static</span> <span style="color: #228b22;">int</span> <span style="color: #a0522d;">j</span>=b.printAndRet2();
+    <span style="color: #228b22;">int</span> <span style="color: #a0522d;">n</span>=b.printAndRet1();
+    <span style="color: #da70d6;">public</span> <span style="color: #da70d6;">static</span> <span style="color: #228b22;">void</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">String</span>[] <span style="color: #a0522d;">args</span>){
+        System.out.println(<span style="color: #8b2252;">"main"</span>);
+        <span style="color: #228b22;">a</span> <span style="color: #a0522d;">aa</span>=<span style="color: #a020f0;">new</span> <span style="color: #228b22;">a</span>();
+        <span style="color: #228b22;">a</span> <span style="color: #a0522d;">aaa</span>=<span style="color: #a020f0;">new</span> <span style="color: #228b22;">a</span>();
     }
 }
 </pre>
@@ -73,18 +78,18 @@ import static静态导入是jdk1.5中的新特性。一般我们导入一个类�
 </div> <div class="span5">
 <div class="org-src-container">
 
-<pre class="src src-java"><span style="color: #b0c4de;">public</span> <span style="color: #b4fa70;">class</span> <span style="color: #8cc4ff;">b</span>{
-    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #8cc4ff;">int</span> <span style="color: #fce94f;">printAndRet1</span>(){
-        System.out.println(<span style="color: #e9b96e;">"1"</span>);
-        <span style="color: #b4fa70;">return</span> <span style="color: #ffa07a;">1</span>;
+<pre class="src src-java"><span style="color: #da70d6;">public</span> <span style="color: #a020f0;">class</span> <span style="color: #228b22;">b</span>{
+    <span style="color: #da70d6;">public</span> <span style="color: #da70d6;">static</span> <span style="color: #228b22;">int</span> <span style="color: #0000ff;">printAndRet1</span>(){
+        System.out.println(<span style="color: #8b2252;">"1"</span>);
+        <span style="color: #a020f0;">return</span> <span style="color: #bc8f8f;">1</span>;
     }
-    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #8cc4ff;">int</span> <span style="color: #fce94f;">printAndRet2</span>(){
-        System.out.println(<span style="color: #e9b96e;">"2"</span>);
-        <span style="color: #b4fa70;">return</span> <span style="color: #ffa07a;">1</span>;
+    <span style="color: #da70d6;">public</span> <span style="color: #da70d6;">static</span> <span style="color: #228b22;">int</span> <span style="color: #0000ff;">printAndRet2</span>(){
+        System.out.println(<span style="color: #8b2252;">"2"</span>);
+        <span style="color: #a020f0;">return</span> <span style="color: #bc8f8f;">1</span>;
     }
-    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #8cc4ff;">int</span> <span style="color: #fce94f;">printAndRet3</span>(){
-        System.out.println(<span style="color: #e9b96e;">"3"</span>);
-        <span style="color: #b4fa70;">return</span> <span style="color: #ffa07a;">1</span>;
+    <span style="color: #da70d6;">public</span> <span style="color: #da70d6;">static</span> <span style="color: #228b22;">int</span> <span style="color: #0000ff;">printAndRet3</span>(){
+        System.out.println(<span style="color: #8b2252;">"3"</span>);
+        <span style="color: #a020f0;">return</span> <span style="color: #bc8f8f;">1</span>;
     }    
 }
 </pre>
@@ -105,6 +110,187 @@ base ctor
 a ctor
 </pre>
 </div> </div> </div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 抽象类与接口</h2>
+<div class="outline-text-2" id="text-3">
+<ol class="org-ol">
+<li>抽象类里可以有普通成员方法，此种方法可以有定义；接口中所有方法均为抽象方法，抽象方法不可以有定义；<br/>
+</li>
+<li>抽象类中成员变量可以是各种类型；接口中成员变量必为 <code>public static final</code> 类型。<br/>
+</li>
+<li><b>一个类最多只能继承一个类</b> ，但可以实现多个接口。<br/>
+</li>
+<li>继承是一个"是不是"的关系，而接口则是"有没有"的关系。如果一个类继承了某个抽象类，则子类必定是抽象类的种类；而接口实现则是有没有、具备不具备的关系，比如鸟是否能飞，能飞行则可以实现这个接口，不能飞行就不实现这个接口。<br/>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Java不允许继承多个类</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+<a href="http://www.zhihu.com/question/20306381">http://www.zhihu.com/question/20306381</a><br/>
+AB同时有f方法，若C继承A，B；则C调用f时无法决定调用A的f还是B的f。C++有解决办法。<br/>
+Java只允许最多继承一个类，但可以实现多个接口；如C继承B类，实现A接口，若B和A中同时有f方法，则不会出现上面问题：若C无f方法，则从B继承来的f方法可以当作实现A接口中的f方法；若C有f方法，则此f方法override B中f方法并实现A中f方法。<br/>
+Java间接实现多重继承的方法 <a href="http://www.cnblogs.com/chenssy/p/3389027.html">http://www.cnblogs.com/chenssy/p/3389027.html</a><br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> heap pollution</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+<a href="http://en.wikipedia.org/wiki/Heap_pollution">http://en.wikipedia.org/wiki/Heap_pollution</a><br/>
+本该存放A类型的泛型变量里存放B类型的数据。编译时有unchecked警告，运行时出现ClassCastException错误。<br/>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #da70d6;">public</span> <span style="color: #a020f0;">class</span> <span style="color: #228b22;">HeapPollutionDemo</span>
+{
+   <span style="color: #da70d6;">public</span> <span style="color: #da70d6;">static</span> <span style="color: #228b22;">void</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">String</span>[] <span style="color: #a0522d;">args</span>)
+   {
+      <span style="color: #228b22;">Set</span> <span style="color: #a0522d;">s</span> = <span style="color: #a020f0;">new</span> <span style="color: #228b22;">TreeSet</span>&lt;<span style="color: #228b22;">Integer</span>&gt;();
+      <span style="color: #228b22;">Set</span>&lt;<span style="color: #228b22;">String</span>&gt; <span style="color: #a0522d;">ss</span> = s;            <span style="color: #b22222;">// </span><span style="color: #b22222;">unchecked warning</span>
+      s.add(<span style="color: #a020f0;">new</span> <span style="color: #228b22;">Integer</span>(<span style="color: #bc8f8f;">42</span>));        <span style="color: #b22222;">// </span><span style="color: #b22222;">another unchecked warning</span>
+      <span style="color: #228b22;">Iterator</span>&lt;<span style="color: #228b22;">String</span>&gt; <span style="color: #a0522d;">iter</span> = ss.iterator();
+      <span style="color: #a020f0;">while</span> (iter.hasNext())
+      {
+         <span style="color: #228b22;">String</span> <span style="color: #a0522d;">str</span> = iter.next();   <span style="color: #b22222;">// </span><span style="color: #b22222;">ClassCastException thrown</span>
+         System.out.println(str);
+      }
+   }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Java8 Repeatable注解</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+<a href="http://softwarecave.org/2014/05/20/repeating-annotations-in-java-8/">http://softwarecave.org/2014/05/20/repeating-annotations-in-java-8/</a><br/>
+</p>
+<div class="accordion-group"> <div class="accordion-heading"> <a href="#CollapseIDJava8使用Repeatable实现多次注解" data-toggle="collapse" class="accordion-toggle">Java8使用Repeatable实现多次注解</a> </div> <div class="accordion-body collapse" style="height: 0px" id="CollapseIDJava8使用Repeatable实现多次注解"> <div class="accordion-inner">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #b22222;">// </span><span style="color: #b22222;">Author.java</span>
+<span style="color: #a020f0;">import</span> <span style="color: #0000cd;">java.lang.annotation.</span><span style="color: #228b22;">Repeatable</span>;
+
+@Repeatable(value = Authors.<span style="color: #a020f0;">class</span>)
+<span style="color: #da70d6;">public</span> @<span style="color: #a020f0;">interface</span> <span style="color: #228b22;">Author</span> {
+    <span style="color: #228b22;">String</span> <span style="color: #0000ff;">name</span>() <span style="color: #a020f0;">default</span> <span style="color: #8b2252;">""</span>;
+}
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">Authors.java</span>
+<span style="color: #a020f0;">import</span> <span style="color: #0000cd;">java.lang.annotation.</span><span style="color: #228b22;">Retention</span>;
+<span style="color: #a020f0;">import</span> <span style="color: #0000cd;">java.lang.annotation.</span><span style="color: #228b22;">RetentionPolicy</span>;
+
+@Retention(<span style="color: #008b8b;">RetentionPolicy</span>.<span style="color: #228b22;">RUNTIME</span>)
+<span style="color: #da70d6;">public</span> @<span style="color: #a020f0;">interface</span> <span style="color: #228b22;">Authors</span> {
+    <span style="color: #228b22;">Author</span>[] <span style="color: #0000ff;">value</span>();
+}
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">Book.java</span>
+@Author(name=<span style="color: #8b2252;">"fan"</span>)
+@Author(name=<span style="color: #8b2252;">"han"</span>)
+<span style="color: #da70d6;">public</span> <span style="color: #a020f0;">class</span> <span style="color: #228b22;">Book</span> {
+}
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">RepeatableAnnotation.java</span>
+<span style="color: #da70d6;">public</span> <span style="color: #a020f0;">class</span> <span style="color: #228b22;">RepeatableAnnotation</span> {
+    <span style="color: #da70d6;">public</span> <span style="color: #da70d6;">static</span> <span style="color: #228b22;">void</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">String</span>[] <span style="color: #a0522d;">args</span>) <span style="color: #a020f0;">throws</span> <span style="color: #228b22;">ClassNotFoundException</span> {
+        <span style="color: #228b22;">Author</span>[] <span style="color: #a0522d;">authors</span> = Class.forName(<span style="color: #8b2252;">"Book"</span>).getAnnotationsByType(Author.<span style="color: #a020f0;">class</span>);
+        <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">Author</span> <span style="color: #a0522d;">author</span> : authors)
+            System.out.println(author);
+
+        <span style="color: #228b22;">Authors</span> <span style="color: #a0522d;">authors2</span> = Book.<span style="color: #a020f0;">class</span>.getAnnotation(Authors.<span style="color: #a020f0;">class</span>);
+        <span style="color: #a020f0;">for</span>(<span style="color: #228b22;">Author</span> <span style="color: #a0522d;">author</span>: authors2.value())
+            System.out.println(author);
+    }
+}
+</pre>
+</div>
+</div> </div> </div>
+<p>
+<a href="http://stackoverflow.com/questions/1554112/multiple-annotations-of-the-same-type-on-one-element">http://stackoverflow.com/questions/1554112/multiple-annotations-of-the-same-type-on-one-element</a><br/>
+</p>
+<div class="accordion-group"> <div class="accordion-heading"> <a href="#CollapseIDJava7通过嵌套注解数组来实现多次注解" data-toggle="collapse" class="accordion-toggle">Java7通过嵌套注解数组来实现多次注解</a> </div> <div class="accordion-body collapse" style="height: 0px" id="CollapseIDJava7通过嵌套注解数组来实现多次注解"> <div class="accordion-inner">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #a020f0;">import</span> <span style="color: #0000cd;">java.lang.annotation.</span><span style="color: #228b22;">ElementType</span>;
+<span style="color: #a020f0;">import</span> <span style="color: #0000cd;">java.lang.annotation.</span><span style="color: #228b22;">Retention</span>;
+<span style="color: #a020f0;">import</span> <span style="color: #0000cd;">java.lang.annotation.</span><span style="color: #228b22;">RetentionPolicy</span>;
+<span style="color: #a020f0;">import</span> <span style="color: #0000cd;">java.lang.annotation.</span><span style="color: #228b22;">Target</span>;
+
+@Target(<span style="color: #008b8b;">ElementType</span>.<span style="color: #228b22;">TYPE</span>)
+@Retention(<span style="color: #008b8b;">RetentionPolicy</span>.<span style="color: #228b22;">RUNTIME</span>)
+@<span style="color: #a020f0;">interface</span> <span style="color: #228b22;">Author</span> {
+    <span style="color: #228b22;">String</span> <span style="color: #0000ff;">name</span>();
+}
+
+@Target(<span style="color: #008b8b;">ElementType</span>.<span style="color: #228b22;">TYPE</span>)
+@Retention(<span style="color: #008b8b;">RetentionPolicy</span>.<span style="color: #228b22;">RUNTIME</span>)
+@<span style="color: #a020f0;">interface</span> <span style="color: #228b22;">Authors</span> {
+    <span style="color: #228b22;">Author</span>[] <span style="color: #0000ff;">value</span>();
+}
+
+@Authors({
+        @Author(name = <span style="color: #8b2252;">"fan"</span>),
+        <span style="color: #a0522d;">@Author</span>(name = <span style="color: #8b2252;">"han"</span>)
+})
+<span style="color: #a020f0;">class</span> <span style="color: #228b22;">Book</span> {
+
+}
+
+<span style="color: #da70d6;">public</span> <span style="color: #a020f0;">class</span> <span style="color: #228b22;">RepeatableAnnotation</span> {
+    <span style="color: #da70d6;">public</span> <span style="color: #da70d6;">static</span> <span style="color: #228b22;">void</span> <span style="color: #0000ff;">main</span>(<span style="color: #228b22;">String</span>[] <span style="color: #a0522d;">args</span>) <span style="color: #a020f0;">throws</span> <span style="color: #228b22;">ClassNotFoundException</span> {
+        <span style="color: #228b22;">Authors</span> <span style="color: #a0522d;">authors</span> = Book.<span style="color: #a020f0;">class</span>.getAnnotation(Authors.<span style="color: #a020f0;">class</span>);
+        <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">Author</span> <span style="color: #a0522d;">author</span> : authors.value())
+            System.out.println(author);
+    }
+}
+</pre>
+</div>
+</div> </div> </div>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Java8 ::操作符（Method Reference）</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+<a href="http://stackoverflow.com/questions/20001427/double-colon-operator-in-java-8">http://stackoverflow.com/questions/20001427/double-colon-operator-in-java-8</a><br/>
+<a href="http://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html">http://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html</a><br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Java8 Stream</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+<a href="http://www.ibm.com/developerworks/cn/java/j-lo-java8streamapi/">http://www.ibm.com/developerworks/cn/java/j-lo-java8streamapi/</a><br/>
+<a href="./java8stream.html">本地存档备份</a><br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> == 与 equals</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+<a href="http://www.cnblogs.com/zhxhdean/archive/2011/03/25/1995431.html">http://www.cnblogs.com/zhxhdean/archive/2011/03/25/1995431.html</a><br/>
+== 判断是否是同一个引用<br/>
+JAVA当中所有的类都是继承于Object这个基类的，在Object中的基类中定义了一个equals的方法，这个方法的初始行为是比较对象的内存地址。<br/>
+但在一些类库当中这个方法被覆盖掉了，如String,Integer,Date在这些类当中equals有其自身的实现，而不再是比较类在堆内存中的存放地址了。<br/>
+对于复合数据类型之间进行equals比较，在没有覆写equals方法的情况下，他们之间的比较还是基于他们在内存中的存放位置的地址值的，因为Object的equals方法也是用双等号（==）进行比较的，所以比较后的结果跟双等号（==）的结果相同。<br/>
+</p>
 </div>
 </div>
 </div>

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title>Lyx 笔记</title>
-<!-- 2014-10-29 Wed 10:21 -->
+<!-- 2015-03-05 Thu 18:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
 <meta name="author" content="visayafan"/>
@@ -76,44 +76,45 @@
 <li><a href="#sec-6">6. 参考文献</a></li>
 <li><a href="#sec-7">7. 分栏</a></li>
 <li><a href="#sec-8">8. 设置页边距</a></li>
-<li><a href="#sec-9">9. 源码高亮</a></li>
-<li><a href="#sec-10">10. 算法排版</a></li>
-<li><a href="#sec-11">11. 为lyx添加新的class</a></li>
-<li><a href="#sec-12">12. 插入gif动画文件</a></li>
-<li><a href="#sec-13">13. Beamer中为插入frame设置快捷键</a></li>
-<li><a href="#sec-14">14. lyx+latex+Beamer</a>
+<li><a href="#sec-9">9. 水平垂直居中</a></li>
+<li><a href="#sec-10">10. 源码高亮</a></li>
+<li><a href="#sec-11">11. 算法排版</a></li>
+<li><a href="#sec-12">12. 为lyx添加新的class</a></li>
+<li><a href="#sec-13">13. 插入gif动画文件</a></li>
+<li><a href="#sec-14">14. Beamer中为插入frame设置快捷键</a></li>
+<li><a href="#sec-15">15. lyx+latex+Beamer</a>
 <ul>
-<li><a href="#sec-14-1">14.1. columns</a></li>
-<li><a href="#sec-14-2">14.2. block</a></li>
-<li><a href="#sec-14-3">14.3. step-wise</a></li>
-<li><a href="#sec-14-4">14.4. replace</a>
+<li><a href="#sec-15-1">15.1. columns</a></li>
+<li><a href="#sec-15-2">15.2. block</a></li>
+<li><a href="#sec-15-3">15.3. step-wise</a></li>
+<li><a href="#sec-15-4">15.4. replace</a>
 <ul>
-<li><a href="#sec-14-4-1">14.4.1. only</a></li>
-<li><a href="#sec-14-4-2">14.4.2. uncover</a></li>
-<li><a href="#sec-14-4-3">14.4.3. invisable</a></li>
-<li><a href="#sec-14-4-4">14.4.4. alter</a></li>
-<li><a href="#sec-14-4-5">14.4.5. alt</a></li>
-<li><a href="#sec-14-4-6">14.4.6. temporal</a></li>
-<li><a href="#sec-14-4-7">14.4.7. Overprint/Overlayarea</a></li>
+<li><a href="#sec-15-4-1">15.4.1. only</a></li>
+<li><a href="#sec-15-4-2">15.4.2. uncover</a></li>
+<li><a href="#sec-15-4-3">15.4.3. invisable</a></li>
+<li><a href="#sec-15-4-4">15.4.4. alter</a></li>
+<li><a href="#sec-15-4-5">15.4.5. alt</a></li>
+<li><a href="#sec-15-4-6">15.4.6. temporal</a></li>
+<li><a href="#sec-15-4-7">15.4.7. Overprint/Overlayarea</a></li>
 </ul>
 </li>
-<li><a href="#sec-14-5">14.5. 创建链接</a></li>
-<li><a href="#sec-14-6">14.6. 整个frame的内容动态出现</a></li>
-<li><a href="#sec-14-7">14.7. 改变Beamer的脚注</a></li>
-<li><a href="#sec-14-8">14.8. 打印Beamer制作的幻灯片</a>
+<li><a href="#sec-15-5">15.5. 创建链接</a></li>
+<li><a href="#sec-15-6">15.6. 整个frame的内容动态出现</a></li>
+<li><a href="#sec-15-7">15.7. 改变Beamer的脚注</a></li>
+<li><a href="#sec-15-8">15.8. 打印Beamer制作的幻灯片</a>
 <ul>
-<li><a href="#sec-14-8-1">14.8.1. 修改源码实现</a></li>
-<li><a href="#sec-14-8-2">14.8.2. 利用pdfpages包实现</a></li>
+<li><a href="#sec-15-8-1">15.8.1. 修改源码实现</a></li>
+<li><a href="#sec-15-8-2">15.8.2. 利用pdfpages包实现</a></li>
 </ul>
 </li>
-<li><a href="#sec-14-9">14.9. lyx解决Beamer中插入代码问题</a></li>
-<li><a href="#sec-14-10">14.10. 生成的幻灯片默认以全屏方式打开</a></li>
+<li><a href="#sec-15-9">15.9. lyx解决Beamer中插入代码问题</a></li>
+<li><a href="#sec-15-10">15.10. 生成的幻灯片默认以全屏方式打开</a></li>
 </ul>
 </li>
-<li><a href="#sec-15">15. 管理文献</a></li>
-<li><a href="#sec-16">16. 快捷键</a>
+<li><a href="#sec-16">16. 管理文献</a></li>
+<li><a href="#sec-17">17. 快捷键</a>
 <ul>
-<li><a href="#sec-16-1">16.1. lyx设置菜单快捷键</a></li>
+<li><a href="#sec-17-1">17.1. lyx设置菜单快捷键</a></li>
 </ul>
 </li>
 </ul>
@@ -418,8 +419,25 @@ A4默认使用的边距为上下2.54cm,左右3.18cm，可以使用geometry包来
 </div>
 
 <div id="outline-container-sec-9" class="outline-2">
-<h2 id="sec-9"><span class="section-number-2">9</span> 源码高亮</h2>
+<h2 id="sec-9"><span class="section-number-2">9</span> 水平垂直居中</h2>
 <div class="outline-text-2" id="text-9">
+<p>
+用在幻灯片中：<br/>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-tex"><span style="color: #a020f0;">\vspace*</span>{<span style="color: #a020f0;">\fill</span>}<span style="color: #a020f0;">\center</span>{&#27700;&#24179;&#22402;&#30452;&#27491;&#24403;&#20013;}<span style="color: #a020f0;">\vspace*</span>{<span style="color: #a020f0;">\fill</span>}
+</pre>
+</div>
+<p>
+lyx中insert-&gt;formatting-&gt;vertical Space-&gt;VFill并勾上protect，相当于\vspace*{\fill}<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> 源码高亮</h2>
+<div class="outline-text-2" id="text-10">
 <p>
 lstlisting可以实现源码高亮但颜色单调，不过还是建议使用此包，原因：<br/>
 1.lyx对此包的支持非常好，在lyx中插入代码非常方便<br/>
@@ -547,9 +565,9 @@ int main(int argc, char *argv[])
 </div>
 </div>
 
-<div id="outline-container-sec-10" class="outline-2">
-<h2 id="sec-10"><span class="section-number-2">10</span> 算法排版</h2>
-<div class="outline-text-2" id="text-10">
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> 算法排版</h2>
+<div class="outline-text-2" id="text-11">
 <p>
 使用algorithm2e宏包。<a href="http://nckunoname.pixnet.net/blog/post/67368529-%E7%94%A8latex%E5%AF%ABalgorithm">參考</a><br/>
 在preamble中加入<br/>
@@ -631,9 +649,9 @@ int main(int argc, char *argv[])
 </div>
 </div>
 
-<div id="outline-container-sec-11" class="outline-2">
-<h2 id="sec-11"><span class="section-number-2">11</span> 为lyx添加新的class</h2>
-<div class="outline-text-2" id="text-11">
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> 为lyx添加新的class</h2>
+<div class="outline-text-2" id="text-12">
 <p>
 <a href="http://www.paulkiddie.com/2010/02/adding-custom-class-files-cls-to-lyx-in-windows-vista-windows-7-environment/">http://www.paulkiddie.com/2010/02/adding-custom-class-files-cls-to-lyx-in-windows-vista-windows-7-environment/</a><br/>
 查找cls文件位置：使用kpsewhich命令，例如 kpsewhich amsbook.cls<br/>
@@ -641,18 +659,18 @@ int main(int argc, char *argv[])
 </div>
 </div>
 
-<div id="outline-container-sec-12" class="outline-2">
-<h2 id="sec-12"><span class="section-number-2">12</span> 插入gif动画文件</h2>
-<div class="outline-text-2" id="text-12">
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13"><span class="section-number-2">13</span> 插入gif动画文件</h2>
+<div class="outline-text-2" id="text-13">
 <p>
 可以<a href="../../Linux/LinuxOS/UbuntuTrick.html">将gif转换成avi</a> 后再用movie15宏包插入。<br/>
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-13" class="outline-2">
-<h2 id="sec-13"><span class="section-number-2">13</span> Beamer中为插入frame设置快捷键</h2>
-<div class="outline-text-2" id="text-13">
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14"><span class="section-number-2">14</span> Beamer中为插入frame设置快捷键</h2>
+<div class="outline-text-2" id="text-14">
 <p>
 Tools-&gt;Preferences-&gt;Editing-&gt;Shortcuts中New对话框中Function栏写 <code>layout BeginFrame</code> 并为其添加快捷键，同理可为 <code>layout EndFrame</code> 添加快捷键.<br/>
 查看一个功能对应的函数：在菜单上执行一次此功能后会出现在状态栏上。<br/>
@@ -661,30 +679,30 @@ Tools-&gt;Preferences-&gt;Editing-&gt;Shortcuts中New对话框中Function栏写 
 </div>
 </div>
 
-<div id="outline-container-sec-14" class="outline-2">
-<h2 id="sec-14"><span class="section-number-2">14</span> lyx+latex+Beamer</h2>
-<div class="outline-text-2" id="text-14">
-</div><div id="outline-container-sec-14-1" class="outline-3">
-<h3 id="sec-14-1"><span class="section-number-3">14.1</span> columns</h3>
-<div class="outline-text-3" id="text-14-1">
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15"><span class="section-number-2">15</span> lyx+latex+Beamer</h2>
+<div class="outline-text-2" id="text-15">
+</div><div id="outline-container-sec-15-1" class="outline-3">
+<h3 id="sec-15-1"><span class="section-number-3">15.1</span> columns</h3>
+<div class="outline-text-3" id="text-15-1">
 <p>
 首先从下拉菜单下选择columns，在新行中选择column，输入宽度，后快捷键 <code>M-S-right</code> 将其提升了columns的child。<br/>
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-14-2" class="outline-3">
-<h3 id="sec-14-2"><span class="section-number-3">14.2</span> block</h3>
-<div class="outline-text-3" id="text-14-2">
+<div id="outline-container-sec-15-2" class="outline-3">
+<h3 id="sec-15-2"><span class="section-number-3">15.2</span> block</h3>
+<div class="outline-text-3" id="text-15-2">
 <p>
 菜单下选择block后 <code>C-l</code> 输入 <code>{标题}</code> ，注意不可省略 <code>{}</code> 。<br/>
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-14-3" class="outline-3">
-<h3 id="sec-14-3"><span class="section-number-3">14.3</span> step-wise</h3>
-<div class="outline-text-3" id="text-14-3">
+<div id="outline-container-sec-15-3" class="outline-3">
+<h3 id="sec-15-3"><span class="section-number-3">15.3</span> step-wise</h3>
+<div class="outline-text-3" id="text-15-3">
 <ol class="org-ol">
 <li>对于列表之类的 <code>\item&lt;n1-n2&gt;内容</code> 表示在n1至n2个幻灯片上显示，省略n2则表示自n1之后一直显示。<br/>
 <div class="org-src-container">
@@ -714,21 +732,21 @@ Tools-&gt;Preferences-&gt;Editing-&gt;Shortcuts中New对话框中Function栏写 
 </div>
 </div>
 
-<div id="outline-container-sec-14-4" class="outline-3">
-<h3 id="sec-14-4"><span class="section-number-3">14.4</span> replace</h3>
-<div class="outline-text-3" id="text-14-4">
-</div><div id="outline-container-sec-14-4-1" class="outline-4">
-<h4 id="sec-14-4-1"><span class="section-number-4">14.4.1</span> only</h4>
-<div class="outline-text-4" id="text-14-4-1">
+<div id="outline-container-sec-15-4" class="outline-3">
+<h3 id="sec-15-4"><span class="section-number-3">15.4</span> replace</h3>
+<div class="outline-text-3" id="text-15-4">
+</div><div id="outline-container-sec-15-4-1" class="outline-4">
+<h4 id="sec-15-4-1"><span class="section-number-4">15.4.1</span> only</h4>
+<div class="outline-text-4" id="text-15-4-1">
 <p>
 <code>\only&lt;n&gt;{..}</code> 表示只在第n个幻灯片上显示，不保留空间<br/>
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-14-4-2" class="outline-4">
-<h4 id="sec-14-4-2"><span class="section-number-4">14.4.2</span> uncover</h4>
-<div class="outline-text-4" id="text-14-4-2">
+<div id="outline-container-sec-15-4-2" class="outline-4">
+<h4 id="sec-15-4-2"><span class="section-number-4">15.4.2</span> uncover</h4>
+<div class="outline-text-4" id="text-15-4-2">
 <p>
 <code>\uncover&lt;n&gt;{..}</code> 只在n张上显示，保留空间<br/>
 与only的区别可以用下面的例子说明：<br/>
@@ -765,18 +783,18 @@ lyx代码：<br/>
 </div>
 </div>
 
-<div id="outline-container-sec-14-4-3" class="outline-4">
-<h4 id="sec-14-4-3"><span class="section-number-4">14.4.3</span> invisable</h4>
-<div class="outline-text-4" id="text-14-4-3">
+<div id="outline-container-sec-15-4-3" class="outline-4">
+<h4 id="sec-15-4-3"><span class="section-number-4">15.4.3</span> invisable</h4>
+<div class="outline-text-4" id="text-15-4-3">
 <p>
 <code>\invisible&lt;n&gt;{..}</code> 在第n张上消失，和 <code>\uncover&lt;n&gt;{..}</code> 相反。<br/>
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-14-4-4" class="outline-4">
-<h4 id="sec-14-4-4"><span class="section-number-4">14.4.4</span> alter</h4>
-<div class="outline-text-4" id="text-14-4-4">
+<div id="outline-container-sec-15-4-4" class="outline-4">
+<h4 id="sec-15-4-4"><span class="section-number-4">15.4.4</span> alter</h4>
+<div class="outline-text-4" id="text-15-4-4">
 <p>
 <code>\alter&lt;n&gt;{..}</code> 在第n张的时候显示为强调颜色<br/>
 lyx中使用方法是 <code>&lt;alter@n&gt;</code><br/>
@@ -784,18 +802,18 @@ lyx中使用方法是 <code>&lt;alter@n&gt;</code><br/>
 </div>
 </div>
 
-<div id="outline-container-sec-14-4-5" class="outline-4">
-<h4 id="sec-14-4-5"><span class="section-number-4">14.4.5</span> alt</h4>
-<div class="outline-text-4" id="text-14-4-5">
+<div id="outline-container-sec-15-4-5" class="outline-4">
+<h4 id="sec-15-4-5"><span class="section-number-4">15.4.5</span> alt</h4>
+<div class="outline-text-4" id="text-15-4-5">
 <p>
 <code>\alt&lt;n&gt;{before}{after}</code> n帧前为before，n帧后为after。<br/>
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-14-4-6" class="outline-4">
-<h4 id="sec-14-4-6"><span class="section-number-4">14.4.6</span> temporal</h4>
-<div class="outline-text-4" id="text-14-4-6">
+<div id="outline-container-sec-15-4-6" class="outline-4">
+<h4 id="sec-15-4-6"><span class="section-number-4">15.4.6</span> temporal</h4>
+<div class="outline-text-4" id="text-15-4-6">
 <p>
 <code>\temporal&lt;n&gt;{before}{on}{after}</code> 在n帧之前一直是before，n帧时是on，之后是after<br/>
 </p>
@@ -813,10 +831,10 @@ lyx中使用方法是 <code>&lt;alter@n&gt;</code><br/>
 </div>
 </div>
 
-<div id="outline-container-sec-14-4-7" class="outline-4">
-<h4 id="sec-14-4-7"><span class="section-number-4">14.4.7</span> Overprint/Overlayarea</h4>
-<div class="outline-text-4" id="text-14-4-7">
-</div><ol class="org-ol"><li>使用原因<br/><div class="outline-text-5" id="text-14-4-7-1">
+<div id="outline-container-sec-15-4-7" class="outline-4">
+<h4 id="sec-15-4-7"><span class="section-number-4">15.4.7</span> Overprint/Overlayarea</h4>
+<div class="outline-text-4" id="text-15-4-7">
+</div><ol class="org-ol"><li>使用原因<br/><div class="outline-text-5" id="text-15-4-7-1">
 <p>
 下面代码由于only1和only2行数不同，所以两者之下的内容在切换时会发生移动现象，叫“whobble”：<br/>
 </p>
@@ -866,7 +884,7 @@ lyx代码：<br/>
 </div>
 </li>
 
-<li>二者区别<br/><div class="outline-text-5" id="text-14-4-7-2">
+<li>二者区别<br/><div class="outline-text-5" id="text-15-4-7-2">
 <p>
 二者的区别是Overlayarea必须要自定义显示矩阵的宽和高：<br/>
 </p>
@@ -914,9 +932,9 @@ lyx代码：<br/>
 </div>
 </li>
 
-<li>打印设置<br/><div class="outline-text-5" id="text-14-4-7-3">
+<li>打印设置<br/><div class="outline-text-5" id="text-15-4-7-3">
 <p>
-打印设置为<a href="#sec-14-8">handout</a>的时候会出错，因为tex不知道打印哪个，可以设置handout属性，所有默认值都为1,可以将不想被打印出来的设置为0：<br/>
+打印设置为<a href="#sec-15-8">handout</a>的时候会出错，因为tex不知道打印哪个，可以设置handout属性，所有默认值都为1,可以将不想被打印出来的设置为0：<br/>
 </p>
 <div class="org-src-container">
 
@@ -935,9 +953,9 @@ lyx代码：<br/>
 </div>
 </div>
 
-<div id="outline-container-sec-14-5" class="outline-3">
-<h3 id="sec-14-5"><span class="section-number-3">14.5</span> 创建链接</h3>
-<div class="outline-text-3" id="text-14-5">
+<div id="outline-container-sec-15-5" class="outline-3">
+<h3 id="sec-15-5"><span class="section-number-3">15.5</span> 创建链接</h3>
+<div class="outline-text-3" id="text-15-5">
 <p>
 创建target: <code>\hypertarget{targetname}{text-to-show}</code> 。<br/>
 创建link: =\hyperlink{targetname}{\beamergotobutton{text-to-show-on-button}}=。<br/>
@@ -946,18 +964,18 @@ lyx代码：<br/>
 </div>
 </div>
 
-<div id="outline-container-sec-14-6" class="outline-3">
-<h3 id="sec-14-6"><span class="section-number-3">14.6</span> 整个frame的内容动态出现</h3>
-<div class="outline-text-3" id="text-14-6">
+<div id="outline-container-sec-15-6" class="outline-3">
+<h3 id="sec-15-6"><span class="section-number-3">15.6</span> 整个frame的内容动态出现</h3>
+<div class="outline-text-3" id="text-15-6">
 <p>
 可以在菜单选择BeginFrame后 <code>C-l</code> 输入 <code>&lt;+-&gt;</code> 再输入标题。这样如果此frame此都是列表则列表逐一出现。<br/>
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-14-7" class="outline-3">
-<h3 id="sec-14-7"><span class="section-number-3">14.7</span> 改变Beamer的脚注</h3>
-<div class="outline-text-3" id="text-14-7">
+<div id="outline-container-sec-15-7" class="outline-3">
+<h3 id="sec-15-7"><span class="section-number-3">15.7</span> 改变Beamer的脚注</h3>
+<div class="outline-text-3" id="text-15-7">
 <p>
 默认情况下所有幻灯片脚注中使用的标题是整个幻灯片的标题。<br/>
 </p>
@@ -970,12 +988,12 @@ lyx代码：<br/>
 </div>
 </div>
 
-<div id="outline-container-sec-14-8" class="outline-3">
-<h3 id="sec-14-8"><span class="section-number-3">14.8</span> 打印Beamer制作的幻灯片</h3>
-<div class="outline-text-3" id="text-14-8">
-</div><div id="outline-container-sec-14-8-1" class="outline-4">
-<h4 id="sec-14-8-1"><span class="section-number-4">14.8.1</span> 修改源码实现</h4>
-<div class="outline-text-4" id="text-14-8-1">
+<div id="outline-container-sec-15-8" class="outline-3">
+<h3 id="sec-15-8"><span class="section-number-3">15.8</span> 打印Beamer制作的幻灯片</h3>
+<div class="outline-text-3" id="text-15-8">
+</div><div id="outline-container-sec-15-8-1" class="outline-4">
+<h4 id="sec-15-8-1"><span class="section-number-4">15.8.1</span> 修改源码实现</h4>
+<div class="outline-text-4" id="text-15-8-1">
 <p>
 Beamer做的幻灯片的pause之类的Overlay都是通过额外的PDF页来实现的，打印时会造成浪费，解决方法是：<br/>
 </p>
@@ -989,9 +1007,9 @@ lyx设置：document-&gt;setting-&gt;document class-&gt;class options-&gt;custom
 </div>
 </div>
 
-<div id="outline-container-sec-14-8-2" class="outline-4">
-<h4 id="sec-14-8-2"><span class="section-number-4">14.8.2</span> 利用pdfpages包实现</h4>
-<div class="outline-text-4" id="text-14-8-2">
+<div id="outline-container-sec-15-8-2" class="outline-4">
+<h4 id="sec-15-8-2"><span class="section-number-4">15.8.2</span> 利用pdfpages包实现</h4>
+<div class="outline-text-4" id="text-15-8-2">
 <p>
 大部分情况下我们手上只有一份pdf版的幻灯片，没有源码，此时上面的方法就行不通了，可以利用如下方法实现：<br/>
 </p>
@@ -1011,9 +1029,9 @@ lyx设置：document-&gt;setting-&gt;document class-&gt;class options-&gt;custom
 </div>
 </div>
 
-<div id="outline-container-sec-14-9" class="outline-3">
-<h3 id="sec-14-9"><span class="section-number-3">14.9</span> lyx解决Beamer中插入代码问题</h3>
-<div class="outline-text-3" id="text-14-9">
+<div id="outline-container-sec-15-9" class="outline-3">
+<h3 id="sec-15-9"><span class="section-number-3">15.9</span> lyx解决Beamer中插入代码问题</h3>
+<div class="outline-text-3" id="text-15-9">
 <p>
 直接insert-&gt;program listing插入代码这种方法行不通。<br/>
 目前最好的解决办法是把待插入的代码保存到一个文件中，通过 insert-&gt;file-&gt;child document来插入文件，<br/>
@@ -1021,9 +1039,9 @@ lyx设置：document-&gt;setting-&gt;document class-&gt;class options-&gt;custom
 </div>
 </div>
 
-<div id="outline-container-sec-14-10" class="outline-3">
-<h3 id="sec-14-10"><span class="section-number-3">14.10</span> 生成的幻灯片默认以全屏方式打开</h3>
-<div class="outline-text-3" id="text-14-10">
+<div id="outline-container-sec-15-10" class="outline-3">
+<h3 id="sec-15-10"><span class="section-number-3">15.10</span> 生成的幻灯片默认以全屏方式打开</h3>
+<div class="outline-text-3" id="text-15-10">
 <p>
 添加 <code>\hypersetup{pdfpagemode=FullScreen}</code><br/>
 </p>
@@ -1031,9 +1049,9 @@ lyx设置：document-&gt;setting-&gt;document class-&gt;class options-&gt;custom
 </div>
 </div>
 
-<div id="outline-container-sec-15" class="outline-2">
-<h2 id="sec-15"><span class="section-number-2">15</span> 管理文献</h2>
-<div class="outline-text-2" id="text-15">
+<div id="outline-container-sec-16" class="outline-2">
+<h2 id="sec-16"><span class="section-number-2">16</span> 管理文献</h2>
+<div class="outline-text-2" id="text-16">
 <p>
 将文献写入bib后缀文件中，格式如下：<br/>
 </p>
@@ -1057,16 +1075,16 @@ lyx中insert-&gt;list/toc-&gt;bibtex bibliography插入文件中，之后insert-
 </div>
 </div>
 
-<div id="outline-container-sec-16" class="outline-2">
-<h2 id="sec-16"><span class="section-number-2">16</span> 快捷键</h2>
-<div class="outline-text-2" id="text-16">
+<div id="outline-container-sec-17" class="outline-2">
+<h2 id="sec-17"><span class="section-number-2">17</span> 快捷键</h2>
+<div class="outline-text-2" id="text-17">
 <p>
 参考lyx的帮助文档 <a href="./lyx_shortcuts/Shortcuts.html">LY X Keyboard Shortcuts</a><br/>
 </p>
 </div>
-<div id="outline-container-sec-16-1" class="outline-3">
-<h3 id="sec-16-1"><span class="section-number-3">16.1</span> lyx设置菜单快捷键</h3>
-<div class="outline-text-3" id="text-16-1">
+<div id="outline-container-sec-17-1" class="outline-3">
+<h3 id="sec-17-1"><span class="section-number-3">17.1</span> lyx设置菜单快捷键</h3>
+<div class="outline-text-3" id="text-17-1">
 <p>
 需要修改菜单配置文件，xp下位于C:\Program Files\LyX 2.0\Resources\ui中，打开stdmenu.inc，<br/>
 </p>

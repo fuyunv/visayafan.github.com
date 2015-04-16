@@ -1,0 +1,129 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:ExtJS
+
+* videos resources
+  http://www.sencha.com/blog/ext-js-5-mvc-mvvm-and-more/ [[https://vimeo.com/96094423][视频讲解（其实就是念稿子）]]
+  http://docs.sencha.com/extjs/5.1/index.html Core Concepts和Application Architecture 
+  http://docs.sencha.com/extjs/5.1/application_architecture/application_architecture.html
+  http://docs.sencha.com/extjs/5.1/application_architecture/view_controllers.html
+  http://docs.sencha.com/extjs/5.1/application_architecture/view_models_data_binding.html
+* Mac下搭建环境
+** 配置apache服务器
+   http://www.cnblogs.com/yjmyzz/p/3920361.html
+   启动apache, =sudo apachectl start= ，打开 http://localhost ，看到 =it works!= 表明启动成功，此时显示的index.html位于 =/Library/WebServer/Documents/index.html.en= ，由 =/etc/apache2/httpd.conf= 文件中
+   #+BEGIN_EXAMPLE
+   <Directory "/Library/WebServer/Documents">
+   </Directory>
+   #+END_EXAMPLE
+   指定。
+
+   =sudo apachectl stop/restart= 
+
+   在 =/etc/apache2/users= 目录下创建 =visayafan.conf= ，内容为：
+   #+BEGIN_EXAMPLE
+     <Directory "/Users/visayafan//Sites/">
+         Options FollowSymLinks Indexes MultiViews
+         AllowOverride All
+         Order allow,deny
+         Allow from all
+     </Directory>  
+   #+END_EXAMPLE
+   HOME目录下创建Sites目录，之后 =http://localhost/~visayafan= 即可访问Sites目录下的index.html.
+   之所以是HOME下的Sites目录，是由 =/etc/apache2/extra/httpd-userdir.conf= 中 =UserDir Sites= 决定。
+
+   启动虚拟主机：修改 =/etc/apache2/httpd.conf= ，去掉 =Include /private/etc/apache2/extra/httpd-vhosts.conf= 前注释。
+   修改 =/etc/apache2/extra/httpd-vhosts.conf= 为:
+   #+BEGIN_EXAMPLE
+     NameVirtualHost *:80
+     
+     #
+     # VirtualHost example:
+     # Almost any Apache directive may go into a VirtualHost container.
+     # The first VirtualHost section is used for all requests that do not
+     # match a ServerName or ServerAlias in any <VirtualHost> block.
+     #
+     <VirtualHost *:80>
+         DocumentRoot "/Users/visayafan/Sites"
+         ServerName shorturl 
+         ErrorLog "/Users/visayafan/Sites/log/error.log"
+         CustomLog "/Users/visayafan/Sites/log/access.log" common
+         <Directory />
+                     Options Indexes FollowSymLinks MultiViews
+                     AllowOverride None
+                     Order deny,allow
+                     Allow from all
+           </Directory>
+     </VirtualHost>  
+   #+END_EXAMPLE
+   其中ServerName可起个自己喜欢的名字。
+   在 =/etc/hosts= 中添加 =127.0.0.1 shorturl= 。
+
+   修改 =/etc/apache2/httpd.conf= ，去掉 =LoadModule php5_module libexec/apache2/libphp5.so= 前面的注释，因为 extjs api文档需要PHP。
+
+   重启apache，之后访问 http://shorturl 等价访问 http://localhost/~visayafan
+** 下载doc
+   http://docs-origin.sencha.com/extjs/5.1/ 左上角 =Ext JS Guides= 点击 =(offline docs)= 下载离线API文档。解压后放到HOME下的Sites目录中，之后访问 http://shorturl/ext-docs-5.1/ 即可。
+* Sencha CMD
+** 启动一个web server
+   #+BEGIN_EXAMPLE
+   sencha fs web -port 8000 start -map ext-5.1.0所在目录
+   #+END_EXAMPLE
+** 生成app
+   #+BEGIN_EXAMPLE
+   sencha -sdk ext-5.1.0 generate app myApp（APP名称） ExtJS_App_GenBySenchaCmd（APP目录）
+   #+END_EXAMPLE
+** 打开app
+   #+BEGIN_EXAMPLE
+   sencha web start
+   之后访问 http://localhost:1841
+   sencha web start -map mytest=APP目录
+   之后访问 http://localhost:1841/mytest
+   #+END_EXAMPLE
+** 实时监控
+   #+BEGIN_EXAMPLE
+   sencha app watch
+   #+END_EXAMPLE
+** build app
+   #+BEGIN_EXAMPLE
+   sencha app build
+   #+END_EXAMPLE
+* 模态窗口
+  #+BEGIN_EXAMPLE
+  modal:true
+  #+END_EXAMPLE
+  表明当前窗口不关闭不能做其它事，会显示到最上层,不会被遮盖。
+* 所有的xtype
+  Ext.enums.Widget
+* Ext.Img
+  xtype: image
+  #+BEGIN_SRC javascript
+    var changingImage = Ext.create('Ext.Img', {
+        src: 'http://www.sencha.com/img/20110215-feat-html5.png',
+        renderTo: Ext.getBody()
+    });
+    
+    // change the src of the image programmatically
+    changingImage.setSrc('http://www.sencha.com/img/20110215-feat-perf.png');  
+  #+END_SRC
+* Ext.form.field.file
+  xtype: filefield
+  一个上传文件的表单
+* Ext.form.field.displayField
+  xtype:displayfield
+  只是用来显示文字
+* Intellij自动补全慢
+  如何自动补全：Preferences->JavaScript->Library->Add 添加ext-all.js和ext-all-debug.js
+  http://stackoverflow.com/questions/11124042/exclude-javascript-library-from-code-completion-in-intellij-idea
+  因为在补全过程中要搜索工程中的extjs所有js文件，所以会慢，只要将extjs目录标记为excluded即可。
+  在Project View中的extjs目录右键->Mark Directory As->Excluded.
+* vtype
+  validation type
+* msgTarget
+* fieldcontainer
+  包含多个field
+* splitter
+  layout为hbox或vbox时为panel间增加缝隙
+* numberfield
+  只能输入数字类型

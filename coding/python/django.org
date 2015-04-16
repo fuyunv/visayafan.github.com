@@ -1,0 +1,66 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* Context与RequestContext区别
+  http://blog.csdn.net/cleverwyq/article/details/11649343
+  http://edison0951.iteye.com/blog/760647
+  RequestContext较Context优点：
+  1. 使用settings里的内置PROCESSOR
+  2. 可以自定义PROCESSOR
+* render和render_to_request区别
+  自django1.3开始：render是render_to_response的一个崭新的快捷方式，前者会自动使用RequestContext。而后者必须coding出来，这是最明显的区别，当然前者更简洁。
+  #+BEGIN_SRC python
+    return render_to_response('blog_add.html',{'blog': blog, 'form': form, 'id': id, 'tag': tag},
+                                  context_instance=RequestContext(request))
+    return render(request, 'blog_add.html', {'blog': blog, 'form': form, 'id': id, 'tag': tag})
+  #+END_SRC
+* Mac下配置MySQL
+  #+BEGIN_EXAMPLE
+  brew install mysql
+  mysql stop
+  mysql.server start
+  sudo mysql_secure_installation
+  #+END_EXAMPLE
+  设置root为空密码
+  #+BEGIN_EXAMPLE
+  set password = password('')
+  #+END_EXAMPLE
+* Mac下安装PyMySQL
+  #+BEGIN_EXAMPLE
+  python3 -m pip install PyMySQL
+  #+END_EXAMPLE
+* 配置django使用MySQL
+  http://stackoverflow.com/questions/7224807/what-is-pymysql-and-how-does-it-differ-from-mysqldb-can-it-affect-django-deploy
+  将下面语句放入settings.py中：
+  #+BEGIN_SRC python
+    try:
+        import pymysql
+        pymysql.install_as_MySQLdb()
+    except ImportError:
+        pass
+  #+END_SRC
+
+  修改settings.py使用mysql engine而非默认的sqlite3
+  #+BEGIN_SRC python
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'testdb', 这是create database testdb中的testdb
+            'USER': 'root',
+            'PASSWORD': '你的密码'
+        }
+    }  
+  #+END_SRC
+
+  修改models.py后要使用 =python3 manage.py makemigrations= 和 =python3 manage.py migrate= 使数据库可见。
+  By running makemigrations, you’re telling Django that you’ve made some changes to your models (in this case, you’ve made new ones) and that you’d like the changes to be stored as a migration.
+  makemigrations相当于git中的add，而migrate相当于commit
+* django中模板标签列表长度
+  https://docs.djangoproject.com/en/dev/ref/templates/builtins/
+  #+BEGIN_EXAMPLE
+  {{ value|length }}
+  #+END_EXAMPLE
+* 解决Cross-Origin Resource Sharing问题
+  https://github.com/ottoyiu/django-cors-headers

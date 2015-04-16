@@ -1,0 +1,202 @@
+#+OPTIONS: ^:{} _:{} num:t toc:2 \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* iterable iterator generator
+  http://nvie.com/posts/iterators-vs-generators [[./IterableIteratorGenerator.html][本地存档备份]]
+  http://www.ibm.com/developerworks/cn/opensource/os-cn-python-yield/ [[./PythonYieldIBM.html][本地存档备份]]
+  1. iterable 是包含 =__iter__= 方法的类，可通过for循环遍历；可用iter()作用返回iterator.
+  2. iterator 是包含 =__next__= 方法的类，可用next()作用依次返回存放的元素，无元素可返时，raise StopIteration异常。
+  3. generator是特殊的iterator，为简化而生。可通过表达式和函数得到。
+     1) 表达式： =gen=(x for x in [1,2,3])= (这不是tuple comprehension，返回不是tuple而是generator)
+     2) 函数：将return换成yield，返回一个generator，返回时不会执行任何函数代码，直到对其调用 next()（在 for 循环中会自动调用 next()）才开始执行。
+
+  itertools模块
+  1. islice 返回islice对象，是个iterator.
+  2. permutations 返回iterable对象的组合，返回permutations对象，可迭代。
+* 时间模块
+** 时间戳 timestamp 浮点数
+   | time.time()        | 返回自1970年1月1日时起的秒数                                                                    |
+   | time.sleep(sec)    | 休眠                                                                                            |
+** struct_time
+    1. time.localtime([sec]) 转化秒为struct_time类型的本地时间，如果无参数则转化当前时间
+    2. time.gmtime([sec]) 转化为GMT时间
+    3. time.strptime(str, format) 转化str为指定格式的struct_time类型时间
+       #+BEGIN_SRC python
+         >> time.strptime("1991/04/28", "%Y/%m/%d")
+         time.struct_time(tm_year=1991, tm_mon=4, tm_mday=28, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=6, tm_yday=118, tm_isdst=-1)
+       #+END_SRC
+    4. time.strftime(format[, tuple]) 将一个时间元组转化成指定格式的时间,和strptime是两个互逆操作
+       #+BEGIN_SRC python
+         >>time.strftime("%Y/%m/%d")
+         '2015/04/10'
+       #+END_SRC
+       {{{singletop(format中时间标记)}}}
+       | %Y | 年                   |
+       | %m | 月                   |
+       | %d | 日                   |
+       | %H | 时(24h)              |
+       | %I | 时(12h)              |
+       | %M | 分                   |
+       | %S | 秒                   |
+       | %x | 日期=%d/%m/%Y        |
+       | %X | 时间=%H:%M:%S        |
+       | %a | 星期（缩写 Tue）     |
+       | %A | 星期（全称 Tuesday） |
+       | %b | 月份（缩写）         |
+       | %B | 月份（全称）         |
+       | %c | 日期和时间=%a %b %d %H:%M:%S %Y 例如：Tue Oct 23 16:56:12 2012 即ctime()返回的类型 |       
+       {{{singleend}}}
+** timeit模块
+   用来benchmark小段代码效率。
+   =timeit.default_timer()= 根据平台来选择 time.time() 还是 time.clock().
+* 命令行交互模式下查看历史命令
+  #+BEGIN_SRC python
+    import readline
+    for i in range(readline.get_current_history_length()):
+        print(readline.get_history_item(i))  
+  #+END_SRC
+* Python中执行shell命令
+  #+BEGIN_SRC python
+    from subprocess import call
+    call(["ls", "-l"])
+  #+END_SRC
+* 模块加载
+  sys.modules变量保存所有已经import的模块名，有新import时先在此搜索是否已经存在，若已存在则不必再编译。
+** reload/imp.reload
+   重新加载模块
+   2.x中reload是内置函数
+   3.x中被放到imp中(必须先导入imp：from imp import reload)
+** 模块加载时搜索路径
+   1. 当前目录：如果是交互模式则是当前目录，如果是文件则是文件所在目录
+   2. PYTHONPATH 环境变量（当需要的模块在其它目录时可以设置其值）
+   3. 标准模块目录：固定的
+   4. .pth 当前目录下的.pth结尾的文件（每行一个目录）
+   可通过sys.path变量来查看具体路径，可以修改此值，但只会影响此程序运行（暂时的）
+** 删除一个模块
+   dele moduleName
+* dict
+** create dict
+   #+BEGIN_EXAMPLE
+   >>> d = {'name':'visaya', 'age':20}
+   >>> d = dict(name='visaya', age=20)
+   >>> d = dict(zip(['name', 'age'], ['visaya', 20]))
+   >>> d = dict.fromkeys(['a', 'b'], 1)
+   >>> d
+   {'a': 1, 'b': 1}
+   #+END_EXAMPLE
+** dict view
+   dict.keys()类似集合可以进行交集和并集等集合操作（类似集合，因为不存在重复的项），但dict.values()不可以进行如上操作。
+   #+BEGIN_EXAMPLE
+   >>> k = d.keys()
+   >>> k
+   dict_keys(['a', 'b'])
+   >>> list(k)
+   ['a', 'b']
+   >>> k | {'x': 3}
+   {'a', 'x', 'b'}
+   >>> k | {'x'}
+   {'a', 'x', 'b'}
+   >>> k | {'x', 'y'}
+   {'a', 'y', 'b', 'x'}
+   >>> k & {'x'}
+   set()
+   >>> v = d.values()
+   >>> v
+   dict_values([1, 2])
+   >>> v | {'x'}
+   Traceback (most recent call last):
+   File "<stdin>", line 1, in <module>
+   TypeError: unsupported operand type(s) for |: 'dict_values' and 'set'
+   #+END_EXAMPLE
+** sort dict
+   两种方法:
+*** sort:
+    #+BEGIN_EXAMPLE
+    >>> Ks = list(d.keys())
+    >>> Ks.sort()
+    >>> for k in Ks:
+    ...     print(k, d[k])
+    ... 
+    a 1
+    b 2
+    #+END_EXAMPLE
+*** sorted:
+    #+BEGIN_EXAMPLE
+    >>> for k in sorted(d.keys()):
+    ...     print(k, d[k])
+    ... 
+    a 1
+    b 2
+    #+END_EXAMPLE
+*** 注意
+    #+BEGIN_EXAMPLE
+    >>> for k in list(d.keys()).sort():
+    ...     print(k, d[k])
+    ... 
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    TypeError: 'NoneType' object is not iterable
+    #+END_EXAMPLE
+    出错原因：
+    list.sort() list.append()函数都是对自身的操作，没有返回值。故需先将list(d.keys())的结果保存下来，在结果上进行sort()。
+    而sorted不是在自身上操作，而是将排序结果返回。
+** 常用函数
+*** udpate()
+     D.update(E, **F) -> None.  Update D from dict/iterable E and F.
+     If E has a .keys() method, does:     for k in E: D[k] = E[k]
+     If E lacks .keys() method, does:     for (k, v) in E: D[k] = v
+     In either case, this is followed by: for k in F: D[k] = F[k]
+    #+BEGIN_EXAMPLE
+      d = dict(name='visaya', age=21)
+      e1= {'age': 20, 'sex': 'male'}
+      # e有keys方法   
+      d.update(e1)
+      e2=[('height',180)]
+      # e无keys方法
+      d.update(e2)
+      # 第2个参数f
+      d.update(a=1,b=2)
+    #+END_EXAMPLE
+*** del()
+    #+BEGIN_EXAMPLE
+    del D[key]
+    #+END_EXAMPLE
+*** clear()
+*** copy()
+* “多维数组”陷阱
+  a=[[ 0 ]*4]*3 如此构造得到的a的每一行其实都是同一个列表对象的引用，所以修改一个元素会引起整个列的改变：
+#+BEGIN_SRC python
+>>> a=[[0]*4]*3
+>>> print a
+[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+>>> a[0][0]=1
+>>> print a
+[[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]]
+#+END_SRC
+  如此这不是你想要的结果，可以如此初始化
+#+BEGIN_SRC python
+>>> a=[[0 for column in range(4)] for row in range(3)]
+>>> print a
+[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+>>> a[0][0]=1
+>>> print a
+[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+>>> 
+#+END_SRC  
+* 处于函数中某个循环下函数
+  如果lambda或def在函数之中定义，且嵌套在一个循环中，且引用了一个被循环使用的上层作用域的变量，则在这个循环中产生的所有函数会有相同的值。
+  如果这不是你想要的结果，可以修改 =acts.append(lambda x, i=i: i**x)=
+#+BEGIN_SRC python
+def makeActions():
+    acts=[]
+    for i in range(5):
+        acts.append(lambda x: i**x)
+    return acts
+acts=makeActions()
+print acts[0](2)
+print acts[1](2)
+print acts[2](2)
+##结果都是一样的
+#+END_SRC    

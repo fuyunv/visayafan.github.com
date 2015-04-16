@@ -66,3 +66,123 @@ base ctor
 a ctor
   #+END_EXAMPLE
   {{{singleend}}}
+* 抽象类与接口
+  1. 抽象类里可以有普通成员方法，此种方法可以有定义；接口中所有方法均为抽象方法，抽象方法不可以有定义；
+  2. 抽象类中成员变量可以是各种类型；接口中成员变量必为 =public static final= 类型。
+  3. *一个类最多只能继承一个类* ，但可以实现多个接口。
+  4. 继承是一个"是不是"的关系，而接口则是"有没有"的关系。如果一个类继承了某个抽象类，则子类必定是抽象类的种类；而接口实现则是有没有、具备不具备的关系，比如鸟是否能飞，能飞行则可以实现这个接口，不能飞行就不实现这个接口。
+* Java不允许继承多个类
+  http://www.zhihu.com/question/20306381
+  AB同时有f方法，若C继承A，B；则C调用f时无法决定调用A的f还是B的f。C++有解决办法。
+  Java只允许最多继承一个类，但可以实现多个接口；如C继承B类，实现A接口，若B和A中同时有f方法，则不会出现上面问题：若C无f方法，则从B继承来的f方法可以当作实现A接口中的f方法；若C有f方法，则此f方法override B中f方法并实现A中f方法。
+  Java间接实现多重继承的方法 http://www.cnblogs.com/chenssy/p/3389027.html
+* heap pollution
+  http://en.wikipedia.org/wiki/Heap_pollution
+  本该存放A类型的泛型变量里存放B类型的数据。编译时有unchecked警告，运行时出现ClassCastException错误。
+  #+BEGIN_SRC java
+    public class HeapPollutionDemo
+    {
+       public static void main(String[] args)
+       {
+          Set s = new TreeSet<Integer>();
+          Set<String> ss = s;            // unchecked warning
+          s.add(new Integer(42));        // another unchecked warning
+          Iterator<String> iter = ss.iterator();
+          while (iter.hasNext())
+          {
+             String str = iter.next();   // ClassCastException thrown
+             System.out.println(str);
+          }
+       }
+    }  
+  #+END_SRC
+* Java8 Repeatable注解
+  http://softwarecave.org/2014/05/20/repeating-annotations-in-java-8/
+  {{{singletop(Java8使用Repeatable实现多次注解)}}}
+  #+BEGIN_SRC java
+    // Author.java
+    import java.lang.annotation.Repeatable;
+    
+    @Repeatable(value = Authors.class)
+    public @interface Author {
+        String name() default "";
+    }
+    
+    // Authors.java
+    import java.lang.annotation.Retention;
+    import java.lang.annotation.RetentionPolicy;
+    
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Authors {
+        Author[] value();
+    }
+    
+    // Book.java
+    @Author(name="fan")
+    @Author(name="han")
+    public class Book {
+    }
+    
+    // RepeatableAnnotation.java
+    public class RepeatableAnnotation {
+        public static void main(String[] args) throws ClassNotFoundException {
+            Author[] authors = Class.forName("Book").getAnnotationsByType(Author.class);
+            for (Author author : authors)
+                System.out.println(author);
+    
+            Authors authors2 = Book.class.getAnnotation(Authors.class);
+            for(Author author: authors2.value())
+                System.out.println(author);
+        }
+    }
+  #+END_SRC
+  {{{singleend}}}
+  http://stackoverflow.com/questions/1554112/multiple-annotations-of-the-same-type-on-one-element
+  {{{singletop(Java7通过嵌套注解数组来实现多次注解)}}}
+  #+BEGIN_SRC java
+    import java.lang.annotation.ElementType;
+    import java.lang.annotation.Retention;
+    import java.lang.annotation.RetentionPolicy;
+    import java.lang.annotation.Target;
+    
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Author {
+        String name();
+    }
+    
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Authors {
+        Author[] value();
+    }
+    
+    @Authors({
+            @Author(name = "fan"),
+            @Author(name = "han")
+    })
+    class Book {
+    
+    }
+    
+    public class RepeatableAnnotation {
+        public static void main(String[] args) throws ClassNotFoundException {
+            Authors authors = Book.class.getAnnotation(Authors.class);
+            for (Author author : authors.value())
+                System.out.println(author);
+        }
+    }  
+  #+END_SRC
+  {{{singleend}}}
+* Java8 ::操作符（Method Reference）
+  http://stackoverflow.com/questions/20001427/double-colon-operator-in-java-8
+  http://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html
+* Java8 Stream
+  http://www.ibm.com/developerworks/cn/java/j-lo-java8streamapi/
+  [[./java8stream.html][本地存档备份]]
+* == 与 equals
+  http://www.cnblogs.com/zhxhdean/archive/2011/03/25/1995431.html
+  == 判断是否是同一个引用
+  JAVA当中所有的类都是继承于Object这个基类的，在Object中的基类中定义了一个equals的方法，这个方法的初始行为是比较对象的内存地址。
+  但在一些类库当中这个方法被覆盖掉了，如String,Integer,Date在这些类当中equals有其自身的实现，而不再是比较类在堆内存中的存放地址了。
+  对于复合数据类型之间进行equals比较，在没有覆写equals方法的情况下，他们之间的比较还是基于他们在内存中的存放位置的地址值的，因为Object的equals方法也是用双等号（==）进行比较的，所以比较后的结果跟双等号（==）的结果相同。

@@ -1,22 +1,14 @@
-#+OPTIONS: "\n:t
-#+OPTIONS: ^:{}
-#+OPTIONS: _:{}
-#+TITLE: 
-
- 
- 
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
 查看所有的关键字：help("keywords")
-
 查看所有的modules：help("modules")
-
-单看所有的modules中包含指定字符串的modules： help("modules yourstr")
-
-查看中常见的topics： help("topics")
+查看中常见的topics：help("topics")
+{{{singletop(所有topic)}}}
 #+BEGIN_EXAMPLE
 >>> help("topics")
-
 Here is a list of available topics.  Enter any topic name to get more help.
-
 ASSERTION           DEBUGGING           LITERALS            SEQUENCEMETHODS2
 ASSIGNMENT          DELETION            LOOPING             SEQUENCES
 ATTRIBUTEMETHODS    DICTIONARIES        MAPPINGMETHODS      SHIFTING
@@ -38,15 +30,13 @@ CONDITIONAL         INTEGER             RETURNING           UNICODE
 CONTEXTMANAGERS     LISTLITERALS        SCOPING             
 CONVERSIONS         LISTS               SEQUENCEMETHODS1    
 #+END_EXAMPLE
+{{{singleend}}}
 例如想要查看CALLS主题的帮助，则：help("CALLS")
-
-查看标准库中的module：import os.path + help("os.path")
-查看内置的类型：help("list")
-查看类型的成员方法：help("str.find") 
-查看内置函数：help("open")
- 
-#+BEGIN_HTML
-<script src="../../layout/js/disqus-comment.js"></script>
-<div id="disqus_thread">
-</div>
-#+END_HTML
+查看标准库中的module：
+#+BEGIN_EXAMPLE
+import os.path 
+help(os.path)
+#+END_EXAMPLE
+查看内置的类型：help(list)
+查看类型的成员方法：help(str.find) 
+查看内置函数：help(open)

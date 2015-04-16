@@ -3,7 +3,7 @@
 #+SETUPFILE: "../../layout/extension.org"
 #+title:VNC
 
-CentOS 6.5
+* CentOS 6.5安装、启动
 #+BEGIN_EXAMPLE
 yum install tigervnc-server tigervnc
 #+END_EXAMPLE
@@ -15,11 +15,21 @@ Starting applications specified in /root/.vnc/xstartup
 Log file is /root/.vnc/node3:3.log
 #+END_EXAMPLE
 
+* VNCViewer登陆
 Windows上用vncviewer登陆，格式为
 #+BEGIN_EXAMPLE
 CentOS服务器:display号
 #+END_EXAMPLE
+Mac可以用Chicken of VNC登陆。
 
+填写host时有两种方法：
+1. 使用真实的IP和端口，例如 192.168.1.111:4901
+2. 使用IP和display号：例如 host填192.168.1.111，display号填1
+端口号=4900+display号
+
+如果使用路由器映射则直接使用第一种方法方便：202.120.38.42:50029
+   
+* 可能出现的问题
 如果CentOS装系统时没有安装图形界面则会出现黑屏：
 #+BEGIN_EXAMPLE
 yum groupinstall “GNOME Desktop Environment”

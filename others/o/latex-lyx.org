@@ -84,6 +84,12 @@ Your abstract goes here...
 \usepackage{geometry}
 \geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
 #+end_example
+* 水平垂直居中
+  用在幻灯片中：
+  #+BEGIN_SRC tex
+  \vspace*{\fill}\center{水平垂直正当中}\vspace*{\fill}
+  #+END_SRC
+  lyx中insert->formatting->vertical Space->VFill并勾上protect，相当于\vspace*{\fill}
 * 源码高亮
   lstlisting可以实现源码高亮但颜色单调，不过还是建议使用此包，原因：
   1.lyx对此包的支持非常好，在lyx中插入代码非常方便

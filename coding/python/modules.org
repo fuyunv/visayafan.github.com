@@ -1,6 +1,7 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+include "../../layout/template.org"
-#+title: 模块总结
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
 * math
 ** e
 ** pi
@@ -73,10 +74,10 @@
   * time.localtime([seconds]) 与gmtime相似，只是转化成当前时区的struct_time
   * time.mktime(t) 与localtime功能相反，将struct_time转化成浮点数
   * time.strftime(format[,t]) 将时间以指定格式输出"%a, %d %b %Y %H:%M:%S %Y"表式出来的时间形式为24字符的：Fri Jul 20 22:01:19 2012
-
+    
 * mimetypes
-  mimetypes实现URL或者文件名和MIME类型[fn:1]的转换。
-  ＊ mimetypes.guess_type(url) => (type, encoding) 根据扩展名来猜文件类型
+  mimetypes实现URL或者文件名和MIME类型的转换。
+  mimetypes.guess_type(url) => (type, encoding) 根据扩展名来猜文件类型
 * collections
 ** deque
 * select
@@ -88,11 +89,10 @@
 #+begin_src python
    def load(self, filename):
         self.__data = pickle.load(open(filename, 'rb'))
-
    def save(self, filename):
         pickle.dump(self.__data, open(filename, 'wb'))
 #+end_src  
-
+  
 * webbrowser
   webbrowser.open('http://google.com')可以调用默认浏览器打开网页
   webbrowser.open('/home/visayafan/.emacs')调用系统默认编辑器打开指定目录下的文件
@@ -100,7 +100,7 @@
   执行系统命令：
   1. subprocess.call(['ls', '-l']) 参数为列表形式，要想使用字符串形式必须加上shell=True: subprocess.call("ls -l", shell=True)，返回值为命令执行返回值
   2. proc=subprocess.Popen('ls -l', shell=True) ，需要使用returnCode=proc.wait()等待命令执行结束获得返回值
-  
+     
 * urllib
   用于获取网络数据
 ** 获取网页内容
@@ -130,79 +130,43 @@ print zipfile.ZipFile.getinfo(i+'.txt').comment
 #+end_src
 * operator
 ** itemgetter
-#+begin_example
-返回一个可调用对象，比如: f=itemgetter(2)则当f(r)时结果是r[2],当g=itemgetter(2,3,4)则当g(r)时结果是(r[2],r[3],r[4])
-#+end_example
+   #+begin_example
+   返回一个可调用对象，比如: f=itemgetter(2)则当f(r)时结果是r[2],当g=itemgetter(2,3,4)则当g(r)时结果是(r[2],r[3],r[4])
+   #+end_example
 ** attrgetter
-#+begin_example
-同样返回一个可调用对象，f=attrgetter('name')则f(r)结果是r.name，当g=attrgetter('a','b')则g(r)结果是(r.a, r.b)
-#+end_example
+   #+begin_example
+   同样返回一个可调用对象，f=attrgetter('name')则f(r)结果是r.name，当g=attrgetter('a','b')则g(r)结果是(r.a, r.b)
+   #+end_example
    sorted函数有个参数key是个函数，每个比较对象都要调用此函数：
-#+begin_example
->>> student_tuples = [
+   #+begin_example
+   >>> student_tuples = [
         ('john', 'A', 15),
         ('jane', 'B', 12),
         ('dave', 'B', 10),
-]
->>> sorted(student_tuples, key=lambda student: student[2])   # sort by age
-[('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]
-#+end_example
+   ]
+   >>> sorted(student_tuples, key=lambda student: student[2])   # sort by age
+   [('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]
+   #+end_example
    可以利用operator.itemgetter：
-#+begin_example
->>> sorted(student_tuples, key=itemgetter(2))
-#+end_example
+   #+begin_example
+   >>> sorted(student_tuples, key=itemgetter(2))
+   #+end_example
    与上面结果一样。
-* time/calendar
-** 时间戳 timestamp 浮点数
-   1. time.time()                #返回自1970年1月1日时起的秒数
-   2. time.clock()               #返回第一次调用clock()时CPU时间
-   3. time.mktime(tuple)        #转化一个struct_time元组类型时间为时间戳
-   4. time.sleep(sec)           #休眠
-   5. time.asctime([t])         #将时间元组转化为Sun Jun 20 23:21:05 1993形式的字符串，默认转化当前时间元组即localtime()的返回值
-   6. time.ctime([sec])         #与asctime类似只是它的参数是时间戳而asctime的参数是时间元组
-** 元组 struct_time
-   1. time.localtime([sec])          #转化秒为struct_time类型的本地时间，如果无参数则转化当前时间
-   2. time.gmtime([sec])             #转化为GMT时间
-   3. time.strptime(str, format) #转化str为指定格式的struct_time类型时间
-   4. time.strftime(format[, tuple]) #将一个时间元组转化成指定格式的时间,和strptime是两个互逆操作
-| %Y | 年                   |
-| %m | 月                   |
-| %d | 日                   |
-| %H | 时(24h)              |
-| %I | 时(12h)              |
-| %M | 分                   |
-| %S | 秒                   |
-| %x | 日期=%d/%m/%Y        |
-| %X | 时间=%H:%M:%S        |
-| %a | 星期（缩写 Tue）     |
-| %A | 星期（全称 Tuesday） |
-| %b | 月份（缩写）         |
-| %B | 月份（全称）         |
-| %c | 日期和时间=%a %b %d %H:%M:%S %Y 例如：Tue Oct 23 16:56:12 2012 即ctime()返回的类型 |
-[[image/time.jpg]]
 * unicode/utf8/gbk
   三者编码的长度分别是1,3,2
-#+begin_example
->>> s=u'中'
->>> s=s.encode('utf8')
->>> len(s)
-3
->>> s=s.decode('utf8')
->>> len(s)
-1
->>> s=s.encode('gbk')
->>> len(s)
-2
->>> s=s.decode('gbk')
->>> len(s)
-1
-#+end_example
-
-* Footnotes
-
-[fn:1] MIME类型就是设定某种扩展名的文件用一种应用程序来打开的方式类型，当该扩展名文件被访问的时候，浏览器会自动使用指定应用程序来打开。多用于指定一些客户端自定义的文件名，以及一些媒体文件打开方式。在HTTP中，MIME类型被定义在Content-Type header中。你要传送一个Microsoft Excel文件到客户端。那么这时的MIME类型就是“application/vnd.ms-excel”。在大多数实际情况中，这个文件然后将传送给Execl来处理（假设我们设定Execl为处理特殊MIME类型的应用程序）。在ASP中，设定MIME类型的方法是通过Response对象的ContentType属性。
-#+BEGIN_HTML
-<script src="../../layout/js/disqus-comment.js"></script>
-<div id="disqus_thread">
-</div>
-#+END_HTML
+  #+begin_example
+  >>> s=u'中'
+  >>> s=s.encode('utf8')
+  >>> len(s)
+  3
+  >>> s=s.decode('utf8')
+  >>> len(s)
+  1
+  >>> s=s.encode('gbk')
+  >>> len(s)
+  2
+  >>> s=s.decode('gbk')
+  >>> len(s)
+  1
+  #+end_example
+  

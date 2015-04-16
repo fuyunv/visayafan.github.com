@@ -14,6 +14,8 @@
 *** Cmd H隐藏
 *** Cmd Tab时鼠标滚轮左右选择
 *** Cmd Tab时左右键左右选择
+*** Cmd `
+    切换同个app不同窗口。
 ** Terminal里Options作为meta键
    Terminal／Preferences／Keyboard，勾选“Use Option As Meta Key”
    这样就可以options-b/a前后移动单词了

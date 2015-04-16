@@ -1,0 +1,61 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* GRADLE_HOME
+  http://stackoverflow.com/questions/18495474/intellij-cannot-find-gradle-home-location
+  #+BEGIN_EXAMPLE
+    task getHomeDir << {
+        println gradle.gradleHomeDir
+    }  
+  #+END_EXAMPLE
+* gradle tasks
+  查看available tasks（不显示依赖tasks）
+  =gradle tasks --all= 查看所有tasks
+* gradle --daemon
+  启动一个gradle daemon， =gradle --stop= 杀死gradle daemon
+  使用daemon启动task =gradle taskName --daemon= ，不使用daemon =gradle taskName --no-daemon=.
+* manifest 'Main-Class' attribute
+  指定main入口
+  #+BEGIN_EXAMPLE
+    jar {
+        manifest {
+            attributes 'Main-Class':'com.visayafan.www.HelloWorld'
+        }
+    }  
+  #+END_EXAMPLE
+* gradle fat jar
+  将依赖的jar在build时合并到生成的jar中，否则java -jar jarfile运行时会出现class not found错误。
+  #+BEGIN_EXAMPLE
+    jar {
+        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    }  
+  #+END_EXAMPLE
+* flat directory repo
+  http://stackoverflow.com/questions/20700053/how-to-add-local-jar-file-dependency-to-build-gradle-file
+  #+BEGIN_EXAMPLE
+    repositories {
+        flatDir {
+            dirs 'libA', 'libB'
+        }
+    }
+    // 下面的jar文件会在libA和libB目录下查找而不会从remote repo中下载。
+    dependencies {
+       compile name: 'jarName-version.jar'
+    }
+  #+END_EXAMPLE
+  另外方法：
+  #+BEGIN_EXAMPLE
+    dependencies {
+        compile files('libs/something_local.jar')
+    }  
+  #+END_EXAMPLE
+  或
+  #+BEGIN_EXAMPLE
+    dependencies {
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+    }  
+  #+END_EXAMPLE
+* 查找依赖
+  http://search.maven.org/

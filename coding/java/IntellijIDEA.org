@@ -1,6 +1,6 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+INCLUDE: "../../layout/template.org"
 #+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
 #+title:
 
 * 快捷键
@@ -22,19 +22,34 @@
 * 经验
   IntelliJ IDEA 的 20 个代码自动完成的特性  http://www.oschina.net/question/12_70799
   从Eclipse转移到IntelliJ IDEA一点心得   http://www.ituring.com.cn/article/37792
-** 导入第3方jar包
-   File->Project structure(C-S-M-s)
-   
-** 补全时不区分大小写
-   Editor=>Code Completion里把Case sensitive completion设置为None就可以了。
-** 自动编译
-   IntelliJ默认是不会自动编译项目的，所以在run之前会有个make的过程，习惯自动编译项目的可以在这里打开：Compiler=>make project automatically。因为IntelliJ项目空间不大，所以开启之后也不会像Eclipse一样出现build workspace很久的情况。
-** Caret
-   相当于Emacs中的er/expand-region mode，可以根据语法单元增量选择。
-   快捷键是 =C-M-w=
-** 版本控制
-   我们开发肯定是有版本控制的，大家以前Eclipse的时候在本地文件和版本库不一致的时候，那么文件以及所在的文件夹都会出现一个〉表示，大家能很轻松的看到本地文件修改了哪一些，但是IntelliJ中默认是不能这样的。仅仅是给变化的文件在修改的时候提供了颜色上的变化，不包括其所在的各个父级文件夹哦，如果想和Eclipse一样的话需要如下图把设置勾选就可以了
-** 编写单元测试
-   http://jingyan.baidu.com/article/9faa72315be0ef473d28cb64.html
-** 自动补全
-   查看自动补全的帮助 help->productivity guide
+* 导入第3方jar包
+  File->Project structure(C-S-M-s)
+* 补全时不区分大小写
+  Editor=>Code Completion里把Case sensitive completion设置为None就可以了。
+* 自动编译
+  IntelliJ默认是不会自动编译项目的，所以在run之前会有个make的过程，习惯自动编译项目的可以在这里打开：Compiler=>make project automatically。因为IntelliJ项目空间不大，所以开启之后也不会像Eclipse一样出现build workspace很久的情况。
+* Caret
+  相当于Emacs中的er/expand-region mode，可以根据语法单元增量选择。
+  快捷键是 =C-M-w=
+* 版本控制
+  我们开发肯定是有版本控制的，大家以前Eclipse的时候在本地文件和版本库不一致的时候，那么文件以及所在的文件夹都会出现一个〉表示，大家能很轻松的看到本地文件修改了哪一些，但是IntelliJ中默认是不能这样的。仅仅是给变化的文件在修改的时候提供了颜色上的变化，不包括其所在的各个父级文件夹哦，如果想和Eclipse一样的话需要如下图把设置勾选就可以了
+* 编写单元测试
+  http://jingyan.baidu.com/article/9faa72315be0ef473d28cb64.html
+* 自动补全
+  查看自动补全的帮助 help->productivity guide
+* Editor中最大字符数
+  file>other settings>default setting>code style>general
+* quick fix
+  =Alt Enter=
+* Project View中快速定位当前打开文件位置
+  =Nivigate->Select in->Project view= 快捷键 =Alt+F1 Enter=
+  自动定位 Project view的设置里 autoscroll from source
+* 自定义live template
+  http://blog.csdn.net/little__zm/article/details/19561853
+* intellij支持java8语法
+  http://stackoverflow.com/questions/22703412/java-lambda-expressions-not-supported-at-this-language-level
+  In IntelliJ IDEA, In File Menu->Project Structure, change "Project Language Level" to "8.0 - Lambdas, typ[e annotations etc."
+* Gradle依赖
+  Gradle窗口中点“刷新”即可下载依赖并添加到classpath中。
+* 隐藏窗口快捷键
+  =Shift ESC= 或 =Shift 单击= 

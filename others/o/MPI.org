@@ -1,0 +1,10 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* 函数
+** MPI_Init
+** MPI_Comm_size
+** MPI_Comm_rank
+** MPI_Get_processor_name

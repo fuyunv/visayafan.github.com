@@ -1,45 +1,17 @@
-#+OPTIONS: "\n:t
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+LaTeX_CLASS: cn-article
-#+STYLE: <link rel="stylesheet" type="text/css" href="../style/style.css" />
-##+INFOJS_OPT: view:content mouse:#cccccc toc:t ftoc:t  path:../style/org-info.js
-
-* /usr/bin/python与/usr/bin/env python的区别
-#+BEGIN_EXAMPLE
-前者指定具体路径，必须确保python在/usr/bin下。
-后者通过env在PATH路径中寻找python,
-~$ echo $PATH
-/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
-就会在 /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games目录下寻找python  
-#+END_EXAMPLE
-* Reference Semantic
-#+BEGIN_EXAMPLE
-此时ab是同一个变量的别名
->>> a = [1,2,3]
->>> b=a
->>> a.append(4)
->>> print b
-[1, 2, 3, 4]
-
->>> a=1
->>> b=a
->>> a=a+1
-此时a b不再是同一个变量的别名
->>> a
-2
->>> b
-1
-#+END_EXAMPLE
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
 * 执行
-#+BEGIN_EXAMPLE
-1 $python script.py
-2 $python -i script.py   //可以保持交互
-3 $python
+  #+BEGIN_EXAMPLE
+  1 $python script.py
+  2 $python -i script.py   //可以保持交互
+  3 $python
    >>>import script   //此时无py后缀
-4 $python
+  4 $python
   >>>execfile('script.py')
-#+END_EXAMPLE
-
+  #+END_EXAMPLE
+  
 * import from
 #+BEGIN_EXAMPLE
 import re
@@ -115,103 +87,7 @@ Presence check
 
 BinaryData RegExp
 
-* 通配符
-* print(通配符支持，重定向支持)
-* 运算符
-* 变量和赋值
-
-* 集合元素
-#+BEGIN_EXAMPLE
-[]
-()
-{}
-可变对象、不可变对象
-#+END_EXAMPLE
-
-* 字符串
-* 列表和元组
-
-* 字典
-
-* 控制语句
-** if
-
-** while
-#+BEGIN_EXAMPLE
->>> a = 1
->>> while a<10:
-...     print a,
-...     a+=1
-... 
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
->>> a = 1  
->>> while a<10:
-...     print a
-...     a+=1
-... 
-#+END_EXAMPLE
-
-** for
-#+BEGIN_EXAMPLE
->>> a = 'adaffad'
->>> for x in a:
-...     print x,
-... 
-a d a f f a d   
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
->>> for x in range(len(a)):
-...     print x,
-... 
-0 1 2 3 4 5 6
->>> for x in range(len(a)):
-...     print a[x],
-... 
-a d a f f a d
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
->>> a=[1,2,3,4]
->>> for index, value in enumerate(a):
-...     print '{%d}: %d' % (index, value)
-... 
-{0}: 1
-{1}: 2
-{2}: 3
-{3}: 4
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
->>> [x * x for x in a if x % 2 == 0]
-[4, 16]
-#+END_EXAMPLE
-
-* 异常
-try
-raise
-except
-finally
-
 * 函数
-** 常用函数
-#+BEGIN_EXAMPLE
-dir()
-help()
-len()
-int()   
-range([start], end, [step])
-type() 返回类型
-sum() 求和函数
-sys.exit()
-pass()
-append()
-linesep()
-lstrip() rstrip() strip() 去掉左/右/左右的空格
-0b 0 0x 二进制、八进制、十六进制
-#+END_EXAMPLE
 * 类
 #+BEGIN_EXAMPLE
 >>> class A:
@@ -227,8 +103,6 @@ lstrip() rstrip() strip() 去掉左/右/左右的空格
 <type 'type'>
 #+END_EXAMPLE
   
-* range,xrange
-* help(range)
 * repr和str的区别
   repr无歧义的标识对象，当执行后与原来的对象相同；str是为方便阅读。
 #+begin_src python
@@ -320,8 +194,4 @@ class MineSweep(tkinter.Frame):
 if __name__ == '__main__':
     MineSweep.main(10, 10, 10)
 #+end_src
-#+BEGIN_HTML
-<script src="../../layout/js/disqus-comment.js"></script>
-<div id="disqus_thread">
-</div>
-#+END_HTML
+

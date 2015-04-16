@@ -1,0 +1,14 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* 安装
+  #+BEGIN_EXAMPLE
+  brew install tomcat
+  #+END_EXAMPLE
+  安装在 =/usr/local/Cellar/tomcat/8.0.21/= 中， =/usr/local/Cellar/tomcat/8.0.21/webapps/index.jsp= 为打开 localhost:8080 后的页面。
+  自己的文件可以放在 webapps 目录下。或修改 conf/server.xml中的appBase为自定义路径。
+* intellij部署tomcat
+  http://blog.csdn.net/little__zm/article/details/19569397
+  http://blog.csdn.net/little__zm/article/details/19570535

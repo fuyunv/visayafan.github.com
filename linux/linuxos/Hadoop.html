@@ -2,15 +2,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
-<title></title>
-<!-- 2014-12-21 Sun 05:42 -->
+<title>Hadoop</title>
+<!-- 2015-03-04 Wed 23:16 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
 <meta name="author" content="visayafan"/>
 </head>
 <body>
 <div id="content">
-<h1 class="title"></h1>
+<h1 class="title">Hadoop</h1>
 <div id="table-of-contents">
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents">
@@ -25,35 +25,37 @@
 </ul>
 </li>
 <li><a href="#sec-1-2">1.2. 安装</a></li>
-<li><a href="#sec-1-3">1.3. 解决Unable to load native-hadoop library</a></li>
-<li><a href="#sec-1-4">1.4. 配置</a>
+<li><a href="#sec-1-3">1.3. 配置</a>
 <ul>
-<li><a href="#sec-1-4-1">1.4.1. core-site.xml</a></li>
-<li><a href="#sec-1-4-2">1.4.2. mapred-site.xml</a></li>
-<li><a href="#sec-1-4-3">1.4.3. hdfs-site.xml</a></li>
-<li><a href="#sec-1-4-4">1.4.4. yarn-site.xml</a></li>
-<li><a href="#sec-1-4-5">1.4.5. slaves</a></li>
+<li><a href="#sec-1-3-1">1.3.1. core-site.xml</a></li>
+<li><a href="#sec-1-3-2">1.3.2. mapred-site.xml</a></li>
+<li><a href="#sec-1-3-3">1.3.3. hdfs-site.xml</a></li>
+<li><a href="#sec-1-3-4">1.3.4. yarn-site.xml</a></li>
+<li><a href="#sec-1-3-5">1.3.5. slaves</a></li>
+<li><a href="#sec-1-3-6">1.3.6. hadoop-env.sh</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#sec-2">2. HBase安装</a>
+<li><a href="#sec-2">2. Eclipse的Hadoop2.x插件</a></li>
+<li><a href="#sec-3">3. Intellij运行Hadoop代码</a></li>
+<li><a href="#sec-4">4. Intellij中打包Hadoop代码</a></li>
+<li><a href="#sec-5">5. HBase安装</a>
 <ul>
-<li><a href="#sec-2-1">2.1. 配置</a>
+<li><a href="#sec-5-1">5.1. 配置</a>
 <ul>
-<li><a href="#sec-2-1-1">2.1.1. hbase-site.xml</a></li>
-<li><a href="#sec-2-1-2">2.1.2. hbase-env.sh</a></li>
+<li><a href="#sec-5-1-1">5.1.1. hbase-site.xml</a></li>
+<li><a href="#sec-5-1-2">5.1.2. hbase-env.sh</a></li>
 </ul>
 </li>
-<li><a href="#sec-2-2">2.2. 注意：版本兼容问题</a></li>
+<li><a href="#sec-5-2">5.2. 注意：版本兼容问题</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
 <link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
-<link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
+<link rel="stylesheet" type="text/css" href="../../layout/css/too_many_toc.css" />
 <script src="../../layout/js/jquery_1.7.1.js"></script>
 <script src="../../layout/js/bootstrap_old.js"></script>
 
@@ -130,29 +132,11 @@ hadoop-dist/target/hadoop-2.6.0/hadoop-dist/target/hadoop-2.6.0/api为文档<br/
 </div>
 
 <div id="outline-container-sec-1-3" class="outline-3">
-<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 解决Unable to load native-hadoop library</h3>
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 配置</h3>
 <div class="outline-text-3" id="text-1-3">
-<p>
-在hadoop-env.sh中修改<br/>
-</p>
-<pre class="example">
-export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true"
-</pre>
-<p>
-为<br/>
-</p>
-<pre class="example">
-export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Djava.library.path=/usr/hadoop/hadoop-2.6.0/lib/native"
-</pre>
-</div>
-</div>
-
-<div id="outline-container-sec-1-4" class="outline-3">
-<h3 id="sec-1-4"><span class="section-number-3">1.4</span> 配置</h3>
-<div class="outline-text-3" id="text-1-4">
-</div><div id="outline-container-sec-1-4-1" class="outline-4">
-<h4 id="sec-1-4-1"><span class="section-number-4">1.4.1</span> core-site.xml</h4>
-<div class="outline-text-4" id="text-1-4-1">
+</div><div id="outline-container-sec-1-3-1" class="outline-4">
+<h4 id="sec-1-3-1"><span class="section-number-4">1.3.1</span> core-site.xml</h4>
+<div class="outline-text-4" id="text-1-3-1">
 <div class="org-src-container">
 
 <pre class="src src-xml">&lt;?<span style="color: #a020f0;">xml</span> <span style="color: #a0522d;">version</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">1.0</span><span style="color: #8b2252;">"</span>?&gt;
@@ -172,9 +156,9 @@ export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Djava.library.
 </div>
 </div>
 
-<div id="outline-container-sec-1-4-2" class="outline-4">
-<h4 id="sec-1-4-2"><span class="section-number-4">1.4.2</span> mapred-site.xml</h4>
-<div class="outline-text-4" id="text-1-4-2">
+<div id="outline-container-sec-1-3-2" class="outline-4">
+<h4 id="sec-1-3-2"><span class="section-number-4">1.3.2</span> mapred-site.xml</h4>
+<div class="outline-text-4" id="text-1-3-2">
 <div class="org-src-container">
 
 <pre class="src src-xml">&lt;?<span style="color: #a020f0;">xml</span> <span style="color: #a0522d;">version</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">1.0</span><span style="color: #8b2252;">"</span>?&gt;
@@ -190,9 +174,9 @@ export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Djava.library.
 </div>
 </div>
 
-<div id="outline-container-sec-1-4-3" class="outline-4">
-<h4 id="sec-1-4-3"><span class="section-number-4">1.4.3</span> hdfs-site.xml</h4>
-<div class="outline-text-4" id="text-1-4-3">
+<div id="outline-container-sec-1-3-3" class="outline-4">
+<h4 id="sec-1-3-3"><span class="section-number-4">1.3.3</span> hdfs-site.xml</h4>
+<div class="outline-text-4" id="text-1-3-3">
 <div class="org-src-container">
 
 <pre class="src src-xml">&lt;?<span style="color: #a020f0;">xml</span> <span style="color: #a0522d;">version</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">1.0</span><span style="color: #8b2252;">"</span>?&gt;
@@ -208,9 +192,9 @@ export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Djava.library.
 </div>
 </div>
 
-<div id="outline-container-sec-1-4-4" class="outline-4">
-<h4 id="sec-1-4-4"><span class="section-number-4">1.4.4</span> yarn-site.xml</h4>
-<div class="outline-text-4" id="text-1-4-4">
+<div id="outline-container-sec-1-3-4" class="outline-4">
+<h4 id="sec-1-3-4"><span class="section-number-4">1.3.4</span> yarn-site.xml</h4>
+<div class="outline-text-4" id="text-1-3-4">
 <div class="org-src-container">
 
 <pre class="src src-xml">&lt;?<span style="color: #a020f0;">xml</span> <span style="color: #a0522d;">version</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">1.0</span><span style="color: #8b2252;">"</span>?&gt;
@@ -230,9 +214,9 @@ export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Djava.library.
 </div>
 </div>
 
-<div id="outline-container-sec-1-4-5" class="outline-4">
-<h4 id="sec-1-4-5"><span class="section-number-4">1.4.5</span> slaves</h4>
-<div class="outline-text-4" id="text-1-4-5">
+<div id="outline-container-sec-1-3-5" class="outline-4">
+<h4 id="sec-1-3-5"><span class="section-number-4">1.3.5</span> slaves</h4>
+<div class="outline-text-4" id="text-1-3-5">
 <div class="org-src-container">
 
 <pre class="src src-xml">slave1
@@ -249,18 +233,71 @@ slave10
 </div>
 </div>
 </div>
+
+<div id="outline-container-sec-1-3-6" class="outline-4">
+<h4 id="sec-1-3-6"><span class="section-number-4">1.3.6</span> hadoop-env.sh</h4>
+<div class="outline-text-4" id="text-1-3-6">
+<p>
+修改JAVA_HOME变量；<br/>
+修改<br/>
+</p>
+<pre class="example">
+export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true"
+</pre>
+<p>
+为<br/>
+</p>
+<pre class="example">
+export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Djava.library.path=/usr/hadoop/hadoop-2.6.0/lib/native"
+</pre>
+<p>
+来解决Unable to load native-hadoop library警告问题。<br/>
+</p>
+</div>
+</div>
 </div>
 </div>
 
 <div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> HBase安装</h2>
+<h2 id="sec-2"><span class="section-number-2">2</span> Eclipse的Hadoop2.x插件</h2>
 <div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 配置</h3>
-<div class="outline-text-3" id="text-2-1">
-</div><div id="outline-container-sec-2-1-1" class="outline-4">
-<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> hbase-site.xml</h4>
-<div class="outline-text-4" id="text-2-1-1">
+<p>
+<a href="https://github.com/winghc/hadoop2x-eclipse-plugin">https://github.com/winghc/hadoop2x-eclipse-plugin</a><br/>
+<a href="http://blog.itpub.net/26041994/viewspace-1119285/">http://blog.itpub.net/26041994/viewspace-1119285/</a><br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Intellij运行Hadoop代码</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<a href="http://vichargrave.com/intellij-project-for-building-hadoop-the-definitive-guide-examples/">http://vichargrave.com/intellij-project-for-building-hadoop-the-definitive-guide-examples/</a><br/>
+添加Hadoop库依赖即可：<br/>
+file&gt;project structure Global Libraries -&gt; + -&gt; 输入name，+添加库，添加hadoop-2.6.0/share/hadoop下所有目录及hadoop-2.6.0/share/hadoop/common目录。<br/>
+之后 modules下dependencies中添加之前命名的global libraries.<br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Intellij中打包Hadoop代码</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+<a href="http://vichargrave.com/intellij-project-for-building-hadoop-the-definitive-guide-examples/">http://vichargrave.com/intellij-project-for-building-hadoop-the-definitive-guide-examples/</a><br/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> HBase安装</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> 配置</h3>
+<div class="outline-text-3" id="text-5-1">
+</div><div id="outline-container-sec-5-1-1" class="outline-4">
+<h4 id="sec-5-1-1"><span class="section-number-4">5.1.1</span> hbase-site.xml</h4>
+<div class="outline-text-4" id="text-5-1-1">
 <div class="org-src-container">
 
 <pre class="src src-xml">&lt;<span style="color: #0000ff;">configuration</span>&gt;
@@ -287,9 +324,9 @@ slave10
 </div>
 </div>
 
-<div id="outline-container-sec-2-1-2" class="outline-4">
-<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> hbase-env.sh</h4>
-<div class="outline-text-4" id="text-2-1-2">
+<div id="outline-container-sec-5-1-2" class="outline-4">
+<h4 id="sec-5-1-2"><span class="section-number-4">5.1.2</span> hbase-env.sh</h4>
+<div class="outline-text-4" id="text-5-1-2">
 <p>
 修改JAVA_HOME和HBASE_MANAGES_ZK（使用hbase自带的zookeeper则设为true）<br/>
 </p>
@@ -297,8 +334,8 @@ slave10
 </div>
 </div>
 
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 注意：版本兼容问题</h3>
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> 注意：版本兼容问题</h3>
 </div>
 </div>
 </div>
