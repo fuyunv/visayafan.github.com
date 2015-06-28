@@ -1,6 +1,5 @@
-#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+INCLUDE: "../../layout/template.org"
-#+SETUPFILE: "../../layout/extension.org"
+#+OPTIONS: ^:{} _:{} num:t toc:t
+#+INCLUDE: "./template/log.org"
 #+title:
 
 2014年09月14日21:56

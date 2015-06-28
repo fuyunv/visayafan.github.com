@@ -1,7 +1,7 @@
-#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+INCLUDE: "../../layout/template.org"
-#+SETUPFILE: "../../layout/extension.org"
+#+OPTIONS: ^:{} _:{} num:t toc:t
+#+INCLUDE: "./template/log.org"
 #+title:
+
 2014年07月22日06:24
 
 距离上次写日志已经很久了。
