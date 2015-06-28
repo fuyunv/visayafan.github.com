@@ -63,6 +63,30 @@
    修改 =/etc/apache2/httpd.conf= ，去掉 =LoadModule php5_module libexec/apache2/libphp5.so= 前面的注释，因为 extjs api文档需要PHP。
 
    重启apache，之后访问 http://shorturl 等价访问 http://localhost/~visayafan
+** Yosemite中额外注意
+   http://lawrencenaman.com/development/fixing-apache-after-upgrading-to-yosemite/   
+   MacOS升级10.9到10.10后，之前apache的配置会被覆盖掉。例如之前的 =http.conf= 会变为 =httpd.conf~previous= 。升级系统会需要重新设置。
+   修改http.conf中
+   #+BEGIN_EXAMPLE
+     #
+     # Deny access to the entirety of your server's filesystem. You must
+     # explicitly permit access to web content directories in other
+     # <Directory> blocks below.
+     #
+     <Directory />
+     AllowOverride none
+     Require all denied
+     </Directory>
+   #+END_EXAMPLE
+   为
+   #+BEGIN_EXAMPLE
+     <Directory />
+     Options FollowSymLinks
+     AllowOverride all
+     Order allow,deny
+     Allow from all
+     </Directory>   
+   #+END_EXAMPLE
 ** 下载doc
    http://docs-origin.sencha.com/extjs/5.1/ 左上角 =Ext JS Guides= 点击 =(offline docs)= 下载离线API文档。解压后放到HOME下的Sites目录中，之后访问 http://shorturl/ext-docs-5.1/ 即可。
 * Sencha CMD
@@ -107,17 +131,14 @@
     // change the src of the image programmatically
     changingImage.setSrc('http://www.sencha.com/img/20110215-feat-perf.png');  
   #+END_SRC
-* Ext.form.field.file
+* Ext.form.field.File
   xtype: filefield
   一个上传文件的表单
-* Ext.form.field.displayField
+* Ext.form.field.Displayfield
   xtype:displayfield
   只是用来显示文字
-* Intellij自动补全慢
-  如何自动补全：Preferences->JavaScript->Library->Add 添加ext-all.js和ext-all-debug.js
-  http://stackoverflow.com/questions/11124042/exclude-javascript-library-from-code-completion-in-intellij-idea
-  因为在补全过程中要搜索工程中的extjs所有js文件，所以会慢，只要将extjs目录标记为excluded即可。
-  在Project View中的extjs目录右键->Mark Directory As->Excluded.
+* 用webstorm而非intellij
+  sencha有插件
 * vtype
   validation type
 * msgTarget
@@ -127,3 +148,85 @@
   layout为hbox或vbox时为panel间增加缝隙
 * numberfield
   只能输入数字类型
+* glyph
+  http://lingyi.red/using-font-awesome-in-extjs
+  http://fortawesome.github.io/Font-Awesome/cheatsheet/
+  下载fontawesome到resources目录下，在index.html中加入
+  #+BEGIN_EXAMPLE
+    <link rel="stylesheet" type="text/css" href="resources/font-awesome-4.3.0/css/font-awesome.min.css">  
+  #+END_EXAMPLE
+* Ext.window.Window
+  1. autoShow 为true时，不用显示调用show函数，Ext.create('windowname').show()
+  2. header为false时不会显示窗口标题，但必须保证header上没有其它组件，例如没有关闭icon，即closable:false
+  3. tools可以设置header上的icon，各个icon形状参考 Ext.panel.Tool的type config
+  4. titleAlign 标题位置
+  5. titlePosition 为 header 的 config，值为数字，表示前面有几个icon (tools配置)
+* Ext.create与Ext.widget
+  http://stackoverflow.com/questions/12496299/what-is-the-difference-between-these-two-codes
+  =new Ext.button.Button= 等价于 =Ext.create ('Ext.button.Button')= 等价于 =Ext.widget('button')=
+* multiselector
+* cellediting
+  可以编辑表格中的cell
+* grid.selection
+  一般用于binding
+* extjs class
+  http://docs.sencha.com/extjs/5.1/core_concepts/classes.html
+  1. 只用字母数字，尽量不要用数字
+  2. 点号分隔的第1个和最后1个采用CamelCase命名，其它全部小写 =MyCompany.data.CoolProxy=
+  3. 类名与路径直接对应 =MyCompany.data.CoolProxy= 对应目录 =MyCompany/data/CoolProxy.js=
+  4. 变量和函数命名采用 =camelCase= 命名法 =isGoodName= ，常量则全为大写 =YES=
+  5. 使用 =Ext.define= 而非 =Ext.extend= 来定义新类
+  6. 定义的类 constructor 属性值为构造函数
+  7. =config= 属性里的键（设为key）均有对应的setKey和getKey方法，setKey方法会使用applyKey方法的返回值，用户可以重载applyKey方法来影响setKey方法。
+  8. 静态方法可直接通过 =classname.method= 来调用
+* model没有alias属性
+  汉有为model设置alias属性，然后通过alias名来访问model
+  必须使用全名，例如 model: 'MyApp.model.main.ModeName'
+* 前缀
+  http://www.sencha.com/forum/showthread.php?131277-alias-prefix-widget-editing-plugin-...-where-is-more
+  使用alias,例如alias: 'viewmodel.myname'
+  widget => component
+  viewmodel => view model
+  store => store
+  view  => view
+  controller => view controller
+  widget可以使用xtype，此时不用widget前缀，例如：xtype:'myname'等价于alias:'widget.myname'
+* plugins mixins
+  http://www.sencha.com/blog/using-plugins-and-mixins-in-your-sencha-apps/
+* button
+** pressed,enableToggle,toggleHandler
+   pressed为true时按钮为按下状态，（只有当entableToggle为true时此属性才会生效）
+   此时每次press都会触发toggleHandler函数
+** previousNode/previousSibling
+   遍历用
+* 为组件添加事件
+** listener
+   #+BEGIN_EXAMPLE
+     listener:{
+         click: 'onClick'
+     }
+   #+END_EXAMPLE
+** on
+   #+BEGIN_SRC js
+     bt.on('click', onClick)   ;
+   #+END_SRC
+* breadcrumb
+  工具栏，用来显示导航，存储的数据为treestore
+* Ext.mixin.Mashup
+  方便加载外部js脚本
+* Ext.DomHelper
+  创建element
+  可以使用 Ext.DomHelper.createTemplate使用template
+* Ext.get
+  返回Ext.dom.Element对象
+  Ext.get('x).dom 返回HTMLElement
+  Ext.getDom 返回HTMLElement
+* Ext.getCmp
+  =Ext.ComponentManager.get=
+  通过组件id
+* Ext.ux.ajax.SimManager
+  模拟ajax访问
+* Ext.toast
+  在页面最上方出现自动消失的提示框
+* grid中widgetcolumn
+  getWidgetRecord得到当前row

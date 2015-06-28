@@ -1,185 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title>批量修改文件</title>
+<!-- 2015-05-08 Fri 22:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<meta name="title" content="批量修改文件"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-12-14 09:05:09 CST"/>
 <meta name="author" content="visayafan"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/>
-<div id="org-div-comments"><a href="../../index.html#linuxos">主页</a></div>
-
-
 </head>
 <body>
-
-
 <div id="content">
 <h1 class="title">批量修改文件</h1>
-
-
+<div id="table-of-contents">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 利用sed与grep实现批量替换</a></li>
+<li><a href="#sec-2">2. 在文件末尾添加</a></li>
+<li><a href="#sec-3">3. 读文件／写文件</a></li>
+<li><a href="#sec-4">4. 利用sed删除行</a></li>
+<li><a href="#sec-5">5. 多次编辑</a></li>
+<li><a href="#sec-6">6. sed替换中使用变量</a></li>
+<li><a href="#sec-7">7. sed中使用命令执行结果</a></li>
+</ul>
+</div>
+</div>
 <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script> -->
 <link rel="stylesheet" type="text/css" href="../../layout/css/bootstrap_old.css" />
 <link rel="stylesheet" type="text/css" href="../../layout/css/style.css" />
 <script src="../../layout/js/jquery_1.7.1.js"></script>
 <script src="../../layout/js/bootstrap_old.js"></script>
 
-
-
-<div id="table-of-contents">
-<h2>目录</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 利用sed与grep实现批量替换</a></li>
-<li><a href="#sec-2">2 在文件末尾添加</a></li>
-<li><a href="#sec-3">3 读文件／写文件</a></li>
-<li><a href="#sec-4">4 利用sed删除行</a></li>
-<li><a href="#sec-5">5 多次编辑</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-2">
+<div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> 利用sed与grep实现批量替换</h2>
 <div class="outline-text-2" id="text-1">
-
-<p>利用grep和sed来实现：<br/>
-</p>
-
-
-<pre class="example">sed -i "s/old/new/g" `grep "old" -rl directory`
-</pre>
-
 <p>
-grep命令的-r选项表递归，-l选项表&ndash;files-with-matches匹配的文件，即将匹配的文件作为sed的参数。<br/>
-sed命令-i表示 &ndash;in-place即原地修改，s表替换，g表全局。<br/>
+利用grep和sed来实现：<br/>
+</p>
+<pre class="example">
+sed -i "s/old/new/g" `grep "old" -rl directory`
+</pre>
+<p>
+grep命令的-r选项表递归，-l选项表&#x2013;files-with-matches匹配的文件，即将匹配的文件作为sed的参数。<br/>
+sed命令-i表示 &#x2013;in-place即原地修改，s表替换，g表全局。<br/>
 </p>
 
-
-
-<pre class="example">sed -i 's/old/&amp;new/g' filename
+<pre class="example">
+sed -i 's/old/&amp;new/g' filename
 </pre>
-
 <p>
 &amp;表示前面欲替换的内容，即old，即把old替换成oldnew。<br/>
 </p>
+
 <p>
 如果没有子目录，只使用sed即可：<br/>
 </p>
-
-
-<pre class="example">sed -i "s/old/new/g" *
+<pre class="example">
+sed -i "s/old/new/g" *
 </pre>
-
 <p>
 *表匹配，即所有文件。<br/>
 </p>
+
 <p>
 例如下面命令把当前目录及其子目录下所有../template2.org替换成../../layo../layout/template.org：<br/>
 </p>
-
-
-<pre class="example">sed -i "s|../template2.org|../../layo../layout/template.org|g" `grep "../template2.org" -rl .`
+<pre class="example">
+sed -i "s|../template2.org|../../layo../layout/template.org|g" `grep "../template2.org" -rl .`
 </pre>
-
 <p>
 利用得当可以极大提高效率。<br/>
-</p></div>
-
+</p>
+</div>
 </div>
 
-<div id="outline-container-2" class="outline-2">
+<div id="outline-container-sec-2" class="outline-2">
 <h2 id="sec-2"><span class="section-number-2">2</span> 在文件末尾添加</h2>
 <div class="outline-text-2" id="text-2">
-
-
-
-
-<pre class="example">sed '$a \toadd' `find -name "*.org"`
+<pre class="example">
+sed '$a \toadd' `find -name "*.org"`
 </pre>
-
 <p>
-  $a表文件尾，\表换行，即在后缀为org文件中的文件末尾添加toadd<br/>
-  其中a表添加，与i的区别在于：a在后面添加，i在前面添加，所以上面命令中如果把a换成i则在最后一行的前面一行添加toadd<br/>
-</p></div>
-
+$a表文件尾，\表换行，即在后缀为org文件中的文件末尾添加toadd<br/>
+其中a表添加，与i的区别在于：a在后面添加，i在前面添加，所以上面命令中如果把a换成i则在最后一行的前面一行添加toadd<br/>
+</p>
+</div>
 </div>
 
-<div id="outline-container-3" class="outline-2">
+<div id="outline-container-sec-3" class="outline-2">
 <h2 id="sec-3"><span class="section-number-2">3</span> 读文件／写文件</h2>
 <div class="outline-text-2" id="text-3">
-
-
-
-
-<pre class="example">sed '/abc/r filename1' `find -name "*.org"`
+<pre class="example">
+sed '/abc/r filename1' `find -name "*.org"`
 </pre>
-
 <p>
-  用filename1中的内容替换掉目录下以后缀为org文件中的abc<br/>
-  同理用w即把内容写到指定文件中。<br/>
+用filename1中的内容替换掉目录下以后缀为org文件中的abc<br/>
+同理用w即把内容写到指定文件中。<br/>
 </p>
-
-
-<pre class="example">sed '/div/w div.org' filename   #将filename中有div的行写到div.org文件中。
+<pre class="example">
+sed '/div/w div.org' filename   #将filename中有div的行写到div.org文件中。
 </pre>
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-4" class="outline-2">
+<div id="outline-container-sec-4" class="outline-2">
 <h2 id="sec-4"><span class="section-number-2">4</span> 利用sed删除行</h2>
 <div class="outline-text-2" id="text-4">
-
-
-
-
-<pre class="example">sed '/abc/ d' filename          #删除filename中含abc的行
+<pre class="example">
+sed '/abc/ d' filename          #删除filename中含abc的行
 sed '3d' filename               #删除filename第3行
 sed '$d' filename               #删除filename最后一行
 sed '3,$d' filename             #删除filename第3行到最后一行
 </pre>
-
 <p>
-  其中逗号表范围，例如：<br/>
+其中逗号表范围，例如：<br/>
 </p>
-
-
-<pre class="example">sed -n /abc/,/def/p filename
+<pre class="example">
+sed -n /abc/,/def/p filename
 </pre>
-
 <p>
-  打印第一个匹配abc的行到最后一个匹配def行之间的行，其中，表范围<br/>
-</p></div>
-
+打印第一个匹配abc的行到最后一个匹配def行之间的行，其中，表范围<br/>
+</p>
+</div>
 </div>
 
-<div id="outline-container-5" class="outline-2">
+<div id="outline-container-sec-5" class="outline-2">
 <h2 id="sec-5"><span class="section-number-2">5</span> 多次编辑</h2>
 <div class="outline-text-2" id="text-5">
-
-
-
-
-<pre class="example">sed -e 's/div/divvvv/g' -e 's/divvvv/div/g' a.org #先把所有div换成divvvv，再把所有divvvvv换成div
+<pre class="example">
+sed -e 's/div/divvvv/g' -e 's/divvvv/div/g' a.org #先把所有div换成divvvv，再把所有divvvvv换成div
 </pre>
-
 <p>
-  -e表示多次编辑，相当于调用多次sed命令，每次内容为前一个-e到后一个-e之间的命令。<br/>
+-e表示多次编辑，相当于调用多次sed命令，每次内容为前一个-e到后一个-e之间的命令。<br/>
 </p>
-
 
 <script src="../../layout/js/disqus-comment.js"></script>
 <div id="disqus_thread">
 </div>
 </div>
 </div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> sed替换中使用变量</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+<a href="http://www.cnblogs.com/yi-meng/p/3194208.html">http://www.cnblogs.com/yi-meng/p/3194208.html</a><br/>
+双引号或无引号下使用$var<br/>
+</p>
+<pre class="example">
+sed "s/x/$var/g" filename
+sed s/x/$var/g filename
+</pre>
+<p>
+单引号下的内容不会被解析，例如：<br/>
+</p>
+<pre class="example">
+$Comfilename="/home/evan/sandbox/Main/"
+echo $Comfilename | sed 's#\/#\\\/#g'
+echo $Comfilename | sed "s#\/#\\\/#g"
+</pre>
+<p>
+第一个的结果是：\/home\/evan\/sandbox\/Main\/<br/>
+第二个还是：/home/evan/sandbox/Main/ 因为双引号会将“\/“解释为”/“，所以sed "s#\/#\\\/#g"被Shell解释成了sed s#/#\/#g 到sed里执行时又把”\/“转义为”/“了，这样相当于进行了了两次解释，就得不到想要的结果了。<br/>
+</p>
+
+<p>
+所以变量不能包含在单引号中：<br/>
+</p>
+<pre class="example">
+sed 's/x/'$var'/g' filename
+</pre>
+<p>
+或将变量包含在单引号中但额外执行一次执行<br/>
+</p>
+<pre class="example">
+eval sed 's/x/$var/g' filename
+</pre>
+</div>
 </div>
 
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> sed中使用命令执行结果</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+用$(cmd) or `cmd`<br/>
+</p>
+<pre class="example">
+sed "s/x/$(hostname)/g" filename
+sed "s/x/`hostname`/g" filename
+</pre>
+</div>
+</div>
+</div>
 </body>
 </html>

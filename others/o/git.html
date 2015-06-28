@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
 <head>
 <title>Git笔记</title>
-<!-- 2015-04-16 Thu 09:27 -->
+<!-- 2015-05-13 Wed 00:05 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
 <meta name="author" content="visayafan"/>
@@ -82,13 +82,15 @@
 </li>
 <li><a href="#sec-29">29. .git目录</a></li>
 <li><a href="#sec-30">30. git区间</a></li>
-<li><a href="#sec-31">31. tricks</a>
+<li><a href="#sec-31">31. git处理pull request</a></li>
+<li><a href="#sec-32">32. git origin master</a></li>
+<li><a href="#sec-33">33. tricks</a>
 <ul>
-<li><a href="#sec-31-1">31.1. git中永久删除一个文件</a></li>
-<li><a href="#sec-31-2">31.2. 乱码</a></li>
+<li><a href="#sec-33-1">33.1. git中永久删除一个文件</a></li>
+<li><a href="#sec-33-2">33.2. 乱码</a></li>
 </ul>
 </li>
-<li><a href="#sec-32">32. 搭建git服务器</a></li>
+<li><a href="#sec-34">34. 搭建git服务器</a></li>
 </ul>
 </div>
 </div>
@@ -564,18 +566,26 @@ Careful! The meaning of &#x2013;ours and &#x2013;theirs is reversed. <b>&#x2013;
 <h2 id="sec-20"><span class="section-number-2">20</span> git remote</h2>
 <div class="outline-text-2" id="text-20">
 <p>
-从远程仓库上用git clone下载下来的可以理解为有两个分支origin/master和master，其中origin为远程仓库名，前者分支是不受你支配的，你所在的是master分支，当你push的时候，git会比较你的origion/master和远程仓库的是否一样，如果一样并且你有权限则可以push，如果不一样则需要用 <code>git fetch</code> 下载下来进行合并，此时的远程仓库和你的仓库里的origin/master更改为和master指向同一结点。<br/>
+<a href="https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF">https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF</a><br/>
+从远程仓库上用git clone下载下来的可以理解为有两个分支origin/master和master，其中origin为远程仓库名，前者分支是不受你支配的，你所在的是master分支。<br/>
+当push时，git会比较你的origion/master和远程仓库的是否一样，如果一样并且你有权限则可以push，则fast-forward。<br/>
+如果不一样则需要用 <code>git fetch</code> 下载下来，此时的远程仓库和你的仓库里的origin/master一致。merge后再push。<br/>
 </p>
 <ul class="org-ul">
-<li>查看当前repo有哪些远程repo，可以用git remote（至少有一个origin，表示这个repo的发起人），可以加-v来查看详细信息（将显示出其远程仓库地址，例如cho45 git://github.com/cho45/grit.git）这样可以方便地把它的repo提交到本地上来查看。<br/>
+<li>查看当前repo有哪些远程repo，可以用 <code>git remote</code> ，可以加-v来查看详细信息（将显示出其远程仓库地址，例如cho45 git://github.com/cho45/grit.git）。<br/>
 </li>
-<li>添加一个远程repo：git remote add shortname address 其中shortname表示简单名字，之后再用git remote -v可以看到多了一个 shortname address的远程仓库<br/>
+<li>添加一个远程repo： <code>git remote add shortname address</code> 其中shortname表示简单名字，之后再用git remote -v可以看到多了一个 shortname address的远程仓库<br/>
 </li>
 <li>git remote show [remote-name] 查看远程repo信息<br/>
 </li>
 <li>git remote rename name1 namw2 将远程repo的name1命名为name2<br/>
 </li>
 <li>git remote rm remote-name 删除<br/>
+</li>
+<li>取得remote repo的某个分支 <code>git fetch origin</code> 后 <code>git checkout -b branchName origin/branchName</code> ，后者是必须的，否则本地没有分支与origin的branchName对应。本地分支名不一定必须与remote分支名相同，如果相同的话，可以简化 <code>git checkout &#x2013;track origin/branchName</code> 。<br/>
+也可以直接merge <code>git fetch origin</code> 后 <code>git merge origin/master</code> 。merge前可以查看diff <code>git diff master origin/master</code> 。<br/>
+</li>
+<li>删除服务器上remote分支 <code>git push origin :branchName</code> ，此命令中本地分支为空，表示删除remote分支。<br/>
 </li>
 </ul>
 </div>
@@ -585,6 +595,7 @@ Careful! The meaning of &#x2013;ours and &#x2013;theirs is reversed. <b>&#x2013;
 <h2 id="sec-21"><span class="section-number-2">21</span> git fetch</h2>
 <div class="outline-text-2" id="text-21">
 <p>
+<a href="https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF">https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF</a><br/>
 如果多个人同时向远程仓库提交则有可能后提交者与先前提交者存在冲突，因为本地origin/master指向结点和远程仓库上origin/master不一样(<a href="#sec-20">20</a>)，此时后提交者要先用 <code>git fetch</code> 将前者已经提交的版本下载下来进行合并操作然后才能进行push。origin/master只有这种情况才会改变其指向。<br/>
 </p>
 <ul class="org-ul">
@@ -658,11 +669,9 @@ git fetch只是从远程repo中拉来本地repo但并不合并，git pull则与�
 <h2 id="sec-26"><span class="section-number-2">26</span> git rebase</h2>
 <div class="outline-text-2" id="text-26">
 <p>
+<a href="https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E5%88%86%E6%94%AF%E7%9A%84%E8%A1%8D%E5%90%88">https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E5%88%86%E6%94%AF%E7%9A%84%E8%A1%8D%E5%90%88</a><br/>
 看链接图示： <a href="http://www.zhaoxiaoqing.cn/a/php/php1/2012/1025/654.html">http://www.zhaoxiaoqing.cn/a/php/php1/2012/1025/654.html</a><br/>
 <a href="http://gitbook.liuhui998.com/4_2.html">http://gitbook.liuhui998.com/4_2.html</a><br/>
-</p>
-
-<p>
 相当于进行多次的 <a href="#cherrypick">cherry-pick</a><br/>
 </p>
 <link rel="stylesheet" href="../../layout/css/jquery.lightbox-0.5.css" type="text/css" media="screen" /> <script type="text/javascript" src="../../layout/js/jquery.lightbox-0.5.js"></script> <center> <a class="lightbox" href="images/rebase.jpg"> <img class="lightbox " title="点击查看大图" src="images/rebase.jpg" width="400"> </a> </center> <script type="text/javascript"> $(function() {$('a.lightbox').lightBox();}); </script>
@@ -675,6 +684,7 @@ git fetch只是从远程repo中拉来本地repo但并不合并，git pull则与�
 <link rel="stylesheet" href="../../layout/css/jquery.lightbox-0.5.css" type="text/css" media="screen" /> <script type="text/javascript" src="../../layout/js/jquery.lightbox-0.5.js"></script> <center> <a class="lightbox" href="images/rebase.png"> <img class="lightbox " title="点击查看大图" src="images/rebase.png" width="400"> </a> </center> <script type="text/javascript"> $(function() {$('a.lightbox').lightBox();}); </script>
 </div>
 </div>
+
 <div id="outline-container-sec-27" class="outline-2">
 <h2 id="sec-27"><span class="section-number-2">27</span> fast forward</h2>
 <div class="outline-text-2" id="text-27">
@@ -841,11 +851,53 @@ ref目录保存本地/远程版本库的分支。<br/>
 </div>
 
 <div id="outline-container-sec-31" class="outline-2">
-<h2 id="sec-31"><span class="section-number-2">31</span> tricks</h2>
+<h2 id="sec-31"><span class="section-number-2">31</span> git处理pull request</h2>
 <div class="outline-text-2" id="text-31">
-</div><div id="outline-container-sec-31-1" class="outline-3">
-<h3 id="sec-31-1"><span class="section-number-3">31.1</span> git中永久删除一个文件</h3>
-<div class="outline-text-3" id="text-31-1">
+<p>
+A fork B的repo后，便拥有了自己版本的repo版本，A可以对A的repo进行修改commit，不会对B的repo造成任何影响。<br/>
+A想要自己的代码合并到B中，必须发起pull request（github）或merge request（gitlab）。<br/>
+B看到A发起的request后，进行审核，决定是否合并到自己的分支上。<br/>
+B在命令行下操作：<br/>
+</p>
+<pre class="example">
+// 得到A master分支上的代码
+git fetch http://202.120.4.52/visayafan/doc.git master
+// 创建名为A-branch的分支
+git checkout -b A-branch FETCH_HEAD
+测试A的代码
+// 切换到master
+git checkout master
+// 合并A-branch上的代码
+git merge A-branch
+// 删除分支
+git branch -d A-branch
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-32" class="outline-2">
+<h2 id="sec-32"><span class="section-number-2">32</span> git origin master</h2>
+<div class="outline-text-2" id="text-32">
+<p>
+<a href="http://lishicongli.blog.163.com/blog/static/1468259020132125247302/">http://lishicongli.blog.163.com/blog/static/1468259020132125247302/</a><br/>
+origin是个alias 表示remote repo。当clone时自动将remote repo命名为origin。也可以git remote add origin remote_repo_address。当然也可以起其它名。<br/>
+master表local repo的一个分支。<br/>
+origin/master 表示remote repo的master分支。<br/>
+HEAD表示当前工作空间的分支。 <a href="https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E4%BD%95%E8%B0%93%E5%88%86%E6%94%AF">https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E4%BD%95%E8%B0%93%E5%88%86%E6%94%AF</a><br/>
+</p>
+<pre class="example">
+git push origin HEAD:master   // 表示将当前工作空间的分支 push 到 origin的master分支
+git push origin master 等价于 git push origin master:master
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-33" class="outline-2">
+<h2 id="sec-33"><span class="section-number-2">33</span> tricks</h2>
+<div class="outline-text-2" id="text-33">
+</div><div id="outline-container-sec-33-1" class="outline-3">
+<h3 id="sec-33-1"><span class="section-number-3">33.1</span> git中永久删除一个文件</h3>
+<div class="outline-text-3" id="text-33-1">
 <p>
 git rm filename可以从repo中删除一个文件，但仍旧可以其库存历史将其恢复<br/>
 </p>
@@ -903,9 +955,9 @@ $ du -hs
 </div>
 </div>
 
-<div id="outline-container-sec-31-2" class="outline-3">
-<h3 id="sec-31-2"><span class="section-number-3">31.2</span> 乱码</h3>
-<div class="outline-text-3" id="text-31-2">
+<div id="outline-container-sec-33-2" class="outline-3">
+<h3 id="sec-33-2"><span class="section-number-3">33.2</span> 乱码</h3>
+<div class="outline-text-3" id="text-33-2">
 <p>
 使用git add添加要提交的文件的时候，如果文件名是中文，会显示形如274\232\350\256\256\346\200\273\347\273\223.png的乱码。<br/>
 解决方案：<br/>
@@ -915,9 +967,9 @@ git config &#x2013;global core.quotepath false<br/>
 </div>
 </div>
 
-<div id="outline-container-sec-32" class="outline-2">
-<h2 id="sec-32"><span class="section-number-2">32</span> 搭建git服务器</h2>
-<div class="outline-text-2" id="text-32">
+<div id="outline-container-sec-34" class="outline-2">
+<h2 id="sec-34"><span class="section-number-2">34</span> 搭建git服务器</h2>
+<div class="outline-text-2" id="text-34">
 <p>
 本地(Win7)：<br/>
 生成公钥<br/>

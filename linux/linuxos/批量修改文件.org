@@ -1,6 +1,7 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+include "../../layo../layout/template.org"
-#+title: 批量修改文件
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:批量修改文件
 
 * 利用sed与grep实现批量替换
 利用grep和sed来实现：

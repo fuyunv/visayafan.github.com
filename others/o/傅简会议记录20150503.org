@@ -1,0 +1,12 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:傅简会议记录20150503
+
+* 图表2
+  增加全选
+  状态 文字
+  日期 日历图标删掉
+  前驱规则 用名称而非编号
+* 图表3
+  

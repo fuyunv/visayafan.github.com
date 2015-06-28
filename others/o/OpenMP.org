@@ -1,0 +1,33 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* omp_set_num_threads
+  设置进程个数
+  #+BEGIN_EXAMPLE
+  omp_set_num_threads(4);
+  #+END_EXAMPLE
+  #+BEGIN_EXAMPLE
+  #pragma omp parallel num_threads(4)
+  #+END_EXAMPLE
+* omp_get_thread_num
+* omp_get_num_threads
+  总进程个数
+
+* 例子
+** hello
+   #+BEGIN_SRC c
+     #include "omp.h"
+     #include <stdio.h>
+     int main(int argc, char *argv[])
+     {
+          #pragma omp parallel
+          {
+               int ID = omp_get_thread_num();
+               printf("hello(%d)\n", ID);
+          }
+          return 0;
+     }
+     
+   #+END_SRC

@@ -1,0 +1,9 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* prototype based programming
+  http://en.wikipedia.org/wiki/Prototype-based_programming
+  http://www.zhihu.com/question/20076777?utm_campaign=rss&utm_medium=rss&utm_source=rss&utm_content=title
+  http://www.cnblogs.com/winter-cn/archive/2009/05/16/1458390.html

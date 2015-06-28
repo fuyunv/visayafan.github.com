@@ -53,3 +53,69 @@
   Gradle窗口中点“刷新”即可下载依赖并添加到classpath中。
 * 隐藏窗口快捷键
   =Shift ESC= 或 =Shift 单击= 
+* 快速跳转到匹配括号
+  keymap->Move caret to matched brace
+* newline
+  =shift enter= 新一行（下）
+  =ctrl cmd enter= 新一行（上）
+* 改变字体大小快捷键
+  editor->general->change font size(zoom) with command+mouse wheel
+
+  增加快捷键 increase/decrease font size
+* chrome改变字体
+  =M == =M -=
+* 快速创建test
+  =Cmd Shift T=
+* 查看指定类继承关系
+  https://www.jetbrains.com/idea/help/building-class-hierarchy.html
+  首先要 =Ctrl h= build hierarchy
+  再打开hierarchy tool window 或快捷键 =Cmd 8=
+* 拷贝当前行
+  拷贝时如果没有选中任何区域则拷贝当前行
+  同理剪切
+* 跳转Back/Forward
+  =Cmd [=
+  =Cmd ]=
+* 上/下一个Tab
+  =Cmd Shift [=
+  =Cmd Shift ]=
+* 跳转到代码块开始结束位置
+  =Cmd Alt [=
+  =Cmd Alt ]=
+* Find Usage
+  | Alt F7       | find usage in file |
+  | Cmd Alt F7   | find usage         |
+  | Cmd Shift F7 | highlight usage    |
+* 快速切换主题
+  =Ctrl `=
+* Recent Files
+  =Cmd e= 可以输入文件名查找
+  =Ctrl Tab= 快速切换
+  =Cmd Shift e= recent edited file
+* Surrounding
+  =Cmd Alt t=
+* 查看参数信息
+  在函数参数中 =Cmd p= 可查看此函数的参数信息
+* 查看所在位置context信息
+  https://www.jetbrains.com/idea/help/viewing-current-caret-location.html
+  当代码块过长时 =Ctrl Shift q= 可以查看context信息
+* 选择代码块
+  =alt up=
+  例如要选择引号间的内容，将光标放在引号中做任意位置，连续按 =alt up=
+* 快速查找文件
+  =cmd shift o=
+  只键入文件名任意几个字母即可
+* 所有live templates
+  =cmd j=
+* 查看出现错误的可能解决方法
+  =alt enter=
+* 方法跳转
+  =ctrl up/down=
+* 快速查看定义
+  =cmd y=
+  跳转是 =cmd b=
+* 导航栏
+  =cmd up=
+* 选择当前位置到行首/行末
+  =cmd shift left/right=
+* acejump插件

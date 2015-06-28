@@ -1,0 +1,12 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* 去除标题栏
+  #+BEGIN_EXAMPLE
+  // 在setContentView之前
+  requestWindowFeature(Window.FEATURE_NO_TITLE);
+  #+END_EXAMPLE
+* 模拟器中切换横竖屏
+  Ctrl F11

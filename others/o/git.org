@@ -219,13 +219,20 @@ $ git commit -c ORIG_HEAD
    假设filename为发生合并冲突的文件，可以使用checkout的--ours和--theirs选项指定这个文件用哪个版本的，当然也可以打开git mergetool进入手工修改，但如果事先知道用哪个文件的话，这个方法比较快。
    Careful! The meaning of --ours and --theirs is reversed. *--ours == the remote* . *--theirs == local* .
 * git remote
-  从远程仓库上用git clone下载下来的可以理解为有两个分支origin/master和master，其中origin为远程仓库名，前者分支是不受你支配的，你所在的是master分支，当你push的时候，git会比较你的origion/master和远程仓库的是否一样，如果一样并且你有权限则可以push，如果不一样则需要用 =git fetch= 下载下来进行合并，此时的远程仓库和你的仓库里的origin/master更改为和master指向同一结点。
-  * 查看当前repo有哪些远程repo，可以用git remote（至少有一个origin，表示这个repo的发起人），可以加-v来查看详细信息（将显示出其远程仓库地址，例如cho45 git://github.com/cho45/grit.git）这样可以方便地把它的repo提交到本地上来查看。
-  * 添加一个远程repo：git remote add shortname address 其中shortname表示简单名字，之后再用git remote -v可以看到多了一个 shortname address的远程仓库
+  https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF
+  从远程仓库上用git clone下载下来的可以理解为有两个分支origin/master和master，其中origin为远程仓库名，前者分支是不受你支配的，你所在的是master分支。
+  当push时，git会比较你的origion/master和远程仓库的是否一样，如果一样并且你有权限则可以push，则fast-forward。
+  如果不一样则需要用 =git fetch= 下载下来，此时的远程仓库和你的仓库里的origin/master一致。merge后再push。
+  * 查看当前repo有哪些远程repo，可以用 =git remote= ，可以加-v来查看详细信息（将显示出其远程仓库地址，例如cho45 git://github.com/cho45/grit.git）。
+  * 添加一个远程repo： =git remote add shortname address= 其中shortname表示简单名字，之后再用git remote -v可以看到多了一个 shortname address的远程仓库
   * git remote show [remote-name] 查看远程repo信息
   * git remote rename name1 namw2 将远程repo的name1命名为name2
   * git remote rm remote-name 删除
+  * 取得remote repo的某个分支 =git fetch origin= 后 =git checkout -b branchName origin/branchName= ，后者是必须的，否则本地没有分支与origin的branchName对应。本地分支名不一定必须与remote分支名相同，如果相同的话，可以简化 =git checkout --track origin/branchName= 。
+    也可以直接merge =git fetch origin= 后 =git merge origin/master= 。merge前可以查看diff =git diff master origin/master= 。
+  * 删除服务器上remote分支 =git push origin :branchName= ，此命令中本地分支为空，表示删除remote分支。
 * git fetch
+  https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF
   如果多个人同时向远程仓库提交则有可能后提交者与先前提交者存在冲突，因为本地origin/master指向结点和远程仓库上origin/master不一样([[git remote]])，此时后提交者要先用 =git fetch= 将前者已经提交的版本下载下来进行合并操作然后才能进行push。origin/master只有这种情况才会改变其指向。
   * 如果要抓取所有shortname有但本地没有的，可以git fetch shortname
   * 如果你本地repo是从别人那里clone来的，此命令会自动将远程仓库归于origin名下，于是可以用git fetch origin来更新本地repo的发起人的repo一致（并没有自动合并到当前本机repo中，只有等你准备好了手工合并）
@@ -249,9 +256,9 @@ $ git commit -c ORIG_HEAD
   4. =git diff HEAD= 查看工作目录与版本库的差异
   5. =git diff BranchName= 查看分支最新提交与当前工作目录的差异
 * git rebase
+  https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E5%88%86%E6%94%AF%E7%9A%84%E8%A1%8D%E5%90%88
   看链接图示： http://www.zhaoxiaoqing.cn/a/php/php1/2012/1025/654.html
   http://gitbook.liuhui998.com/4_2.html
-
   相当于进行多次的 [[cherrypick][cherry-pick]]
   {{{lightbox(images/rebase.jpg,400)}}} 
   和进行merge操作结果是完全一样，只是提交历史不同。衍合是按照每行的修改次序重演一遍修改,而合并是把最终结果合在一起。
@@ -259,7 +266,6 @@ $ git commit -c ORIG_HEAD
   但 *一旦分支中的提交对象发布到公共仓库,就千万不要对该分支进行衍合操作。*
   把衍合当成一种在推送之前清理提交历史的手段,而且仅仅衍合那些尚未公开的提交对象,就没问题。如果衍合那些已经公开的提交对象,并且已经有人基于这些提交对象开展 了后续开发工作的话,就会出现叫人沮丧的麻烦。
   {{{lightbox(images/rebase.png,400)}}} 
-
 * fast forward
   如果顺着一个分支走下去可以到达另一个分支的话,那么 Git 在合并两者时,只会简单地把指针右移,因为这种单线的历史分支不存在任何需要解决的分歧,所以这种合并过程可以 称为快进(Fast forward)。
 
@@ -341,6 +347,34 @@ minimap$ git merge 310819a
   2. master~n 表前n个提交点
   3. 02943a..a123ab 两个提交点之间的(左开右闭)
      02943a..默认是到最新提交点
+* git处理pull request
+  A fork B的repo后，便拥有了自己版本的repo版本，A可以对A的repo进行修改commit，不会对B的repo造成任何影响。
+  A想要自己的代码合并到B中，必须发起pull request（github）或merge request（gitlab）。
+  B看到A发起的request后，进行审核，决定是否合并到自己的分支上。
+  B在命令行下操作：
+  #+BEGIN_EXAMPLE
+  // 得到A master分支上的代码
+  git fetch http://202.120.4.52/visayafan/doc.git master
+  // 创建名为A-branch的分支
+  git checkout -b A-branch FETCH_HEAD
+  测试A的代码
+  // 切换到master
+  git checkout master
+  // 合并A-branch上的代码
+  git merge A-branch
+  // 删除分支
+  git branch -d A-branch
+  #+END_EXAMPLE
+* git origin master
+  http://lishicongli.blog.163.com/blog/static/1468259020132125247302/
+  origin是个alias 表示remote repo。当clone时自动将remote repo命名为origin。也可以git remote add origin remote_repo_address。当然也可以起其它名。
+  master表local repo的一个分支。
+  origin/master 表示remote repo的master分支。
+  HEAD表示当前工作空间的分支。 https://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E4%BD%95%E8%B0%93%E5%88%86%E6%94%AF
+  #+BEGIN_EXAMPLE
+  git push origin HEAD:master   // 表示将当前工作空间的分支 push 到 origin的master分支
+  git push origin master 等价于 git push origin master:master
+  #+END_EXAMPLE
 * tricks
 ** git中永久删除一个文件
   git rm filename可以从repo中删除一个文件，但仍旧可以其库存历史将其恢复

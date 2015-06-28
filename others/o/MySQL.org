@@ -3,6 +3,17 @@
 #+INCLUDE: "../../layout/template-toc.org"
 #+title:
 
+* Mac下配置MySQL
+  #+BEGIN_EXAMPLE
+  brew install mysql
+  mysql stop
+  mysql.server start
+  sudo mysql_secure_installation
+  #+END_EXAMPLE
+  设置root为空密码
+  #+BEGIN_EXAMPLE
+  set password = password('')
+  #+END_EXAMPLE
 * create db,user并赋权限
   http://www.lanexa.net/2011/08/create-a-mysql-database-username-password-and-permissions-from-the-command-line/
   #+BEGIN_EXAMPLE

@@ -1,8 +1,105 @@
 #+OPTIONS: ^:{} _:{} num:t toc:t \n:t
-#+INCLUDE: "../../layout/template.org"
 #+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
 #+title:
 
+https://www.youtube.com/watch?v=NnNvDknQJt0&list=PLkEyk1WOu6VifwUmLCcBu8G3ROJ8VrWq1&index=1
 * 下载spring
   http://repo.spring.io/release/org/springframework/spring/4.1.6.RELEASE/spring-framework-4.1.6.RELEASE-dist.zip
-* 
+* ClassPathXmlApplicationContext
+  ClassPathXmlApplicationContext
+  1. 默认是项目classpath目录
+  2. 要使用绝对路径需要加file: 前缀
+  FileSystemXmlApplicationContext
+  1. 没有盘符的是项目工作路径， 即项目的根目录；
+  2. 有盘符表示的是文件绝对路径。
+  3. 如果要使用classpath路径，需要前缀classpath:
+* constructor-arg
+  初始化构造函数，可以使用index指定参数的位置
+  value值全是字符串，为避免歧义，可以使用type指定类型，例如type="java.lang.String"
+* ref
+  指向另一个bean的id
+* property
+  定义类内变量，name为变量名，value为值
+  可以内嵌bean
+  bean的id相当于该bean的名字，如果没有使用可以不定义
+* alias
+  为某个bean定义别名
+  #+BEGIN_EXAMPLE
+    <alias name="triangle" alias="triangle-alias"></alias>
+  #+END_EXAMPLE
+  也可以直接在bean定义时用name来定义
+  #+BEGIN_EXAMPLE
+     <bean id="triangle" class="com.JavaBrains.Triangle" name="triangle-alias">
+     </bean>
+  #+END_EXAMPLE
+* idref
+  表明引用的是一个bean的id，若不是则报错
+  #+BEGIN_EXAMPLE
+  <idref="idname" />
+  #+END_EXAMPLE
+* list
+  用来初始化列表
+  #+BEGIN_SRC xml
+    <bean id="triangle" class="com.JavaBrains.Triangle">
+      <property name="points">
+        <list>
+          <ref bean="PointA"></ref>
+          <ref bean="PointB"></ref>
+          <ref bean="PointC"></ref>
+        </list>
+      </property>
+    </bean>  
+  #+END_SRC
+* autowire
+  1. byName 根据此bean对应类的 =成员变量名= 与 =所有bean的id= ，若相同，则自动赋值。
+  2. byType 根据变量类型而非变量名
+  3. constructor 
+* scope
+  singleton/prototype/web
+  http://blog.csdn.net/mastermind/article/details/1932787
+  http://stackoverflow.com/questions/15145258/spring-beans-scopes-in-web-application-best-practices
+  http://www.javabeat.net/spring-bean-scopes-request-session-global-session-example/
+  1. singleton模式指的是对某个对象的完全共享，包括代码空间和数据空间。
+     所有对Bean的请求，只要id与该Bean定义相匹配，则只会返回该Bean的同一实例。
+     说白了，如果一个类是singleton的，假如这个类有成员变量，那么这个成员变量的值是各个线程共享的（有点类似于static的样子了），当线程A往给变量赋了一个值以后，线程B就能读出这个值。
+  2. prototype 每次对该Bean请求（将其注入到另一个Bean中，或者以程序的方式调用容器的getBean ()方法）时都会创建一个新的Bean实例。
+     有状态的bean都使用Prototype作用域，而对无状态的bean则应该使用singleton作用域。
+  3. web
+     * request 表示该针对每一次HTTP请求都会产生一个新的bean，同时该bean仅在当前HTTP request内有效
+     * session 作用域表示该针对每一次HTTP请求都会产生一个新的bean，同时该bean仅在当前HTTP session内有效
+     * global session  Scopes a single bean definition to the lifecycle of a global HTTP Session. Typically only valid when used in a portlet context.
+* 周期调用函数task注解
+  @scheduled
+  周期性调用
+  http://blog.csdn.net/guoquanyou/article/details/6756437
+  #+BEGIN_EXAMPLE
+  <task:annotation-driven />
+  #+END_EXAMPLE
+* 缓存注解
+  http://www.ibm.com/developerworks/cn/opensource/os-cn-spring-cache/
+  | @Cacheable  | value="CacheName"                            | 如果缓存中有则不执行函数，直接返回缓存中的值 |
+  | @CachePut   | value="CacheName"                            | 执行函数,同时方法的返回值也被记录到缓存中    |
+  | @CacheEvict | value="CacheNameToBeEvicted",allEntries=true | 清空所有缓存                                   |
+* RESTful
+  Request的header中Content-type:application/json，否则会出现UNSUPPORTED_MEDIA_TYPE
+* mvc:view-controller
+  http://www.xuebuyuan.com/2174881.html
+** 重定向
+   #+BEGIN_EXAMPLE
+    <mvc:view-controller path="/" view-name="redirect:/admin/index"/>
+   #+END_EXAMPLE
+** 返回视图
+   #+BEGIN_EXAMPLE
+    <mvc:view-controller path="/" view-name="admin/index"/> 
+   #+END_EXAMPLE
+   若配置了prefix和suffix
+   #+BEGIN_SRC java
+     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+         <property name="prefix" value="/WEB-INF/jsp/"/>
+         <property name="suffix" value=".jsp"/>
+     </bean>  
+   #+END_SRC
+   则实际路径为 /WEB-INF/jsp/admin/index.jsp
+* mvc:default-servlet-handler
+  用默认的Servlet来响应静态文件

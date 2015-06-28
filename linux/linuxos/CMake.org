@@ -1,0 +1,46 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+SETUPFILE: "../../layout/extension.org"
+#+INCLUDE: "../../layout/template-toc.org"
+#+title:
+
+* cmake_minimum_required
+  最小版本
+* project
+  设置工程名，可指定语言，默认为所有语言
+  #+BEGIN_EXAMPLE
+  project(projectname cxx)
+  #+END_EXAMPLE
+* cmake_build_type
+  设置release or debug
+  #+BEGIN_EXAMPLE
+  SET(CMAKE_BUILD_TYPE DEBUG)
+  #+END_EXAMPLE
+* cmake_cxx_flags
+  编译选项
+  #+BEGIN_EXAMPLE
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  #+END_EXAMPLE
+* add_subdirectory
+  添加子目录
+* include_directories
+  头文件目录
+  #+BEGIN_EXAMPLE
+  INCLUDE_DIRECTORIES(/usr/local/include ${PROJET_SOURCE_DIR}/utility)
+  #+END_EXAMPLE
+* projet_source_dir
+  工程所在路径，系统变量
+* project_binary_dir
+  工程生成可执行文件目录
+* link_directories
+  库文件
+* add_library
+  生成link library
+  #+BEGIN_EXAMPLE
+  ADD_LIBRARY(libname [SHARED|STATIC]
+  #+END_EXAMPLE
+* set_target_properties
+* add_executable
+  设置生成的可执行文件 及 源文件
+* target_link_libraries
+  依赖库
+

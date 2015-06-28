@@ -14,7 +14,6 @@ New 'node3:3 (root)' desktop is node3:3
 Starting applications specified in /root/.vnc/xstartup
 Log file is /root/.vnc/node3:3.log
 #+END_EXAMPLE
-
 * VNCViewer登陆
 Windows上用vncviewer登陆，格式为
 #+BEGIN_EXAMPLE
@@ -23,13 +22,23 @@ CentOS服务器:display号
 Mac可以用Chicken of VNC登陆。
 
 填写host时有两种方法：
-1. 使用真实的IP和端口，例如 192.168.1.111:4901
+1. 使用真实的IP和端口，例如 192.168.1.111:5901
 2. 使用IP和display号：例如 host填192.168.1.111，display号填1
-端口号=4900+display号
-
-如果使用路由器映射则直接使用第一种方法方便：202.120.38.42:50029
+   端口号=5900+display号
    
+   如果使用路由器映射则直接使用第一种方法方便：202.120.38.42:50029
+* 关闭VNC
+  首先kill掉之前的display
+  #+BEGIN_EXAMPLE
+  vncserver -kill :3
+  #+END_EXAMPLE
+  重启服务，重启生成display
+  #+BEGIN_EXAMPLE
+  service vncserver restart
+  vncserver
+  #+END_EXAMPLE
 * 可能出现的问题
+** 服务器没有安装图形界面
 如果CentOS装系统时没有安装图形界面则会出现黑屏：
 #+BEGIN_EXAMPLE
 yum groupinstall “GNOME Desktop Environment”
@@ -39,13 +48,28 @@ yum groupinstall “GNOME Desktop Environment”
 # twm &
 gnome-session &
 #+END_EXAMPLE
+** CentOS7 关闭防火墙
+   http://linux.cn/article-4243-1.html
+   CentOS7中的firewalld替代了6中的iptables，成为负责管理防火墙的服务。
+   在6中 =service iptables stop= 并禁止开机启动 =chkconfig iptables off= 查看状态 =service iptables status= 。
+   在7中 =systemctl stop firewalld= 禁止开机启动 =systemctl disable firewalld= 查看状态 =systemctl status firewalld= 。
+** CentOS7 中开机启动VNC
+   http://www.unixmen.com/install-vnc-server-centos-7/
+   #+BEGIN_EXAMPLE
+   yum install tigervnc-server
+   cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
+   vi /etc/systemd/system/vncserver@:1.service
+   # 把<user> 改为 root
+   systemctl daemon-reload
+   vncpasswd
+   # 开机启动
+   systemctl enable vncserver@:1.service
+   # 启动vnc
+   systemctl start vncserver@:1.service
+   # 关闭vnc
+   systemctl stop vncserver@:1.service
 
-首先kill掉之前的display
-#+BEGIN_EXAMPLE
-vncserver -kill :3
-#+END_EXAMPLE
-重启服务，重启生成display
-#+BEGIN_EXAMPLE
-service vncserver restart
-vncserver
-#+END_EXAMPLE
+   #防火墙，若关闭防火墙则不用下面步骤
+   firewall-cmd --permanent --add-service vnc-server
+   systemctl restart firewalld.service
+   #+END_EXAMPLE

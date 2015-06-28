@@ -1,0 +1,24 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* Joiner
+  #+BEGIN_SRC java
+    @Test
+    public void testJoiner(){
+        Joiner join = Joiner.on(";").skipNulls();
+        assertEquals("a;c", join.join(new String[]{"a", null, "c"}));
+        join = Joiner.on(";").useForNull("!");
+        assertEquals("a;!;c", join.join(new String[]{"a", null, "c"}));
+            
+        StringBuilder buidler = new StringBuilder("start:");
+        assertEquals("start:a;!;c", join.appendTo(buidler, new String[]{"a", null, "c"}).toString());
+            
+        Map<Integer, String> map = new HashMap<Integer, String>();  
+        map.put(1, "a");  
+        map.put(2, "b");  
+        MapJoiner joiner = Joiner.on(";").withKeyValueSeparator("->");  
+        assertEquals("1->a;2->b", joiner.join(map)); 
+    }
+  #+END_SRC

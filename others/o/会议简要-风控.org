@@ -1,0 +1,24 @@
+#+OPTIONS: ^:{} _:{} num:t toc:t \n:t
+#+INCLUDE: "../../layout/template.org"
+#+SETUPFILE: "../../layout/extension.org"
+#+title:
+
+* 风控
+  4大风险
+  1. 市场风险
+     * [[http://zhidao.baidu.com/link?url=tN_0um_2QvM7OMJ4DWrLtn_wI7txKhp-Sns03Ms6cnKS5oYwASxSVtqh_BOUkVLoem5sDIfNMdP4KTynjjwXvRIhr31ip06xzm8vmeIL1Aq][昌九生化]]
+     * [[http://www.cs.com.cn/ssgs/gsxw/201412/t20141215_4590479.html][成飞集成]]
+     * [[http://finance.qq.com/original/lenjing/zzd.html][獐子岛]]
+     * 蓝田
+     * 万福生科
+     * [[http://xueqiu.com/5232498753/34002068][徐翔]] 獐子岛
+  2. 信用风险
+  3. 流动风险：对公司影响大
+     私募基金：流动资产少出现的风险
+  4. 操作风险
+     13年 光大事件 内部交易 负责人禁入证券市场
+     原因：建模方式 得知内幕但未公布 杨剑波
+* ST股票购买不能超过50W
+* o
+  [[http://baike.baidu.com/link?url=CFPq7IzL6CJIizN3nMu-L8yNf3NbMljurn3l20RcLhqG9boKy06AvDQbRp99EI5pHa2xbcCL1QZButULSSVaExnLCHElNiKNkt03kAZYPzC][王亚伟]]
+  [[http://baike.baidu.com/link?url=VRtA8AICarA0vteXyQD89-c_z1vsTJlUgQLqx3cIek8_ryzyE9CMLW8Mi3fIlhbCPqYVSfkzecfQh5yuFfC8U_#2][VaR]]

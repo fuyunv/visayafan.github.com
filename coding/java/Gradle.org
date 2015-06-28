@@ -59,3 +59,11 @@
   #+END_EXAMPLE
 * 查找依赖
   http://search.maven.org/
+* buildscript
+  buildscript中的声明是gradle脚本自身需要使用的资源。可以声明的资源包括依赖项、第三方插件、maven仓库地址等。
+  而在build.gradle文件中直接声明的依赖项、仓库地址等信息是项目自身需要的资源。
+* intellij中查找dependency
+  =Cmd N=  Add maven artifact dependency
+* plugin application
+  可以指定main所在类 mainClassName
+  
