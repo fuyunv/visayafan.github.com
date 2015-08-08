@@ -375,6 +375,44 @@ minimap$ git merge 310819a
   git push origin HEAD:master   // 表示将当前工作空间的分支 push 到 origin的master分支
   git push origin master 等价于 git push origin master:master
   #+END_EXAMPLE
+* 搭建git服务器
+  本地(Win7)：
+  生成公钥
+  #+BEGIN_EXAMPLE
+  ssh-keygen -t rsa
+  #+END_EXAMPLE
+  服务器端(CentOS, IP为192.168.1.101)：
+  #+BEGIN_EXAMPLE
+  #安装git
+  yum install perl openssh git
+  #新建git用户，此用户专门用来处理git repo
+  adduser --system --shell /bin/sh --create-home --home-dir /home/git git
+  #+END_EXAMPLE
+  将本地公钥保存到服务器上的/home/git/.ssh/authorized_keys中，并修改权限
+  #+BEGIN_EXAMPLE
+  chmod -R 700 ~/.ssh
+  #+END_EXAMPLE
+  测试本地是否可以无密码登陆，即ssh 192.168.1.101后提示类似Enter passphrase for key 'xxxxxx/.ssh/id_rsa'而非Enter user git password.
+  
+  服务器端
+  #+BEGIN_EXAMPLE
+  mkdir test.git
+  cd test.git
+  git init --bare
+  #+END_EXAMPLE
+
+  本地
+  #+BEGIN_EXAMPLE
+  mkdir test
+  cd test
+  touch README.md
+  git add .
+  git commit -m "init"
+  git remote add origin git@192.168.1.101:~/test.git
+  git push origin master
+  #+END_EXAMPLE
+
+  如果要进行权限管理，需要配置gitolite或gitosis，参考http://www.uml.org.cn/pzgl/201206121.asp
 * tricks
 ** git中永久删除一个文件
   git rm filename可以从repo中删除一个文件，但仍旧可以其库存历史将其恢复
@@ -431,41 +469,7 @@ $ du -hs
    使用git add添加要提交的文件的时候，如果文件名是中文，会显示形如274\232\350\256\256\346\200\273\347\273\223.png的乱码。
    解决方案：
    git config --global core.quotepath false
-* 搭建git服务器
-  本地(Win7)：
-  生成公钥
-  #+BEGIN_EXAMPLE
-  ssh-keygen -t rsa
-  #+END_EXAMPLE
-  服务器端(CentOS, IP为192.168.1.101)：
-  #+BEGIN_EXAMPLE
-  #安装git
-  yum install perl openssh git
-  #新建git用户，此用户专门用来处理git repo
-  adduser --system --shell /bin/sh --create-home --home-dir /home/git git
-  #+END_EXAMPLE
-  将本地公钥保存到服务器上的/home/git/.ssh/authorized_keys中，并修改权限
-  #+BEGIN_EXAMPLE
-  chmod -R 700 ~/.ssh
-  #+END_EXAMPLE
-  测试本地是否可以无密码登陆，即ssh 192.168.1.101后提示类似Enter passphrase for key 'xxxxxx/.ssh/id_rsa'而非Enter user git password.
-  
-  服务器端
-  #+BEGIN_EXAMPLE
-  mkdir test.git
-  cd test.git
-  git init --bare
-  #+END_EXAMPLE
-
-  本地
-  #+BEGIN_EXAMPLE
-  mkdir test
-  cd test
-  touch README.md
-  git add .
-  git commit -m "init"
-  git remote add origin git@192.168.1.101:~/test.git
-  git push origin master
-  #+END_EXAMPLE
-
-  如果要进行权限管理，需要配置gitolite或gitosis，参考http://www.uml.org.cn/pzgl/201206121.asp
+** 合并分支中的某个文件
+   =git checkout branch_name file_path=
+** 查看某个文件所有修改历史记录
+   =git log -p file_name=
